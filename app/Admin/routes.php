@@ -14,7 +14,7 @@ Route::group([
     $router->get('/', 'HomeController@index')->name('home');
     $router->get('/client/masters', 'ClientController@index')->name('client.masters');
     $router->get('/client/masters/create', 'ClientController@create')->name('client.masters.craete');
-    $router->post('/client/masters/{id}', 'ClientController@store')->name('client.masters.store');
+    $router->post('/client/masters', 'ClientController@store')->name('client.masters.store');
     $router->get('/client/masters/{id}', 'ClientController@show')->name('client.masters.show');
     $router->get('/client/masters/{id}/edit', 'ClientController@edit')->name('client.masters.edit');
     $router->put('/client/masters/{id}', 'ClientController@update')->name('client.masters.update');
