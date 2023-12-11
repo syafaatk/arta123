@@ -15,7 +15,7 @@ class ClientController extends AdminController
      *
      * @var string
      */
-    protected $title = 'Client';
+    protected $title = 'Master Client';
 
     /**
      * Make a grid builder.
@@ -85,7 +85,7 @@ class ClientController extends AdminController
     {
         $form = new Form(new Client());
 
-        $form->text('status', __('Status'));
+        $form->select('status','Status')->options([1 => 'Badan', 2 => 'Perorangan']);
         $form->text('nama_wp', __('Nama wp'));
         $form->text('npwp_wp', __('Npwp wp'));
         $form->text('nama_pj', __('Nama pj'));
