@@ -10,4 +10,13 @@ class Client extends Model
     use SoftDeletes;
 
     protected $table = 'client_master';
+        /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'nama',
+        'status',
+    ];
 }

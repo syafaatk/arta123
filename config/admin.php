@@ -184,6 +184,9 @@ return [
         'users_table' => 'admin_users',
         'users_model' => OpenAdmin\Admin\Auth\Database\Administrator::class,
 
+        // User tables and model.
+        'client_master_table' => 'client_master',
+
         // Role table and model.
         'roles_table' => 'admin_roles',
         'roles_model' => OpenAdmin\Admin\Auth\Database\Role::class,
