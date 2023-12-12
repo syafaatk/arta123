@@ -33,6 +33,8 @@ class CreateClientMasterTable extends Migration
             $table->string('nama_ar')->nullable();
             $table->string('telp_ar')->nullable();
             $table->string('lokasi_kpp')->nullable();
+            $table->string('file_ktp')->nullable();
+            $table->string('file_npwp')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

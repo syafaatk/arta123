@@ -30,9 +30,10 @@ return [
 
     'disks' => [
 
-        'local' => [
+        'admin' => [
             'driver' => 'local',
-            'root' => storage_path('app'),
+            'root' => storage_path('app/public'),
+            'visibility' => 'public',
         ],
 
         'public' => [
@@ -52,9 +53,6 @@ return [
             'endpoint' => env('AWS_ENDPOINT'),
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
         ],
-
-        'admin'  => [ 'driver' => 'local', 'root'   => storage_path('app'), ],
-
     ],
 
     /*
