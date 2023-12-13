@@ -32,15 +32,15 @@ class ClientController extends AdminController
                 return $client->only(['nama_ar','telp_ar','tgl_dikukuhkan_pkp', 'klu', 'status_pkp','lokasi_kpp']);
             });
         
-            return new Table(['Nama AR','Telp AR','Tanggal PKP', 'KLU', 'Status PKP', 'Lokasi KPP'], $clients->toArray());
+            return new Table(['Nama Account Representative','Telp Account Representative','Tanggal PKP', 'KLU', 'Status PKP', 'Lokasi KPP'], $clients->toArray());
         });
         $grid->column('status', __('Status'))->using([0 => 'Badan', 1 => 'Perorangan']);
         $grid->column('bidang_usaha', __('Bidang Usaha'));
         $grid->column('is_umkm', __('UMKM/Non UMKM'))->using([0 => 'Non UMKM', 1 => 'UMKM']);
-        $grid->column('nama_wp', __('Nama wp'));
-        $grid->column('npwp_wp', __('Npwp wp'));
-        $grid->column('npwp_wp_sejak', __('Npwp wp Sejak'));
-        $grid->column('tgl_berdiri', __('Tgl berdiri'));
+        $grid->column('nama_wp', __('Nama Wajib Pajak'));
+        $grid->column('npwp_wp', __('Npwp Wajib Pajak'));
+        $grid->column('npwp_wp_sejak', __('Tanggal Npwp Wajib Pajak'));
+        $grid->column('tgl_berdiri', __('Tanggal berdiri'));
         $grid->column('nama_pj', __('Detail Penanggung Jawab'))->modal('Detail Penanggung Jawab',function ($model) {
 
             $clients = $model->take(10)->get()->map(function ($client) {
@@ -49,13 +49,13 @@ class ClientController extends AdminController
         
             return new Table(['Nama Penanggung Jawab','NPWP Penanggung Jawab','Telp Penanggung Jawab'], $clients->toArray());
         });
-        $grid->column('masa_berlaku_sertel_sejak', __('Detail Sertel'))->modal('Detail Sertel',function ($model) {
+        $grid->column('masa_berlaku_sertel_sejak', __('Detail Sertifikat Elektronik'))->modal('Detail Sertifikat Elektronik',function ($model) {
 
             $clients = $model->take(10)->get()->map(function ($client) {
                 return $client->only(['masa_berlaku_sertel_sejak','masa_berlaku_sertel_sampai']);
             });
         
-            return new Table(['Tanggal Awal Sertel','Tanggal Berakhir Sertel'], $clients->toArray());
+            return new Table(['Tanggal Awal Sertifikat Elektronik','Tanggal Berakhir Sertifikat Elektronik'], $clients->toArray());
         });
         $grid->column('created_at', __('Created at'));
         // $grid->column('updated_at', __('Updated at'));
@@ -77,21 +77,21 @@ class ClientController extends AdminController
         $show->field('id', __('Id'));
         $show->field('status', __('Status'))->using([0 => 'Badan', 1 => 'Perorangan']);
         $show->field('file_npwp')->file();
-        $show->field('nama_wp', __('Nama wp'));
-        $show->field('npwp_wp', __('Npwp wp'));
+        $show->field('nama_wp', __('Nama Wajib Pajak'));
+        $show->field('npwp_wp', __('Npwp Wajib Pajak'));
         $show->divider();
-        $show->field('nama_pj', __('Nama pj'));
-        $show->field('npwp_pj', __('Npwp pj'));
-        $show->field('telp_pj', __('Telp pj'));
+        $show->field('nama_pj', __('Nama Penanggung Jawab'));
+        $show->field('npwp_pj', __('Npwp Penanggung Jawab'));
+        $show->field('telp_pj', __('Telp Penanggung Jawab'));
         $show->field('tgl_berdiri', __('Tgl berdiri'));
-        $show->field('tgl_dikukuhkan_pkp', __('Tgl dikukuhkan pkp'));
+        $show->field('tgl_dikukuhkan_pkp', __('Tgl Dikukuhkan PKP'));
         $show->field('klu', __('KLU'));
-        $show->field('status_pkp', __('Status PKP'));
+        $show->field('status_pkp', __('Status Pengusaha Kena Pajak'));
         $show->field('is_umkm', __('UMKM/Non UMKM'))->using([0 => 'Non UMKM', 1 => 'UMKM']);
-        $show->field('masa_berlaku_sertel_sejak', __('Masa berlaku sertel sejak'));
-        $show->field('masa_berlaku_sertel_sampai', __('Masa berlaku sertel sampai'));
-        $show->field('nama_ar', __('Nama ar'));
-        $show->field('telp_ar', __('Telp ar'));
+        $show->field('masa_berlaku_sertel_sejak', __('Masa berlaku Sertifikat Elektronik sejak'));
+        $show->field('masa_berlaku_sertel_sampai', __('Masa berlaku Sertifikat Elektronik sampai'));
+        $show->field('nama_ar', __('Nama Account Representative'));
+        $show->field('telp_ar', __('Telp Account Representative'));
         $show->field('lokasi_kpp', __('Lokasi kpp'));
         $show->field('file_ktp')->file();
         $show->field('created_at', __('Created at'));
@@ -114,21 +114,21 @@ class ClientController extends AdminController
         $form->text('bidang_usaha',__('Bidang usaha'));
         $form->file('file_ktp', 'File KTP')->move('files/Clients/KTP/')->rules('mimes:pdf,jpeg,png')->uniqueName();
         $form->file('file_npwp', 'File NPWP')->move('files/Clients/NPWP/')->rules('mimes:pdf,jpeg,png')->uniqueName();
-        $form->text('nama_wp', __('Nama wp'));
-        $form->text('npwp_wp', __('Npwp wp'));
-        $form->date('npwp_wp_sejak', __('Npwp wp Sejak'))->default(date('Y-m-d'));
-        $form->text('nama_pj', __('Nama pj'));
-        $form->text('npwp_pj', __('Npwp pj'));
-        $form->text('telp_pj', __('Telp pj'));
+        $form->text('nama_wp', __('Nama Wajib Pajak'));
+        $form->text('npwp_wp', __('Npwp Wajib Pajak'));
+        $form->date('npwp_wp_sejak', __('Npwp Wajib Pajak Sejak'))->default(date('Y-m-d'));
+        $form->text('nama_pj', __('Nama Penanggung Jawab'));
+        $form->text('npwp_pj', __('Npwp Penanggung Jawab'));
+        $form->text('telp_pj', __('Telp Penanggung Jawab'));
         $form->date('tgl_berdiri', __('Tgl berdiri'))->default(date('Y-m-d'));
         $form->date('tgl_dikukuhkan_pkp', __('Tgl dikukuhkan pkp'))->default(date('Y-m-d'));
         $form->text('klu', __('KLU'));
         $form->text('status_pkp', __('Status PKP'));
         $form->select('is_umkm', __('UMKM/Non UMKM'))->options([0 => 'Non UMKM', 1 => 'UMKM']);
-        $form->date('masa_berlaku_sertel_sejak', __('Masa berlaku sertel sejak'))->default(date('Y-m-d'));
-        $form->date('masa_berlaku_sertel_sampai', __('Masa berlaku sertel sampai'))->default(date('Y-m-d'));
-        $form->text('nama_ar', __('Nama ar'));
-        $form->text('telp_ar', __('Telp ar'));
+        $form->date('masa_berlaku_sertel_sejak', __('Masa berlaku Sertifikat Elektronik sejak'))->default(date('Y-m-d'));
+        $form->date('masa_berlaku_sertel_sampai', __('Masa berlaku Sertifikat Elektronik sampai'))->default(date('Y-m-d'));
+        $form->text('nama_ar', __('Nama Account Representative'));
+        $form->text('telp_ar', __('Telp Account Representative'));
         $form->text('lokasi_kpp', __('Lokasi kpp'));
 
         return $form;

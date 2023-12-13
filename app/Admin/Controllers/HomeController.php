@@ -18,6 +18,10 @@ class HomeController extends Controller
             ->title('Dashboard')
             ->description('Description...')
             ->row(Dashboard::title())
+            // ->withError('Title', 'messages..')
+            // ->withWarning('Title', 'messages..')
+            // ->withInfo('Title', 'messages..')
+            // ->withSuccess('Title', 'messages..')
             ->row(function (Row $row) {
 
                 $row->column(4, function (Column $column) {
