@@ -8,6 +8,8 @@ use OpenAdmin\Admin\Show;
 use OpenAdmin\Admin\Widgets\Table;
 use \App\Models\Client;
 use \App\Models\Klu;
+use \App\Models\Kpp;
+
 class ClientController extends AdminController
 {
     /**
@@ -25,18 +27,28 @@ class ClientController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new Client());
-
-        $grid->column('id', __('Id'))->modal('detail',function ($model) {
+        $grid->column('id', __('Id'));
+        $grid->column('lokasi_kpp', __('Lokasi KPP'))->display(function($kppId) {return Kpp::find($kppId)->name_kpp;})->modal('detail',function ($model) {
 
             $clients = $model->take(10)->get()->map(function ($client) {
-                return $client->only(['nama_ar','telp_ar','tgl_dikukuhkan_pkp', 'klu', 'status_pkp','lokasi_kpp']);
+                return $client->only(['nama_ar','telp_ar', 'klu']);
             });
         
-            return new Table(['Nama Account Representative','Telp Account Representative','Tanggal PKP', 'KLU', 'Status PKP', 'Lokasi KPP'], $clients->toArray());
+            return new Table(['Nama Account Representative','Telp Account Representative', 'KLU'], $clients->toArray());
         });
         $grid->column('status', __('Status'))->using([0 => 'Badan', 1 => 'Perorangan']);
         $grid->column('bidang_usaha', __('Bidang Usaha'));
-        $grid->column('is_umkm', __('UMKM/Non UMKM'))->using([0 => 'Non UMKM', 1 => 'UMKM']);
+        $grid->column('is_umkm', __('UMKM'))->using([0 => 'Bukan', 1 => 'Ya']);
+
+        $grid->column('is_pkp', __('PKP'))->using([0 => 'Bukan', 1 => 'Ya'])->modal('Detail Pengusaha Kena Pajak',function ($model) {
+
+            $clients = $model->take(10)->get()->map(function ($client) {
+                return $client->only(['status_pkp','tgl_dikukuhkan_pkp']);
+            });
+        
+            return new Table(['Status PKP','Tgl_Dikukuhkan PKP'], $clients->toArray());
+        });
+        
         $grid->column('nama_wp', __('Nama Wajib Pajak'));
         $grid->column('npwp_wp', __('Npwp Wajib Pajak'));
         $grid->column('npwp_wp_sejak', __('Tanggal Npwp Wajib Pajak'));
@@ -133,7 +145,8 @@ class ClientController extends AdminController
         $form->text('nama_ar', __('Nama Account Representative'));
         $form->text('telp_ar', __('Telp Account Representative'));
         $form->text('lokasi_kpp', __('Lokasi kpp'));
-        
+        $form->select('lokasi_kpp', __("Keterangan KPP"))->options(Kpp::all()->pluck('name_kpp', 'id'));
+
         return $form;
     }
 }
