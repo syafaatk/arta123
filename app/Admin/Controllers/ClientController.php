@@ -129,15 +129,17 @@ class ClientController extends AdminController
         $form->text('nama_wp', __('Nama Wajib Pajak'));
         $form->text('npwp_wp', __('Npwp Wajib Pajak'));
         $form->date('npwp_wp_sejak', __('Npwp Wajib Pajak Sejak'))->default(date('Y-m-d'));
+        $form->divider();
         $form->text('nama_pj', __('Nama Penanggung Jawab'));
         $form->text('npwp_pj', __('Npwp Penanggung Jawab'));
         $form->text('telp_pj', __('Telp Penanggung Jawab'));
         $form->date('tgl_berdiri', __('Tgl berdiri'))->default(date('Y-m-d'));
-        $form->date('tgl_dikukuhkan_pkp', __('Tgl dikukuhkan pkp'))->default(date('Y-m-d'));
+        $form->divider();
         $form->select('klu', __("Keterangan KLU"))->options(Klu::all()->pluck('full_name', 'kode_klu'));
         $form->divider();
         $form->select('is_pkp', __('PKP/Non PKP'))->options([0 => 'Non PKP', 1 => 'PKP']);
         $form->text('status_pkp', __('Status PKP'));
+        $form->date('tgl_dikukuhkan_pkp', __('Tgl dikukuhkan pkp'))->default(date('Y-m-d'));
         $form->divider();
         $form->select('is_umkm', __('UMKM/Non UMKM'))->options([0 => 'Non UMKM', 1 => 'UMKM']);
         $form->date('masa_berlaku_sertel_sejak', __('Masa berlaku Sertifikat Elektronik sejak'))->default(date('Y-m-d'));
