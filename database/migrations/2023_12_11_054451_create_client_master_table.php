@@ -26,6 +26,7 @@ class CreateClientMasterTable extends Migration
             $table->date('tgl_berdiri')->nullable();
             $table->date('tgl_dikukuhkan_pkp')->nullable();
             $table->string('klu')->nullable();
+            $table->string('is_pkp')->comment('1=pkp ; 0=nonpkp')->nullable();
             $table->string('status_pkp')->nullable();
             $table->string('is_umkm')->comment('1=umkm ; 0=nonumkm')->nullable();
             $table->date('masa_berlaku_sertel_sejak')->nullable();

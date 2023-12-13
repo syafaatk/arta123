@@ -19,4 +19,5 @@ class Client extends Model
         'nama',
         'status',
     ];
+
 }
