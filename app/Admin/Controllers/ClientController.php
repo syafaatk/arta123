@@ -104,7 +104,15 @@ class ClientController extends AdminController
         $show->field('masa_berlaku_sertel_sampai', __('Masa berlaku Sertifikat Elektronik sampai'));
         $show->field('nama_ar', __('Nama Account Representative'));
         $show->field('telp_ar', __('Telp Account Representative'));
-        $show->field('lokasi_kpp', __('Lokasi kpp'));
+        $show->panel()
+        ->tools(function ($tools) {
+            $tools->disableEdit();
+            $tools->disableList();
+            $tools->disableDelete();
+        });
+        $show->NamaKantorPajakPratama('Kantor Pajak Pratama', function ($NamaKantorPajakPratama) {
+            $NamaKantorPajakPratama->name_kpp();
+        });
         $show->field('file_ktp')->file();
         $show->field('created_at', __('Created at'));
         $show->field('updated_at', __('Updated at'));
@@ -144,10 +152,9 @@ class ClientController extends AdminController
         $form->select('is_umkm', __('UMKM/Non UMKM'))->options([0 => 'Non UMKM', 1 => 'UMKM']);
         $form->date('masa_berlaku_sertel_sejak', __('Masa berlaku Sertifikat Elektronik sejak'))->default(date('Y-m-d'));
         $form->date('masa_berlaku_sertel_sampai', __('Masa berlaku Sertifikat Elektronik sampai'))->default(date('Y-m-d'));
+        $form->select('lokasi_kpp', __("Keterangan KPP"))->options(Kpp::all()->pluck('name_kpp', 'id'));
         $form->text('nama_ar', __('Nama Account Representative'));
         $form->text('telp_ar', __('Telp Account Representative'));
-        $form->text('lokasi_kpp', __('Lokasi kpp'));
-        $form->select('lokasi_kpp', __("Keterangan KPP"))->options(Kpp::all()->pluck('name_kpp', 'id'));
 
         return $form;
     }

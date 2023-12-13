@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use \App\Models\Kpp;
 
 class Client extends Model
 {
@@ -19,5 +20,10 @@ class Client extends Model
         'nama',
         'status',
     ];
+
+    public function NamaKantorPajakPratama()
+    {
+        return $this->belongsTo(Kpp::class, 'lokasi_kpp');
+    }
 
 }
