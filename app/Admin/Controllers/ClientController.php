@@ -27,51 +27,44 @@ class ClientController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new Client());
+        $states = [
+            'on' => ['value' => 1, 'text' => 'Ya', 'color' => 'primary'],
+            'off' => ['value' => 0, 'text' => 'Bukan', 'color' => 'default'],
+        ];
         $grid->column('id', __('Id'));
-        $grid->column('lokasi_kpp', __('Lokasi KPP'))->display(function($kppId) {return Kpp::find($kppId)->name_kpp;})->modal('detail',function ($model) {
 
-            $clients = $model->take(10)->get()->map(function ($client) {
-                return $client->only(['nama_ar','telp_ar', 'klu']);
-            });
-        
-            return new Table(['Nama Account Representative','Telp Account Representative', 'KLU'], $clients->toArray());
-        });
+        $grid->column('klu_id', __('KLU'))->display(function($kluId) {return Klu::find($kluId)->id . '-' . Klu::find($kluId)->name_klu;});
+
+        $grid->column('lokasi_kpp', __('Lokasi KPP'))->display(function($kppId) {return Kpp::find($kppId)->name_kpp;});
+        $grid->column('nama_ar', __('Nama Account Representative'))->hide();
+        $grid->column('telp_ar', __('Telp Account Representative'))->hide();
         $grid->column('status', __('Status'))->using([0 => 'Badan', 1 => 'Perorangan']);
         $grid->column('bidang_usaha', __('Bidang Usaha'));
-        $grid->column('is_umkm', __('UMKM'))->using([0 => 'Bukan', 1 => 'Ya']);
+        $grid->column('is_umkm', __('UMKM'))->switch($states);
+        $grid->column('is_pkp', __('PKP'))->switch($states);
+        $grid->column('status_pkp', __('Status PKP'))->hide();
+        $grid->column('tgl_dikukuhkan_pkp', __('Status PKP'))->hide();    
+        $grid->column('nama_wp', __('Detail Wajib Pajak'))->modal('Detail Wajib Pajak',function ($model) {
 
-        $grid->column('is_pkp', __('PKP'))->using([0 => 'Bukan', 1 => 'Ya'])->modal('Detail Pengusaha Kena Pajak',function ($model) {
-
-            $clients = $model->take(10)->get()->map(function ($client) {
-                return $client->only(['status_pkp','tgl_dikukuhkan_pkp']);
+            $clients = $model->take(1)->get()->map(function ($client) {
+                return $this->only(['nama_wp','npwp_wp','npwp_wp_sejak']);
             });
         
-            return new Table(['Status PKP','Tgl_Dikukuhkan PKP'], $clients->toArray());
-        });
-        
-        $grid->column('nama_wp', __('Nama Wajib Pajak'));
-        $grid->column('npwp_wp', __('Npwp Wajib Pajak'));
-        $grid->column('npwp_wp_sejak', __('Tanggal Npwp Wajib Pajak'));
+            return new Table(['Nama Wajib Pajak','NPWP Wajib Pajak','Tanggal Npwp Wajib Pajak'], $clients->toArray());
+        }); 
         $grid->column('tgl_berdiri', __('Tanggal berdiri'));
         $grid->column('nama_pj', __('Detail Penanggung Jawab'))->modal('Detail Penanggung Jawab',function ($model) {
 
-            $clients = $model->take(10)->get()->map(function ($client) {
-                return $client->only(['nama_pj','npwp_pj','telp_pj']);
+            $clients = $model->take(1)->get()->map(function ($client) {
+                return $this->only(['nama_pj','npwp_pj','telp_pj']);
             });
         
             return new Table(['Nama Penanggung Jawab','NPWP Penanggung Jawab','Telp Penanggung Jawab'], $clients->toArray());
         });
-        $grid->column('masa_berlaku_sertel_sejak', __('Detail Sertifikat Elektronik'))->modal('Detail Sertifikat Elektronik',function ($model) {
-
-            $clients = $model->take(10)->get()->map(function ($client) {
-                return $client->only(['masa_berlaku_sertel_sejak','masa_berlaku_sertel_sampai']);
-            });
-        
-            return new Table(['Tanggal Awal Sertifikat Elektronik','Tanggal Berakhir Sertifikat Elektronik'], $clients->toArray());
-        });
-        $grid->column('created_at', __('Created at'));
-        // $grid->column('updated_at', __('Updated at'));
-        $grid->column('deleted_at', __('Deleted at'));
+        $grid->column('masa_berlaku_sertel_sejak', __('Detail Sertifikat Elektronik'))->display(function(){return $this->masa_berlaku_sertel_sejak . ' s/d ' . $this->masa_berlaku_sertel_sampai;});
+        $grid->column('created_at', __('Created at'))->hide();
+        $grid->column('updated_at', __('Updated at'))->hide();
+        $grid->column('deleted_at', __('Deleted at'))->hide();
 
         return $grid;
     }
@@ -145,11 +138,11 @@ class ClientController extends AdminController
         $form->divider();
         $form->select('klu', __("Keterangan KLU"))->options(Klu::all()->pluck('full_name', 'kode_klu'));
         $form->divider();
-        $form->select('is_pkp', __('PKP/Non PKP'))->options([0 => 'Non PKP', 1 => 'PKP']);
+        $form->switch('is_pkp', __('PKP'));
         $form->text('status_pkp', __('Status PKP'));
         $form->date('tgl_dikukuhkan_pkp', __('Tgl dikukuhkan pkp'))->default(date('Y-m-d'));
         $form->divider();
-        $form->select('is_umkm', __('UMKM/Non UMKM'))->options([0 => 'Non UMKM', 1 => 'UMKM']);
+        $form->switch('is_umkm', __('UMKM'));
         $form->date('masa_berlaku_sertel_sejak', __('Masa berlaku Sertifikat Elektronik sejak'))->default(date('Y-m-d'));
         $form->date('masa_berlaku_sertel_sampai', __('Masa berlaku Sertifikat Elektronik sampai'))->default(date('Y-m-d'));
         $form->select('lokasi_kpp', __("Keterangan KPP"))->options(Kpp::all()->pluck('name_kpp', 'id'));
