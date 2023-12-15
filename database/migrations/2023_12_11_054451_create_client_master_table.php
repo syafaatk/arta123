@@ -33,7 +33,7 @@ class CreateClientMasterTable extends Migration
             $table->date('masa_berlaku_sertel_sampai')->nullable();
             $table->string('nama_ar')->nullable();
             $table->string('telp_ar')->nullable();
-            $table->string('lokasi_kpp')->nullable();
+            $table->string('kppar_id')->nullable();
             $table->string('file_ktp')->nullable();
             $table->string('file_npwp')->nullable();
             $table->string('file_ktp_pj')->nullable();

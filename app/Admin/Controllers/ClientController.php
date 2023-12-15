@@ -9,6 +9,7 @@ use OpenAdmin\Admin\Widgets\Table;
 use \App\Models\Client;
 use \App\Models\Klu;
 use \App\Models\Kpp;
+use \App\Models\Kppar;
 
 class ClientController extends AdminController
 {
@@ -35,7 +36,18 @@ class ClientController extends AdminController
 
         $grid->column('klu_id', __('KLU'))->display(function($kluId) {return Klu::find($kluId)->id . '-' . Klu::find($kluId)->name_klu;});
 
-        $grid->column('lokasi_kpp', __('Lokasi KPP'))->display(function($kppId) {return Kpp::find($kppId)->name_kpp;});
+        $grid->column('kppar_id', __('Lokasi KPP'))->display(function ($kppId) {
+            $kppar = Kppar::with('masterKpp')->find($kppId);
+        
+            if ($kppar) {
+                $name_kpp = $kppar->masterKpp->name_kpp;
+                $name_ar = $kppar->name_ar;
+        
+                return "$name_kpp - $name_ar";
+            } else {
+                return '';
+            }
+        });
         $grid->column('nama_ar', __('Nama Account Representative'))->hide();
         $grid->column('telp_ar', __('Telp Account Representative'))->hide();
         $grid->column('status', __('Status'))->using([0 => 'Badan', 1 => 'Perorangan']);
@@ -80,9 +92,20 @@ class ClientController extends AdminController
         $show = new Show(Client::findOrFail($id));
 
         $show->field('id', __('Id'));
-        $show->field('lokasi_kpp', __('KPP'))->as(function ($kppId) {
-            return Kpp::find($kppId)->name_kpp;;
+        $show->field('kppar_id', __('KPP'))->as(function ($kppId) {
+            $kppar = Kppar::with('masterKpp')->find($kppId);
+        
+            if ($kppar) {
+                $name_kpp = $kppar->masterKpp->name_kpp;
+                $name_ar = $kppar->name_ar;
+                $telp_ar = $kppar->telp_ar;
+        
+                return "$name_kpp - $name_ar - $telp_ar";
+            } else {
+                return '';
+            }
         });
+        $show->divider();
         $show->field('status', __('Status'))->using([0 => 'Badan', 1 => 'Perorangan']);
         $show->field('nama_wp', __('Nama Wajib Pajak'));
         $show->field('npwp_wp', __('Npwp Wajib Pajak'));
@@ -150,9 +173,16 @@ class ClientController extends AdminController
         $form->switch('is_umkm', __('UMKM'));
         $form->date('masa_berlaku_sertel_sejak', __('Masa berlaku Sertifikat Elektronik sejak'))->default(date('Y-m-d'));
         $form->date('masa_berlaku_sertel_sampai', __('Masa berlaku Sertifikat Elektronik sampai'))->default(date('Y-m-d'));
-        $form->select('lokasi_kpp', __("Keterangan KPP"))->options(Kpp::all()->pluck('name_kpp', 'id'));
-        $form->text('nama_ar', __('Nama Account Representative'));
-        $form->text('telp_ar', __('Telp Account Representative'));
+        $form->select('kppar_id',__("KPP - Account Representative"))->options(
+            Kppar::with(['masterKpp:id,name_kpp', 'clients'])
+                ->select('id', 'kpp_id', 'name_ar')
+                ->get()
+                ->mapWithKeys(function ($item) {
+                    return [$item->id => $item->masterKpp->name_kpp . ' - ' . $item->name_ar];
+                })
+        );
+        $form->text('kppar.name_ar', __("Nama Account Representative"))->disable();
+        $form->text('kppar.telp_ar', __('Telp Account Representative'))->disable();
 
         return $form;
     }

@@ -20,15 +20,15 @@ class Client extends Model
         'nama',
         'status',
     ];
-
-    public function kpp()
-    {
-        return $this->belongsTo(Kpp::class, 'lokasi_kpp');
-    }    
-
+    
     public function klu()
     {
         return $this->belongsTo(Klu::class, 'klu_id');
     }
+
+    public function kppar()
+    {
+        return $this->belongsTo(Kppar::class, 'kppar_id');
+    } 
 
 }

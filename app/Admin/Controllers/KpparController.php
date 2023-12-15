@@ -28,9 +28,10 @@ class KpparController extends AdminController
         $grid = new Grid(new Kppar());
 
         $grid->column('id', __('Id'));
-        $grid->column('kpp_id', __('Kpp id'));
+        
         $grid->column('name_ar', __('Name ar'));
         $grid->column('telp_ar', __('Telp ar'));
+        $grid->column('kpp_id', __('Lokasi KPP'))->display(function($kppId) {return Kpp::find($kppId)->name_kpp;});
         $grid->column('created_at', __('Created at'));
         $grid->column('updated_at', __('Updated at'));
         $grid->column('deleted_at', __('Deleted at'));
@@ -49,9 +50,11 @@ class KpparController extends AdminController
         $show = new Show(Kppar::findOrFail($id));
 
         $show->field('id', __('Id'));
-        $show->field('kpp_id', __('Kpp id'));
         $show->field('name_ar', __('Name ar'));
         $show->field('telp_ar', __('Telp ar'));
+        $show->field('kpp_id', __('KPP'))->as(function ($kppId) {
+            return Kpp::find($kppId)->name_kpp;;
+        });
         $show->field('created_at', __('Created at'));
         $show->field('updated_at', __('Updated at'));
         $show->field('deleted_at', __('Deleted at'));

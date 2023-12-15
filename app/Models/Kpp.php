@@ -10,7 +10,7 @@ class Kpp extends Model
 {
     protected $table = 'kpp_master';
 
-    public function kppar()
+    public function kppars()
     {
         return $this->hasMany(Kppar::class, 'kpp_id');
     }
