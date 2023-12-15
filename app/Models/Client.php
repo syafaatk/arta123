@@ -21,7 +21,7 @@ class Client extends Model
         'status',
     ];
 
-    public function NamaKantorPajakPratama()
+    public function kpp()
     {
         return $this->belongsTo(Kpp::class, 'lokasi_kpp');
     }    

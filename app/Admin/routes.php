@@ -35,4 +35,12 @@ Route::group([
     $router->get('/pajak/kpp/{id}/edit', 'KppController@edit')->name('pajak.kpp.edit');
     $router->put('/pajak/kpp/{id}', 'KppController@update')->name('pajak.kpp.update');
     $router->delete('/pajak/kpp/{id}', 'KppController@destroy')->name('pajak.kpp');
+
+    $router->get('/pajak/kppar', 'KpparController@index')->name('pajak.kppar');
+    $router->get('/pajak/kppar/create', 'KpparController@create')->name('pajak.kppar.craete');
+    $router->post('/pajak/kppar', 'KpparController@store')->name('pajak.kppar.store');
+    $router->get('/pajak/kppar/{id}', 'KpparController@show')->name('pajak.kppar.show');
+    $router->get('/pajak/kppar/{id}/edit', 'KpparController@edit')->name('pajak.kppar.edit');
+    $router->put('/pajak/kppar/{id}', 'KpparController@update')->name('pajak.kppar.update');
+    $router->delete('/pajak/kppar/{id}', 'KpparController@destroy')->name('pajak.kppar');
 });
