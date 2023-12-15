@@ -36,6 +36,8 @@ class CreateClientMasterTable extends Migration
             $table->string('lokasi_kpp')->nullable();
             $table->string('file_ktp')->nullable();
             $table->string('file_npwp')->nullable();
+            $table->string('file_ktp_pj')->nullable();
+            $table->string('file_npwp_pj')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

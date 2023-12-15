@@ -84,13 +84,16 @@ class ClientController extends AdminController
             return Kpp::find($kppId)->name_kpp;;
         });
         $show->field('status', __('Status'))->using([0 => 'Badan', 1 => 'Perorangan']);
-        $show->field('file_npwp')->file();
         $show->field('nama_wp', __('Nama Wajib Pajak'));
         $show->field('npwp_wp', __('Npwp Wajib Pajak'));
+        $show->field('file_ktp')->file();
+        $show->field('file_npwp')->file();
         $show->divider();
         $show->field('nama_pj', __('Nama Penanggung Jawab'));
         $show->field('npwp_pj', __('Npwp Penanggung Jawab'));
         $show->field('telp_pj', __('Telp Penanggung Jawab'));
+        $show->field('file_npwp_pj')->file();
+        $show->field('file_ktp_pj')->file();
         $show->field('tgl_berdiri', __('Tgl berdiri'));
         $show->field('tgl_dikukuhkan_pkp', __('Tgl Dikukuhkan PKP'));
         $show->field('klu_id', __('KLU'))->as(function ($kluId) {
@@ -102,7 +105,7 @@ class ClientController extends AdminController
         $show->field('masa_berlaku_sertel_sampai', __('Masa berlaku Sertifikat Elektronik sampai'));
         $show->field('nama_ar', __('Nama Account Representative'));
         $show->field('telp_ar', __('Telp Account Representative'));
-        $show->field('file_ktp')->file();
+        
         $show->field('created_at', __('Created at'));
         $show->field('updated_at', __('Updated at'));
         $show->field('deleted_at', __('Deleted at'));
@@ -130,6 +133,8 @@ class ClientController extends AdminController
         $form->text('nama_pj', __('Nama Penanggung Jawab'));
         $form->text('npwp_pj', __('Npwp Penanggung Jawab'));
         $form->text('telp_pj', __('Telp Penanggung Jawab'));
+        $form->file('file_ktp_pj', 'File KTP Penanggung Jawab')->move('files/Clients/KTP/')->rules('mimes:pdf,jpeg,png')->uniqueName();
+        $form->file('file_npwp_pj', 'File NPWP Penganggung Jawab')->move('files/Clients/NPWP/')->rules('mimes:pdf,jpeg,png')->uniqueName();
         $form->date('tgl_berdiri', __('Tgl berdiri'))->default(date('Y-m-d'));
         $form->divider();
         $form->select('klu_id', __("Keterangan KLU"))->options(Klu::all()->pluck('full_name', 'id'));
