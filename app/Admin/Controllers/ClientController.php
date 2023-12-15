@@ -132,11 +132,15 @@ class ClientController extends AdminController
         $form->text('telp_pj', __('Telp Penanggung Jawab'));
         $form->date('tgl_berdiri', __('Tgl berdiri'))->default(date('Y-m-d'));
         $form->divider();
-        $form->select('klu', __("Keterangan KLU"))->options(Klu::all()->pluck('full_name', 'kode_klu'));
+        $form->select('klu_id', __("Keterangan KLU"))->options(Klu::all()->pluck('full_name', 'id'));
         $form->divider();
-        $form->switch('is_pkp', __('PKP'));
-        $form->text('status_pkp', __('Status PKP'));
-        $form->date('tgl_dikukuhkan_pkp', __('Tgl dikukuhkan pkp'))->default(date('Y-m-d'));
+        $form->radio('is_pkp', __('PKP'))->options([
+            0 =>'Non PKP',
+            1 =>'PKP',
+        ])->when(1, function (Form $form) {
+            $form->text('status_pkp', __('Status PKP'));
+            $form->date('tgl_dikukuhkan_pkp', __('Tgl dikukuhkan pkp'))->default(date('Y-m-d'));
+        });
         $form->divider();
         $form->switch('is_umkm', __('UMKM'));
         $form->date('masa_berlaku_sertel_sejak', __('Masa berlaku Sertifikat Elektronik sejak'))->default(date('Y-m-d'));

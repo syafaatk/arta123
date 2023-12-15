@@ -14,7 +14,7 @@ class Klu extends Model
 
     public function getFullNameAttribute()
     {
-        return $this->kode_klu . ' - ' . $this->name_klu;
+        return $this->id . ' - ' . $this->name_klu;
     }
 
     public function clients()
