@@ -31,8 +31,6 @@ class CreateClientMasterTable extends Migration
             $table->string('is_umkm')->comment('1=umkm ; 0=nonumkm')->nullable();
             $table->date('masa_berlaku_sertel_sejak')->nullable();
             $table->date('masa_berlaku_sertel_sampai')->nullable();
-            $table->string('nama_ar')->nullable();
-            $table->string('telp_ar')->nullable();
             $table->string('kppar_id')->nullable();
             $table->string('file_ktp')->nullable();
             $table->string('file_npwp')->nullable();
