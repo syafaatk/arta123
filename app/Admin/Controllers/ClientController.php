@@ -43,7 +43,7 @@ class ClientController extends AdminController
         $grid->column('is_umkm', __('UMKM'))->switch($states);
         $grid->column('is_pkp', __('PKP'))->switch($states);
         $grid->column('status_pkp', __('Status PKP'))->hide();
-        $grid->column('tgl_dikukuhkan_pkp', __('Status PKP'))->hide();    
+        $grid->column('tgl_dikukuhkan_pkp', __('Tanggal Dikukuhkan PKP'))->hide();    
         $grid->column('nama_wp', __('Detail Wajib Pajak'))->modal('Detail Wajib Pajak',function ($model) {
 
             $clients = $model->take(1)->get()->map(function ($client) {
@@ -80,6 +80,9 @@ class ClientController extends AdminController
         $show = new Show(Client::findOrFail($id));
 
         $show->field('id', __('Id'));
+        $show->field('lokasi_kpp', __('KPP'))->as(function ($kppId) {
+            return Kpp::find($kppId)->name_kpp;;
+        });
         $show->field('status', __('Status'))->using([0 => 'Badan', 1 => 'Perorangan']);
         $show->field('file_npwp')->file();
         $show->field('nama_wp', __('Nama Wajib Pajak'));
@@ -90,22 +93,15 @@ class ClientController extends AdminController
         $show->field('telp_pj', __('Telp Penanggung Jawab'));
         $show->field('tgl_berdiri', __('Tgl berdiri'));
         $show->field('tgl_dikukuhkan_pkp', __('Tgl Dikukuhkan PKP'));
-        $show->field('klu', __('KLU'));
+        $show->field('klu_id', __('KLU'))->as(function ($kluId) {
+            return Klu::find($kluId)->id . '-' . Klu::find($kluId)->name_klu;;
+        });
         $show->field('status_pkp', __('Status Pengusaha Kena Pajak'));
         $show->field('is_umkm', __('UMKM/Non UMKM'))->using([0 => 'Non UMKM', 1 => 'UMKM']);
         $show->field('masa_berlaku_sertel_sejak', __('Masa berlaku Sertifikat Elektronik sejak'));
         $show->field('masa_berlaku_sertel_sampai', __('Masa berlaku Sertifikat Elektronik sampai'));
         $show->field('nama_ar', __('Nama Account Representative'));
         $show->field('telp_ar', __('Telp Account Representative'));
-        $show->panel()
-        ->tools(function ($tools) {
-            $tools->disableEdit();
-            $tools->disableList();
-            $tools->disableDelete();
-        });
-        $show->NamaKantorPajakPratama('Kantor Pajak Pratama', function ($NamaKantorPajakPratama) {
-            $NamaKantorPajakPratama->name_kpp();
-        });
         $show->field('file_ktp')->file();
         $show->field('created_at', __('Created at'));
         $show->field('updated_at', __('Updated at'));
