@@ -33,7 +33,14 @@ class ClientController extends AdminController
             'off' => ['value' => 0, 'text' => 'Bukan', 'color' => 'default'],
         ];
         $grid->column('id', __('Id'));
+        $grid->column('nama_wp', __('Detail Wajib Pajak'))->modal('Detail Wajib Pajak',function ($model) {
 
+            $clients = $model->take(1)->get()->map(function ($client) {
+                return $this->only(['nama_wp','npwp_wp','npwp_wp_sejak','no_hp', 'tgl_berdiri']);
+            });
+        
+            return new Table(['Nama Wajib Pajak','NPWP Wajib Pajak','Tanggal Npwp Wajib Pajak','No HP', 'Tgl Berdiri'], $clients->toArray());
+        });
         $grid->column('klu_id', __('KLU'))->display(function($kluId) {return Klu::find($kluId)->id . '-' . Klu::find($kluId)->name_klu;});
 
         $grid->column('kppar_id', __('Lokasi KPP'))->display(function ($kppId) {
@@ -56,15 +63,15 @@ class ClientController extends AdminController
         $grid->column('is_pkp', __('PKP'))->switch($states);
         $grid->column('status_pkp', __('Status PKP'))->hide();
         $grid->column('tgl_dikukuhkan_pkp', __('Tanggal Dikukuhkan PKP'))->hide();    
-        $grid->column('nama_wp', __('Detail Wajib Pajak'))->modal('Detail Wajib Pajak',function ($model) {
+        
+        $grid->column('efin', __('EFIN'))->modal('Detail Wajib Pajak',function ($model) {
 
             $clients = $model->take(1)->get()->map(function ($client) {
-                return $this->only(['nama_wp','npwp_wp','npwp_wp_sejak']);
+                return $this->only(['email','password_djp']);
             });
         
-            return new Table(['Nama Wajib Pajak','NPWP Wajib Pajak','Tanggal Npwp Wajib Pajak'], $clients->toArray());
-        }); 
-        $grid->column('tgl_berdiri', __('Tanggal berdiri'));
+            return new Table(['Email','Password'], $clients->toArray());
+        });
         $grid->column('nama_pj', __('Detail Penanggung Jawab'))->modal('Detail Penanggung Jawab',function ($model) {
 
             $clients = $model->take(1)->get()->map(function ($client) {
@@ -109,8 +116,13 @@ class ClientController extends AdminController
         $show->field('status', __('Status'))->using([0 => 'Badan', 1 => 'Perorangan']);
         $show->field('nama_wp', __('Nama Wajib Pajak'));
         $show->field('npwp_wp', __('Npwp Wajib Pajak'));
+        $show->field('no_hp', __('No Handphone'));
         $show->field('file_ktp')->file();
         $show->field('file_npwp')->file();
+        $show->divider();
+        $show->field('email', __('Email'));
+        $show->field('password_djp', __('Password DJP'));
+        $show->field('efin', __('Nomor EFIN'));
         $show->divider();
         $show->field('nama_pj', __('Nama Penanggung Jawab'));
         $show->field('npwp_pj', __('Npwp Penanggung Jawab'));
@@ -152,6 +164,11 @@ class ClientController extends AdminController
         $form->text('nama_wp', __('Nama Wajib Pajak'));
         $form->text('npwp_wp', __('Npwp Wajib Pajak'));
         $form->date('npwp_wp_sejak', __('Npwp Wajib Pajak Sejak'))->default(date('Y-m-d'));
+        $form->text('no_hp', __('No Handphone'));
+        $form->divider();
+        $form->email('email', __('Email DJP'));
+        $form->password('password_djp', __('Password DJP'))->toggleShow();;
+        $form->text('efin', __('Nomor Efin'));
         $form->divider();
         $form->text('nama_pj', __('Nama Penanggung Jawab'));
         $form->text('npwp_pj', __('Npwp Penanggung Jawab'));
