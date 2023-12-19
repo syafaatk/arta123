@@ -42,7 +42,6 @@ class ClientController extends AdminController
             return new Table(['Nama Wajib Pajak','NPWP Wajib Pajak','Tanggal Npwp Wajib Pajak','No HP', 'Tgl Berdiri'], $clients->toArray());
         });
         $grid->column('klu_id', __('KLU'))->display(function($kluId) {return Klu::find($kluId)->id . '-' . Klu::find($kluId)->name_klu;});
-
         $grid->column('kppar_id', __('Lokasi KPP'))->display(function ($kppId) {
             $kppar = Kppar::with('masterKpp')->find($kppId);
         
@@ -117,8 +116,8 @@ class ClientController extends AdminController
         $show->field('nama_wp', __('Nama Wajib Pajak'));
         $show->field('npwp_wp', __('Npwp Wajib Pajak'));
         $show->field('no_hp', __('No Handphone'));
-        $show->field('file_ktp')->file();
-        $show->field('file_npwp')->file();
+        $show->field('file_ktp')->image();
+        $show->field('file_npwp')->image();
         $show->divider();
         $show->field('email', __('Email'));
         $show->field('password_djp', __('Password DJP'));
@@ -127,8 +126,8 @@ class ClientController extends AdminController
         $show->field('nama_pj', __('Nama Penanggung Jawab'));
         $show->field('npwp_pj', __('Npwp Penanggung Jawab'));
         $show->field('telp_pj', __('Telp Penanggung Jawab'));
-        $show->field('file_npwp_pj')->file();
-        $show->field('file_ktp_pj')->file();
+        $show->field('file_npwp_pj')->image();
+        $show->field('file_ktp_pj')->image();
         $show->field('tgl_berdiri', __('Tgl berdiri'));
         $show->field('tgl_dikukuhkan_pkp', __('Tgl Dikukuhkan PKP'));
         $show->field('klu_id', __('KLU'))->as(function ($kluId) {
@@ -159,8 +158,8 @@ class ClientController extends AdminController
 
         $form->select('status','Status')->options([0 => 'Badan', 1 => 'Perorangan']);
         $form->text('bidang_usaha',__('Bidang usaha'));
-        $form->file('file_ktp', 'File KTP')->move('files/Clients/KTP/')->rules('mimes:pdf,jpeg,png')->uniqueName();
-        $form->file('file_npwp', 'File NPWP')->move('files/Clients/NPWP/')->rules('mimes:pdf,jpeg,png')->uniqueName();
+        $form->image('file_ktp', 'File KTP')->move('files/Clients/KTP/')->rules('mimes:pdf,jpeg,png')->uniqueName();
+        $form->image('file_npwp', 'File NPWP')->move('files/Clients/NPWP/')->rules('mimes:pdf,jpeg,png')->uniqueName();
         $form->text('nama_wp', __('Nama Wajib Pajak'));
         $form->text('npwp_wp', __('Npwp Wajib Pajak'));
         $form->date('npwp_wp_sejak', __('Npwp Wajib Pajak Sejak'))->default(date('Y-m-d'));
@@ -173,8 +172,8 @@ class ClientController extends AdminController
         $form->text('nama_pj', __('Nama Penanggung Jawab'));
         $form->text('npwp_pj', __('Npwp Penanggung Jawab'));
         $form->text('telp_pj', __('Telp Penanggung Jawab'));
-        $form->file('file_ktp_pj', 'File KTP Penanggung Jawab')->move('files/Clients/KTP/')->rules('mimes:pdf,jpeg,png')->uniqueName();
-        $form->file('file_npwp_pj', 'File NPWP Penganggung Jawab')->move('files/Clients/NPWP/')->rules('mimes:pdf,jpeg,png')->uniqueName();
+        $form->image('file_ktp_pj', 'File KTP Penanggung Jawab')->move('files/Clients/KTP/')->rules('mimes:pdf,jpeg,png')->uniqueName();
+        $form->image('file_npwp_pj', 'File NPWP Penganggung Jawab')->move('files/Clients/NPWP/')->rules('mimes:pdf,jpeg,png')->uniqueName();
         $form->date('tgl_berdiri', __('Tgl berdiri'))->default(date('Y-m-d'));
         $form->divider();
         $form->select('klu_id', __("Keterangan KLU"))->options(Klu::all()->pluck('full_name', 'id'));
