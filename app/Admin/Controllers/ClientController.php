@@ -41,19 +41,19 @@ class ClientController extends AdminController
         
             return new Table(['Nama Wajib Pajak','NPWP Wajib Pajak','Tanggal Npwp Wajib Pajak','No HP', 'Tgl Berdiri'], $clients->toArray());
         });
-        $grid->column('klu_id', __('KLU'))->display(function($kluId) {return Klu::find($kluId)->id . '-' . Klu::find($kluId)->name_klu;});
-        $grid->column('kppar_id', __('Lokasi KPP'))->display(function ($kppId) {
-            $kppar = Kppar::with('masterKpp')->find($kppId);
+        // $grid->column('klu_id', __('KLU'))->display(function($kluId) {return Klu::find($kluId)->id . '-' . Klu::find($kluId)->name_klu;});
+        // $grid->column('kppar_id', __('Lokasi KPP'))->display(function ($kppId) {
+        //     $kppar = Kppar::with('masterKpp')->find($kppId);
         
-            if ($kppar) {
-                $name_kpp = $kppar->masterKpp->name_kpp;
-                $name_ar = $kppar->name_ar;
+        //     if ($kppar) {
+        //         $name_kpp = $kppar->masterKpp->name_kpp;
+        //         $name_ar = $kppar->name_ar;
         
-                return "$name_kpp - $name_ar";
-            } else {
-                return '';
-            }
-        });
+        //         return "$name_kpp - $name_ar";
+        //     } else {
+        //         return '';
+        //     }
+        // });
         $grid->column('nama_ar', __('Nama Account Representative'))->hide();
         $grid->column('telp_ar', __('Telp Account Representative'))->hide();
         $grid->column('status', __('Status'))->using([0 => 'Badan', 1 => 'Perorangan']);
