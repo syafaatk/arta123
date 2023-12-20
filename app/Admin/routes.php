@@ -19,13 +19,13 @@ Route::group([
     $router->put('/client/masters/{id}', 'ClientController@update')->name('client.masters.update');
     $router->delete('/client/masters/{id}', 'ClientController@destroy')->name('client.masters');
 
-    $router->get('/pemeriksaan/item', 'PemeriksaanItemController@index')->name('pemeriksaan.item');
-    $router->get('/pemeriksaan/item/create', 'PemeriksaanItemController@create')->name('pemeriksaan.item.craete');
-    $router->post('/pemeriksaan/item', 'PemeriksaanItemController@store')->name('pemeriksaan.item.store');
-    $router->get('/pemeriksaan/item/{id}', 'PemeriksaanItemController@show')->name('pemeriksaan.item.show');
-    $router->get('/pemeriksaan/item/{id}/edit', 'PemeriksaanItemController@edit')->name('pemeriksaan.item.edit');
-    $router->put('/pemeriksaan/item/{id}', 'PemeriksaanItemController@update')->name('pemeriksaan.item.update');
-    $router->delete('/pemeriksaan/item/{id}', 'PemeriksaanItemController@destroy')->name('pemeriksaan.masters');
+    $router->get('/pemeriksaan/item', 'PemeriksaanitemController@index')->name('pemeriksaan.item');
+    $router->get('/pemeriksaan/item/create', 'PemeriksaanitemController@create')->name('pemeriksaan.item.craete');
+    $router->post('/pemeriksaan/item', 'PemeriksaanitemController@store')->name('pemeriksaan.item.store');
+    $router->get('/pemeriksaan/item/{id}', 'PemeriksaanitemController@show')->name('pemeriksaan.item.show');
+    $router->get('/pemeriksaan/item/{id}/edit', 'PemeriksaanitemController@edit')->name('pemeriksaan.item.edit');
+    $router->put('/pemeriksaan/item/{id}', 'PemeriksaanitemController@update')->name('pemeriksaan.item.update');
+    $router->delete('/pemeriksaan/item/{id}', 'PemeriksaanitemController@destroy')->name('pemeriksaan.masters');
 
     $router->get('/pemeriksaan/detail', 'PemeriksaandetailController@index')->name('pemeriksaan.detail');
     $router->get('/pemeriksaan/detail/create', 'PemeriksaandetailController@create')->name('pemeriksaan.detail.craete');
