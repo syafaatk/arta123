@@ -131,7 +131,7 @@ class ClientController extends AdminController
         $show->field('tgl_berdiri', __('Tgl berdiri'));
         $show->field('tgl_dikukuhkan_pkp', __('Tgl Dikukuhkan PKP'));
         $show->field('klu_id', __('KLU'))->as(function ($kluId) {
-            return Klu::find($kluId)->id . '-' . Klu::find($kluId)->name_klu;;
+            return Klu::find($kluId)->id . '-' . Klu::find($kluId)->name_klu;
         });
         $show->field('status_pkp', __('Status Pengusaha Kena Pajak'));
         $show->field('is_umkm', __('UMKM/Non UMKM'))->using([0 => 'Non UMKM', 1 => 'UMKM']);
