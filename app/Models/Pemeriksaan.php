@@ -20,7 +20,7 @@ class Pemeriksaan extends Model
 
     public function clients()
     {
-        return $this->belongsTo(Client::class, 'client_id');
+        return $this->hasMany(Client::class, 'client_id');
     }
 
     public function pemeriksaanDetails()

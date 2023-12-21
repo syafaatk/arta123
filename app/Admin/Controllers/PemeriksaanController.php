@@ -266,6 +266,13 @@ class PemeriksaanController extends AdminController
         return $form;
     }
 
+    public function editall($id)
+    {
+        $form = $this->form()->edit($id);
+
+        return $form;
+    }
+
     public function storeall(Request $request)
     {
         // Validate your request data as needed
