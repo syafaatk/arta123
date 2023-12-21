@@ -57,6 +57,8 @@ class PemeriksaandetailController extends AdminController
                 $filter->equal('item_pemeriksaan_id', __('Item Pemeriksaan'))->select(Pemeriksaanitem::all()->pluck('item_pemeriksaan', 'id'));
             });
         });
+        $grid->disableCreateButton();
+        $grid->disableActions();
         return $grid;
     }
 
