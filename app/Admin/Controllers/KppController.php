@@ -7,6 +7,8 @@ use OpenAdmin\Admin\Form;
 use OpenAdmin\Admin\Grid;
 use OpenAdmin\Admin\Show;
 use \App\Models\Kpp;
+Use App\Admin\Extensions\PageExporter_KPP;
+use Barryvdh\DomPDF\Facade as PDF;
 
 class KppController extends AdminController
 {
@@ -22,6 +24,7 @@ class KppController extends AdminController
      *
      * @return Grid
      */
+
     protected function grid()
     {
         $grid = new Grid(new Kpp());
@@ -30,7 +33,7 @@ class KppController extends AdminController
         $grid->column('name_kpp', __('Name kpp'));
         $grid->column('created_at', __('Created at'));
         $grid->column('updated_at', __('Updated at'));
-
+        $grid->exporter(new PageExporter_KPP());
         return $grid;
     }
 

@@ -18,6 +18,7 @@ Route::group([
     $router->get('/client/masters/{id}/edit', 'ClientController@edit')->name('client.masters.edit');
     $router->put('/client/masters/{id}', 'ClientController@update')->name('client.masters.update');
     $router->delete('/client/masters/{id}', 'ClientController@destroy')->name('client.masters');
+    
 
     $router->get('/pemeriksaan/item', 'PemeriksaanitemController@index')->name('pemeriksaan.item');
     $router->get('/pemeriksaan/item/create', 'PemeriksaanitemController@create')->name('pemeriksaan.item.craete');
