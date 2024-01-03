@@ -44,9 +44,9 @@ class EkualisasiController extends AdminController
                     'item_pemeriksaan' => $itemName,
                     'quantity' => $detail->quantity,
                     'jumlah' => number_format($detail->jumlah,0,",","."),
-                    'dpp_faktur_pajak' => $detail->dpp_faktur_pajak,
-                    'dpp_gunggung' => $detail->dpp_gunggung,
-                    'ppn_pph' => $detail->ppn_pph,
+                    'dpp_faktur_pajak' => number_format($detail->dpp_faktur_pajak,0,",","."),
+                    'dpp_gunggung' => number_format($detail->dpp_gunggung,0,",","."),
+                    'ppn_pph' => number_format($detail->ppn_pph,0,",","."),
                     'keterangan' => $detail->keterangan,
                     'created_at' => $detail->created_at,
                 ];

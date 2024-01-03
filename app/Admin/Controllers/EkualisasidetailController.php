@@ -42,9 +42,15 @@ class EkualisasidetailController extends AdminController
         $grid->column('jumlah', __('Jumlah'))->display(function ($jumlah) {
             return number_format($jumlah, 0, ',', '.');
         })->text();
-        $grid->column('dpp_faktur_pajak', __('DPP Faktur Pajak'))->text();
-        $grid->column('dpp_gunggung', __('DPP Gunggung'))->text();
-        $grid->column('ppn_pph', __('PPN PPH'))->text();
+        $grid->column('dpp_faktur_pajak', __('DPP Faktur Pajak'))->display(function ($jumlah) {
+            return number_format($jumlah, 0, ',', '.');
+        })->text();
+        $grid->column('dpp_gunggung', __('DPP Gunggung'))->display(function ($jumlah) {
+            return number_format($jumlah, 0, ',', '.');
+        })->text();
+        $grid->column('ppn_pph', __('PPN PPH'))->display(function ($jumlah) {
+            return number_format($jumlah, 0, ',', '.');
+        })->text();
         $grid->column('keterangan', __('Keterangan'))->text();
         $grid->filter(function ($filter) {
             $filter->expand();
@@ -92,11 +98,11 @@ class EkualisasidetailController extends AdminController
     {
         $form = new Form(new Ekualisasidetail());
         $form->text('item_pemeriksaan_id', __('Item Ekualisasi ID'));
-        $form->text('quantity', __('Quantity'));
+        $form->number('quantity', __('Quantity'));
         $form->number('jumlah', __('Jumlah'));
-        $form->text('dpp_faktur_pajak', __('DPP Faktur Pajak'));
-        $form->text('dpp_gunggung', __('DPP Gunggung'));
-        $form->text('ppn_pph', __('PPN PPH'));
+        $form->number('dpp_faktur_pajak', __('DPP Faktur Pajak'));
+        $form->number('dpp_gunggung', __('DPP Gunggung'));
+        $form->number('ppn_pph', __('PPN PPH'));
         $form->text('keterangan', __('Keterangan'));
         return $form;
     }
