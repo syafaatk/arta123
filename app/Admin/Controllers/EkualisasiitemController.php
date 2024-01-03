@@ -6,17 +6,17 @@ use OpenAdmin\Admin\Controllers\AdminController;
 use OpenAdmin\Admin\Form;
 use OpenAdmin\Admin\Grid;
 use OpenAdmin\Admin\Show;
-use \App\Models\Pemeriksaandetail;
-use \App\Models\Pemeriksaanitem;
+use \App\Models\Ekualisasidetail;
+use \App\Models\Ekualisasiitem;
 
-class PemeriksaanitemController extends AdminController
+class EkualisasiitemController extends AdminController
 {
     /**
      * Title for current resource.
      *
      * @var string
      */
-    protected $title = 'Pemeriksaan Item';
+    protected $title = 'Ekualisasi Item';
 
     /**
      * Make a grid builder.
@@ -25,10 +25,10 @@ class PemeriksaanitemController extends AdminController
      */
     protected function grid()
     {
-        $grid = new Grid(new Pemeriksaanitem());
+        $grid = new Grid(new Ekualisasiitem());
 
         $grid->column('id', __('Id'));
-        $grid->column('item_pemeriksaan', __('Item Pemeriksaan'));
+        $grid->column('item_pemeriksaan', __('Item Ekualisasi'));
         $grid->column('created_at', __('Created at'));
         $grid->column('updated_at', __('Updated at'));
         $grid->column('deleted_at', __('Deleted at'));
@@ -44,10 +44,10 @@ class PemeriksaanitemController extends AdminController
      */
     protected function detail($id)
     {
-        $show = new Show(Pemeriksaanitem::findOrFail($id));
+        $show = new Show(Ekualisasiitem::findOrFail($id));
 
         $show->field('id', __('Id'));
-        $show->field('item_pemeriksaan', __('Item Pemeriksaan'));
+        $show->field('item_pemeriksaan', __('Item Ekualisasi'));
         $show->field('created_at', __('Created at'));
         $show->field('updated_at', __('Updated at'));
         $show->field('deleted_at', __('Deleted at'));
@@ -62,8 +62,8 @@ class PemeriksaanitemController extends AdminController
      */
     protected function form()
     {
-        $form = new Form(new Pemeriksaanitem());
-        $form->text('item_pemeriksaan', __('Item Pemeriksaan'));
+        $form = new Form(new Ekualisasiitem());
+        $form->text('item_pemeriksaan', __('Item Ekualisasi'));
         return $form;
     }
 }

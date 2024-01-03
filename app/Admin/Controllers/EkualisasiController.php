@@ -7,22 +7,22 @@ use OpenAdmin\Admin\Form;
 use OpenAdmin\Admin\Grid;
 use OpenAdmin\Admin\Show;
 use \App\Models\Client;
-use \App\Models\Pemeriksaan;
-use \App\Models\Pemeriksaanitem;
+use \App\Models\Ekualisasi;
+use \App\Models\Ekualisasiitem;
 use \App\Models\Masapajak;
 use Illuminate\Http\Request;
-use \App\Models\Pemeriksaandetail;
+use \App\Models\Ekualisasidetail;
 use OpenAdmin\Admin\Widgets\Table;
 
 
-class PemeriksaanController extends AdminController
+class EkualisasiController extends AdminController
 {
      /**
      * Title for current resource.
      *
      * @var string
      */
-    protected $title = 'Pemeriksaan';
+    protected $title = 'Ekualisasi';
 
     /**
      * Make a grid builder.
@@ -32,18 +32,18 @@ class PemeriksaanController extends AdminController
     
      protected function grid()
     {
-        $grid = new Grid(new Pemeriksaan());
+        $grid = new Grid(new Ekualisasi());
 
         $grid->column('id', 'Detail')->expand(function ($model) {
-            $details = $model->pemeriksaanDetails()->take(30)->get()->map(function ($detail) {
+            $details = $model->ekualisasiDetails()->take(30)->get()->map(function ($detail) {
                 // Access the related item_pemeriksaan model to get the 'name'
-                $itemName = $detail->item_pemeriksaan->item_pemeriksaan;
+                $itemName = $detail->item_ekualisasi->item_pemeriksaan;
         
                 return [
                     'ID' => $detail->item_pemeriksaan_id,
                     'item_pemeriksaan' => $itemName,
                     'quantity' => $detail->quantity,
-                    'jumlah' => $detail->jumlah,
+                    'jumlah' => number_format($detail->jumlah,0,",","."),
                     'dpp_faktur_pajak' => $detail->dpp_faktur_pajak,
                     'dpp_gunggung' => $detail->dpp_gunggung,
                     'ppn_pph' => $detail->ppn_pph,
@@ -52,7 +52,7 @@ class PemeriksaanController extends AdminController
                 ];
             });
         
-            return new Table(['ID', 'item_pemeriksaan', 'quantity', 'jumlah','dpp faktur pajak','dpp gungung','ppn pph','keterangan','created_at'], $details->toArray());
+            return new Table(['ID', 'Item Ekualisasi', 'quantity', 'jumlah','dpp faktur pajak','dpp gungung','ppn pph','keterangan','created_at'], $details->toArray());
         });
         $grid->column('client_id', __('Nama Client'))->display(function($clientId) {return Client::find($clientId)->nama_wp;});
         $grid->column('masa_pajak_id', __('Masa Pajak'))->display(function($masapajakId) {return Masapajak::find($masapajakId)->masa_pajak;});
@@ -88,7 +88,7 @@ class PemeriksaanController extends AdminController
      */
     protected function detail($id)
     {
-        $show = new Show(Pemeriksaan::with('pemeriksaanDetails')->findOrFail($id));
+        $show = new Show(Ekualisasi::with('ekualisasiDetails')->findOrFail($id));
         $show->field('id', __('Id'));
         $show->field('client_id', __('Data Client'))->as(function ($client_id) {
             $client = Client::find($client_id);
@@ -120,7 +120,7 @@ class PemeriksaanController extends AdminController
      */
     protected function form()
     {
-        $form = new Form(new Pemeriksaan());
+        $form = new Form(new Ekualisasi());
         // $form->select('client_id', __("Nama Client"))->options(Client::all()->pluck('nama_wp', 'id'));
         $form->select('client_id',__("Nama Client"))->options(
             Client::select('id','nama_wp','npwp_wp')
@@ -133,15 +133,15 @@ class PemeriksaanController extends AdminController
         $form->date('tanggal_masa_pajak', __('Tanggal Masa Pajak'))->default(date('Y-m-dd'));
         $form->text('diperiksa_oleh', __('Diperiksa Oleh'));
         $form->text('mengetahui', __('Mengetahui'));
-        // Form untuk detail pemeriksaan
-        $items = Pemeriksaanitem::all()->pluck('item_pemeriksaan', 'id');
+        // Form untuk detail Ekualisasi
+        $items = Ekualisasiitem::all()->pluck('item_pemeriksaan', 'id');
 
         for ($i = 1; $i <= 31; $i++) {
             if($i >= 1 and $i <= 3 ):
-                $form->fieldset('Pemeriksaan '.$i, function ($form) use ($i, $items)  {
-                    $pemeriksaanId = $form->model()->id;
-                    $form->hidden("detail_pemeriksaan.$i.pemeriksaan_id")->value($pemeriksaanId);
-                    $form->select("detail_pemeriksaan.$i.item_pemeriksaan_id", __("Item Pemeriksaan $i"))
+                $form->fieldset('Ekualisasi '.$i, function ($form) use ($i, $items)  {
+                    $ekualisasiId = $form->model()->id;
+                    $form->hidden("detail_pemeriksaan.$i.pemeriksaan_id")->value($ekualisasiId);
+                    $form->select("detail_pemeriksaan.$i.item_pemeriksaan_id", __("Item Ekualisasi $i"))
                     ->options($items)
                     ->value($i)
                     ->readonly();
@@ -153,10 +153,10 @@ class PemeriksaanController extends AdminController
                     $form->text("detail_pemeriksaan.$i.keterangan", __("Keterangan $i"));
                 });
             elseif($i >= 4 && $i <= 7 ):
-            $form->fieldset('Pemeriksaan '.$i, function ($form) use ($i, $items)  {
-                    $pemeriksaanId = $form->model()->id;
-                    $form->hidden("detail_pemeriksaan.$i.pemeriksaan_id")->value($pemeriksaanId);
-                    $form->select("detail_pemeriksaan.$i.item_pemeriksaan_id", __("Item Pemeriksaan $i"))
+            $form->fieldset('Ekualisasi '.$i, function ($form) use ($i, $items)  {
+                    $ekualisasiId = $form->model()->id;
+                    $form->hidden("detail_pemeriksaan.$i.pemeriksaan_id")->value($ekualisasiId);
+                    $form->select("detail_pemeriksaan.$i.item_pemeriksaan_id", __("Item Ekualisasi $i"))
                     ->options($items)
                     ->value($i)
                     ->readonly();
@@ -168,10 +168,10 @@ class PemeriksaanController extends AdminController
                     $form->text("detail_pemeriksaan.$i.keterangan", __("Keterangan $i"));
                 });
             elseif($i >= 8 && $i <= 11 ):
-            $form->fieldset('Pemeriksaan '.$i, function ($form) use ($i, $items)  {
-                    $pemeriksaanId = $form->model()->id;
-                    $form->hidden("detail_pemeriksaan.$i.pemeriksaan_id")->value($pemeriksaanId);
-                    $form->select("detail_pemeriksaan.$i.item_pemeriksaan_id", __("Item Pemeriksaan $i"))
+            $form->fieldset('Ekualisasi '.$i, function ($form) use ($i, $items)  {
+                    $ekualisasiId = $form->model()->id;
+                    $form->hidden("detail_pemeriksaan.$i.pemeriksaan_id")->value($ekualisasiId);
+                    $form->select("detail_pemeriksaan.$i.item_pemeriksaan_id", __("Item Ekualisasi $i"))
                     ->options($items)
                     ->value($i)
                     ->readonly();
@@ -183,10 +183,10 @@ class PemeriksaanController extends AdminController
                     $form->text("detail_pemeriksaan.$i.keterangan", __("Keterangan $i"));
                 });
             elseif($i >= 12 && $i <= 15 ):
-            $form->fieldset('Pemeriksaan '.$i, function ($form) use ($i, $items)  {
-                    $pemeriksaanId = $form->model()->id;
-                    $form->hidden("detail_pemeriksaan.$i.pemeriksaan_id")->value($pemeriksaanId);
-                    $form->select("detail_pemeriksaan.$i.item_pemeriksaan_id", __("Item Pemeriksaan $i"))
+            $form->fieldset('Ekualisasi '.$i, function ($form) use ($i, $items)  {
+                    $ekualisasiId = $form->model()->id;
+                    $form->hidden("detail_pemeriksaan.$i.pemeriksaan_id")->value($ekualisasiId);
+                    $form->select("detail_pemeriksaan.$i.item_pemeriksaan_id", __("Item Ekualisasi $i"))
                     ->options($items)
                     ->value($i)
                     ->readonly();
@@ -198,10 +198,10 @@ class PemeriksaanController extends AdminController
                     $form->text("detail_pemeriksaan.$i.keterangan", __("Keterangan $i"));
                 });
             elseif($i >= 16 && $i <= 21 ):
-            $form->fieldset('Pemeriksaan '.$i, function ($form) use ($i, $items)  {
-                    $pemeriksaanId = $form->model()->id;
-                    $form->hidden("detail_pemeriksaan.$i.pemeriksaan_id")->value($pemeriksaanId);
-                    $form->select("detail_pemeriksaan.$i.item_pemeriksaan_id", __("Item Pemeriksaan $i"))
+            $form->fieldset('Ekualisasi '.$i, function ($form) use ($i, $items)  {
+                    $ekualisasiId = $form->model()->id;
+                    $form->hidden("detail_pemeriksaan.$i.pemeriksaan_id")->value($ekualisasiId);
+                    $form->select("detail_pemeriksaan.$i.item_pemeriksaan_id", __("Item Ekualisasi $i"))
                     ->options($items)
                     ->value($i)
                     ->readonly();
@@ -213,10 +213,10 @@ class PemeriksaanController extends AdminController
                     $form->text("detail_pemeriksaan.$i.keterangan", __("Keterangan $i"));
                 });
             elseif($i >= 22 && $i <= 24 ):
-            $form->fieldset('Pemeriksaan '.$i, function ($form) use ($i, $items)  {
-                    $pemeriksaanId = $form->model()->id;
-                    $form->hidden("detail_pemeriksaan.$i.pemeriksaan_id")->value($pemeriksaanId);
-                    $form->select("detail_pemeriksaan.$i.item_pemeriksaan_id", __("Item Pemeriksaan $i"))
+            $form->fieldset('Ekualisasi '.$i, function ($form) use ($i, $items)  {
+                    $ekualisasiId = $form->model()->id;
+                    $form->hidden("detail_pemeriksaan.$i.pemeriksaan_id")->value($ekualisasiId);
+                    $form->select("detail_pemeriksaan.$i.item_pemeriksaan_id", __("Item Ekualisasi $i"))
                     ->options($items)
                     ->value($i)
                     ->readonly();
@@ -228,10 +228,10 @@ class PemeriksaanController extends AdminController
                     $form->text("detail_pemeriksaan.$i.keterangan", __("Keterangan $i"));
                 });
             elseif($i >= 25 && $i <= 27 ):
-            $form->fieldset('Pemeriksaan '.$i, function ($form) use ($i, $items)  {
-                    $pemeriksaanId = $form->model()->id;
-                    $form->hidden("detail_pemeriksaan.$i.pemeriksaan_id")->value($pemeriksaanId);
-                    $form->select("detail_pemeriksaan.$i.item_pemeriksaan_id", __("Item Pemeriksaan $i"))
+            $form->fieldset('Ekualisasi '.$i, function ($form) use ($i, $items)  {
+                    $ekualisasiId = $form->model()->id;
+                    $form->hidden("detail_pemeriksaan.$i.pemeriksaan_id")->value($ekualisasiId);
+                    $form->select("detail_pemeriksaan.$i.item_pemeriksaan_id", __("Item Ekualisasi $i"))
                     ->options($items)
                     ->value($i)
                     ->readonly();
@@ -243,10 +243,10 @@ class PemeriksaanController extends AdminController
                     $form->text("detail_pemeriksaan.$i.keterangan", __("Keterangan $i"));
                 });
             elseif($i >= 28 && $i <= 30 ):
-            $form->fieldset('Pemeriksaan '.$i, function ($form) use ($i, $items)  {
-                    $pemeriksaanId = $form->model()->id;
-                    $form->hidden("detail_pemeriksaan.$i.pemeriksaan_id")->value($pemeriksaanId);
-                    $form->select("detail_pemeriksaan.$i.item_pemeriksaan_id", __("Item Pemeriksaan $i"))
+            $form->fieldset('Ekualisasi '.$i, function ($form) use ($i, $items)  {
+                    $ekualisasiId = $form->model()->id;
+                    $form->hidden("detail_pemeriksaan.$i.pemeriksaan_id")->value($ekualisasiId);
+                    $form->select("detail_pemeriksaan.$i.item_pemeriksaan_id", __("Item Ekualisasi $i"))
                     ->options($items)
                     ->value($i)
                     ->readonly();
@@ -277,8 +277,8 @@ class PemeriksaanController extends AdminController
     {
         // Validate your request data as needed
 
-        // Create Pemeriksaan record
-        $pemeriksaan = Pemeriksaan::create([
+        // Create Ekualisasi record
+        $ekualisasi = Ekualisasi::create([
             'client_id' => $request->input('client_id'),
             'masa_pajak_id' => $request->input('masa_pajak_id'),
             'tanggal_masa_pajak' => $request->input('tanggal_masa_pajak'),
@@ -286,10 +286,10 @@ class PemeriksaanController extends AdminController
             'mengetahui' => $request->input('mengetahui'),
         ]);
 
-        // Save DetailPemeriksaan records
+        // Save DetailEkualisasi records
         for ($i = 1; $i <= 30; $i++) {
-            Pemeriksaandetail::create([
-                'pemeriksaan_id' => $pemeriksaan->id,
+            Ekualisasidetail::create([
+                'Ekualisasi_id' => $ekualisasi->id,
                 'item_pemeriksaan_id' => $request->input("detail_pemeriksaan.$i.item_pemeriksaan_id"),
                 'quantity' => $request->input("detail_pemeriksaan.$i.quantity"),
                 'jumlah' => $request->input("detail_pemeriksaan.$i.jumlah"),
@@ -308,11 +308,11 @@ class PemeriksaanController extends AdminController
     {
         // Validate your request data as needed
 
-        // Find the existing Pemeriksaan record
-        $pemeriksaan = Pemeriksaan::findOrFail($id);
+        // Find the existing Ekualisasi record
+        $ekualisasi = Ekualisasi::findOrFail($id);
 
-        // Update Pemeriksaan record
-        $pemeriksaan->update([
+        // Update Ekualisasi record
+        $ekualisasi->update([
             'client_id' => $request->input('client_id'),
             'masa_pajak_id' => $request->input('masa_pajak_id'),
             'tanggal_masa_pajak' => $request->input('tanggal_masa_pajak'),
@@ -321,10 +321,10 @@ class PemeriksaanController extends AdminController
             // Add other fields as needed
         ]);
 
-        // Update or create DetailPemeriksaan records
+        // Update or create DetailEkualisasi records
         for ($i = 1; $i <= 30; $i++) {
-            Pemeriksaandetail::updateOrInsert(
-                ['pemeriksaan_id' => $pemeriksaan->id, 'item_pemeriksaan_id' => $request->input("detail_pemeriksaan.$i.item_pemeriksaan_id")],
+            Ekualisasidetail::updateOrInsert(
+                ['Ekualisasi_id' => $ekualisasi->id, 'item_pemeriksaan_id' => $request->input("detail_pemeriksaan.$i.item_pemeriksaan_id")],
                 [
                     'quantity' => $request->input("detail_pemeriksaan.$i.quantity"),
                     'jumlah' => $request->input("detail_pemeriksaan.$i.jumlah"),

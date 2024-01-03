@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use \App\Models\Client;
-use \App\Models\Pemeriksaandetail;
+use \App\Models\Ekualisasidetail;
 
-class Pemeriksaan extends Model
+class Ekualisasi extends Model
 {
     protected $table = 'pemeriksaan';
     protected $fillable = [
@@ -23,13 +23,13 @@ class Pemeriksaan extends Model
         return $this->hasMany(Client::class, 'client_id');
     }
 
-    public function pemeriksaanDetails()
+    public function ekualisasiDetails()
     {
-        return $this->hasMany(Pemeriksaandetail::class, 'pemeriksaan_id');
+        return $this->hasMany(Ekualisasidetail::class, 'pemeriksaan_id');
     }
 
-    public function pemeriksaanitems()
+    public function ekualisasiitems()
     {
-        return $this->hasMany(Pemeriksaanitem::class, 'item_pemeriksaan_id');
+        return $this->hasMany(Ekualisasiitem::class, 'item_pemeriksaan_id');
     }
 }
