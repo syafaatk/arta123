@@ -48,25 +48,25 @@ class EkualisasiController extends AdminController
                         $jumlah = $detail->jumlah;
                         $dpp = $detail->dpp_faktur_pajak;
                         $dppg = $detail->dpp_gunggung;
-                        $ppn = $detail->dpp_ppn_pph;
+                        $ppn = $detail->ppn_pph;
                     } elseif ($detail->item_pemeriksaan_id == 2) {
                         $quantity -= $detail->quantity;
                         $jumlah -= $detail->jumlah;
                         $dpp -= $detail->dpp_faktur_pajak;
                         $dppg -= $detail->dpp_gunggung;
-                        $ppn -= $detail->dpp_ppn_pph;
+                        $ppn -= $detail->ppn_pph;
                     } elseif ($detail->item_pemeriksaan_id == 4) {
                         $quantity = $detail->quantity;
                         $jumlah = $detail->jumlah;
                         $dpp = $detail->dpp_faktur_pajak;
                         $dppg = $detail->dpp_gunggung;
-                        $ppn = $detail->dpp_ppn_pph;
+                        $ppn = $detail->ppn_pph;
                     } elseif ($detail->item_pemeriksaan_id == 5) {
                         $quantity += $detail->quantity;
                         $jumlah += $detail->jumlah;
                         $dpp += $detail->dpp_faktur_pajak;
                         $dppg += $detail->dpp_gunggung;
-                        $ppn += $detail->dpp_ppn_pph;
+                        $ppn += $detail->ppn_pph;
                     }
         
                     return [
