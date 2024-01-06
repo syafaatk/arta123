@@ -40,16 +40,16 @@ class EkualisasidetailController extends AdminController
         $grid->column('item_pemeriksaan_id', __('Item Ekualisasi ID'))->display(function($item_pemeriksaan_id) {return Ekualisasiitem::find($item_pemeriksaan_id)->id.'. '.Ekualisasiitem::find($item_pemeriksaan_id)->item_pemeriksaan;});
         $grid->column('quantity', __('Quantity'))->text();
         $grid->column('jumlah', __('Jumlah'))->display(function ($jumlah) {
-            return number_format($jumlah, 0, ',', '.');
+            return ($this->item_pemeriksaan_id != 3 && $this->item_pemeriksaan_id != 6) ? number_format($jumlah, 0, ',', '.') : $jumlah;
         })->text();
         $grid->column('dpp_faktur_pajak', __('DPP Faktur Pajak'))->display(function ($jumlah) {
-            return number_format($jumlah, 0, ',', '.');
+            return ($this->item_pemeriksaan_id != 3 && $this->item_pemeriksaan_id != 6) ? number_format($jumlah, 0, ',', '.') : $jumlah;
         })->text();
         $grid->column('dpp_gunggung', __('DPP Gunggung'))->display(function ($jumlah) {
-            return number_format($jumlah, 0, ',', '.');
+            return ($this->item_pemeriksaan_id != 3 && $this->item_pemeriksaan_id != 6) ? number_format($jumlah, 0, ',', '.') : $jumlah;
         })->text();
         $grid->column('ppn_pph', __('PPN PPH'))->display(function ($jumlah) {
-            return number_format($jumlah, 0, ',', '.');
+            return ($this->item_pemeriksaan_id != 3 && $this->item_pemeriksaan_id != 6) ? number_format($jumlah, 0, ',', '.') : $jumlah;
         })->text();
         $grid->column('keterangan', __('Keterangan'))->text();
         $grid->filter(function ($filter) {
@@ -66,7 +66,6 @@ class EkualisasidetailController extends AdminController
             });
         });
         $grid->disableCreateButton();
-        $grid->disableActions();
         return $grid;
     }
 

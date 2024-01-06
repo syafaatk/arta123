@@ -26,5 +26,4 @@ class Ekualisasidetail extends Model
     {
         return $this->belongsTo(Ekualisasiitem::class, 'item_pemeriksaan_id');
     }
-
 }
