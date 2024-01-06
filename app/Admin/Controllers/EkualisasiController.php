@@ -113,6 +113,17 @@ class EkualisasiController extends AdminController
                 'keterangan' => 'Total 4 dan 5',
                 'created_at' => now(),
             ];
+            $data[] = [
+                'ID' => 7,
+                'item_pemeriksaan' => 'Selisih PPN Keluaran dan Total Transaksi (3-6)',
+                'quantity' => number_format($quantity12-$quantity45, 0, ",", "."),
+                'jumlah' => number_format($jumlah12-$jumlah45, 0, ",", "."),
+                'dpp_faktur_pajak' => number_format($dpp12-$dpp45, 0, ",", "."),
+                'dpp_gunggung' => number_format($dppg12-$dppg45, 0, ",", "."),
+                'ppn_pph' => number_format($ppn12-$ppn45, 0, ",", "."),
+                'keterangan' => 'Selisih 3 dan 6',
+                'created_at' => now(),
+            ];
         
             //dd($data);
         
