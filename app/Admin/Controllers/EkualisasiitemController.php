@@ -28,7 +28,7 @@ class EkualisasiitemController extends AdminController
         $grid = new Grid(new Ekualisasiitem());
 
         $grid->column('id', __('Id'));
-        $grid->column('item_pemeriksaan', __('Item Ekualisasi'));
+        $grid->column('item_pemeriksaan', __('Item Ekualisasi'))->text();
         $grid->column('created_at', __('Created at'));
         $grid->column('updated_at', __('Updated at'));
         $grid->column('deleted_at', __('Deleted at'));

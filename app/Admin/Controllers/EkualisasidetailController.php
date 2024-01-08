@@ -18,17 +18,18 @@ class EkualisasidetailController extends AdminController
      *
      * @var string
      */
-    protected $title = 'Item Ekualisasi';
+     protected $title = 'Item Ekualisasi';
 
     /**
      * Make a grid builder.
      *
      * @return Grid
      */
+
     protected function grid()
     {
         $grid = new Grid(new Ekualisasidetail());
-        $grid->column('id', __('Id'));
+        $grid->column('id', __('id'));
         $grid->column('pemeriksaan_id', __('Ekulisasi ID'))->display(function($pemeriksaan_id) {
             return 
             Ekualisasi::join('client_master', 'client_master.id', '=', 'pemeriksaan.client_id')
@@ -53,12 +54,13 @@ class EkualisasidetailController extends AdminController
         })->text();
         $grid->column('keterangan', __('Keterangan'))->text();
         $grid->filter(function ($filter) {
-            $filter->expand();
+            // $filter->expand();
             $filter->column(1/2, function ($filter) {
-                $filter->equal('pemeriksaan_id', __('Data Ekualisasi'))->select(Ekualisasi::join('client_master', 'client_master.id', '=', 'pemeriksaan.client_id')
-                ->join('masa_pajak', 'masa_pajak.id', '=', 'pemeriksaan.masa_pajak_id')
-                ->select('pemeriksaan.id', DB::raw('CONCAT(client_master.nama_wp, " - ", masa_pajak.masa_pajak) AS display_text'))
-                ->pluck('display_text','pemeriksaan.id'));
+                $filter->equal('pemeriksaan_id', __('Data Ekualisasi'))
+                    ->select(Ekualisasi::join('client_master', 'client_master.id', '=', 'pemeriksaan.client_id')
+                        ->join('masa_pajak', 'masa_pajak.id', '=', 'pemeriksaan.masa_pajak_id')
+                        ->select('pemeriksaan.id', DB::raw('CONCAT(client_master.nama_wp, " - ", masa_pajak.masa_pajak) AS display_text'))
+                        ->pluck('display_text', 'pemeriksaan.id'));
             });
     
             $filter->column(1/2, function ($filter) {
@@ -66,6 +68,30 @@ class EkualisasidetailController extends AdminController
             });
         });
         $grid->disableCreateButton();
+        // Use custom styles for the table
+        
+        $grid->paginate(30);
+        
+            //dd($data);
+            $style = <<<STYLE
+            <style>
+                .table-responsive tr th {
+                    text-align: center;
+                }
+                .table-responsive th,
+                .table-responsive td {
+                    border: 0.5px solid #ddd; /* Add border to both th and td elements */
+                }
+
+                .table-responsive {
+                    border-collapse: collapse; /* Collapse borders for better styling */
+                    width: 100%; /* Set width to 100% */
+                }
+            </style>
+            STYLE;
+
+            // Add custom styles to the table
+            echo $style;
         return $grid;
     }
 
@@ -105,4 +131,5 @@ class EkualisasidetailController extends AdminController
         $form->text('keterangan', __('Keterangan'));
         return $form;
     }
+
 }

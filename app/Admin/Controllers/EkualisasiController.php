@@ -98,7 +98,7 @@ class EkualisasiController extends AdminController
                         'dpp_gunggung' => number_format($detail->dpp_gunggung, 0, ",", "."),
                         'ppn_pph' => number_format($detail->ppn_pph, 0, ",", "."),
                         'keterangan' => $detail->keterangan,
-                        'created_at' => $detail->created_at,
+                        // 'created_at' => $detail->created_at,
                     ];
                 });
             };
@@ -115,7 +115,7 @@ class EkualisasiController extends AdminController
                 'dpp_gunggung' => number_format($dppg12, 0, ",", "."),
                 'ppn_pph' => number_format($ppn12, 0, ",", "."),
                 'keterangan' => 'Selisih 1 dan 2',
-                'created_at' => now(),
+                // 'created_at' => now(),
             ];
         
             $data45 = $processDetails($details45, $quantity45, $jumlah45, $dpp45, $dppg45, $ppn45);
@@ -131,7 +131,7 @@ class EkualisasiController extends AdminController
                 'dpp_gunggung' => number_format($dppg45, 0, ",", "."),
                 'ppn_pph' => number_format($ppn45, 0, ",", "."),
                 'keterangan' => 'Total 4 dan 5',
-                'created_at' => now(),
+                // 'created_at' => now(),
             ];
             $data[] = [
                 'ID' => 7,
@@ -142,7 +142,7 @@ class EkualisasiController extends AdminController
                 'dpp_gunggung' => number_format($dppg12-$dppg45, 0, ",", "."),
                 'ppn_pph' => number_format($ppn12-$ppn45, 0, ",", "."),
                 'keterangan' => 'Selisih 3 dan 6',
-                'created_at' => now(),
+                // 'created_at' => now(),
             ];
             $data8 = $processDetails($details8, $quantity8, $jumlah8, $dpp8, $dppg8, $ppn8);
             $data = $data->merge($data8);
@@ -158,12 +158,10 @@ class EkualisasiController extends AdminController
                 'dpp_gunggung' => number_format($dppg8-$dppg910, 0, ",", "."),
                 'ppn_pph' => number_format($ppn8-$ppn910, 0, ",", "."),
                 'keterangan' => 'Selisih (8-(9+10))',
-                'created_at' => now(),
+                // 'created_at' => now(),
             ];
         
-            //dd($data);
-        
-            return new Table(['ID', 'Item Ekualisasi', 'quantity', 'jumlah', 'dpp faktur pajak', 'dpp gungung', 'ppn pph', 'keterangan', 'created_at'], $data->toArray());
+            return new Table(['ID', 'Item Ekualisasi', 'quantity', 'jumlah', 'dpp faktur pajak', 'dpp gungung', 'ppn pph', 'keterangan'], $data->toArray());
         });
         
 
@@ -173,12 +171,12 @@ class EkualisasiController extends AdminController
         $grid->column('diperiksa_oleh', __('Diperiksa Oleh'));
         $grid->column('mengetahui', __('Mengetahui'));
         
-        $grid->column('created_at', __('Created at'));
-        $grid->column('updated_at', __('Updated at'));
-        $grid->column('deleted_at', __('Deleted at'));
+        // $grid->column('created_at', __('Created at'));
+        // $grid->column('updated_at', __('Updated at'));
+        // $grid->column('deleted_at', __('Deleted at'));
 
         $grid->filter(function ($filter) {
-            $filter->expand();
+            //$filter->expand();
     
             $filter->column(1/2, function ($filter) {
                 $filter->equal('client_id')->select(Client::all()->pluck('nama_wp', 'id'));
@@ -189,6 +187,34 @@ class EkualisasiController extends AdminController
                 $filter->between('tanggal_masa_pajak')->datetime();
             });
         });
+
+        $grid->editButton()->display(function ($value) {
+            // Customize the edit button link
+            $url = $this->id;
+            return "<a href='detail?pemeriksaan_id={$url}' class='btn btn-xs btn-primary'>Edit Detail</a>";
+        });
+
+        
+            //dd($data);
+            $style = <<<STYLE
+            <style>
+                .table-responsive tr th {
+                    text-align: center;
+                }
+                .table-responsive th,
+                .table-responsive td {
+                    border: 0.5px solid #ddd; /* Add border to both th and td elements */
+                }
+
+                .table-responsive {
+                    border-collapse: collapse; /* Collapse borders for better styling */
+                    width: 100%; /* Set width to 100% */
+                }
+            </style>
+            STYLE;
+
+            // Add custom styles to the table
+            echo $style;
 
         return $grid;
     }
