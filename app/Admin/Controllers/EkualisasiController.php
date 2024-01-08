@@ -37,6 +37,8 @@ class EkualisasiController extends AdminController
         $grid->column('id', 'Detail')->expand(function ($model) {
             $details = $model->ekualisasiDetails()->whereIn('item_pemeriksaan_id', [1, 2])->get();
             $details45 = $model->ekualisasiDetails()->whereIn('item_pemeriksaan_id', [4, 5])->get();
+            $details8 = $model->ekualisasiDetails()->whereIn('item_pemeriksaan_id', [8])->get();
+            $details910 = $model->ekualisasiDetails()->whereIn('item_pemeriksaan_id', [9, 10])->get();
         
             // Function to process details and calculate quantities
             $processDetails = function ($details, &$quantity, &$jumlah, &$dpp, &$dppg, &$ppn) {
@@ -62,6 +64,24 @@ class EkualisasiController extends AdminController
                         $dppg = $detail->dpp_gunggung;
                         $ppn = $detail->ppn_pph;
                     } elseif ($detail->item_pemeriksaan_id == 5) {
+                        $quantity += $detail->quantity;
+                        $jumlah += $detail->jumlah;
+                        $dpp += $detail->dpp_faktur_pajak;
+                        $dppg += $detail->dpp_gunggung;
+                        $ppn += $detail->ppn_pph;
+                    } elseif ($detail->item_pemeriksaan_id == 8) {
+                        $quantity = $detail->quantity;
+                        $jumlah = $detail->jumlah;
+                        $dpp = $detail->dpp_faktur_pajak;
+                        $dppg = $detail->dpp_gunggung;
+                        $ppn = $detail->ppn_pph;
+                    } elseif ($detail->item_pemeriksaan_id == 9) {
+                        $quantity = $detail->quantity;
+                        $jumlah = $detail->jumlah;
+                        $dpp = $detail->dpp_faktur_pajak;
+                        $dppg = $detail->dpp_gunggung;
+                        $ppn = $detail->ppn_pph;
+                    } elseif ($detail->item_pemeriksaan_id == 10) {
                         $quantity += $detail->quantity;
                         $jumlah += $detail->jumlah;
                         $dpp += $detail->dpp_faktur_pajak;
@@ -122,6 +142,22 @@ class EkualisasiController extends AdminController
                 'dpp_gunggung' => number_format($dppg12-$dppg45, 0, ",", "."),
                 'ppn_pph' => number_format($ppn12-$ppn45, 0, ",", "."),
                 'keterangan' => 'Selisih 3 dan 6',
+                'created_at' => now(),
+            ];
+            $data8 = $processDetails($details8, $quantity8, $jumlah8, $dpp8, $dppg8, $ppn8);
+            $data = $data->merge($data8);
+            $data910 = $processDetails($details910, $quantity910, $jumlah910, $dpp910, $dppg910, $ppn910);
+            $data = $data->merge($data910);
+
+            $data[] = [
+                'ID' => 11,
+                'item_pemeriksaan' => 'Selisih (8-(9+10))',
+                'quantity' => number_format($quantity8-$quantity910, 0, ",", "."),
+                'jumlah' => number_format($jumlah8-$jumlah910, 0, ",", "."),
+                'dpp_faktur_pajak' => number_format($dpp8-$dpp910, 0, ",", "."),
+                'dpp_gunggung' => number_format($dppg8-$dppg910, 0, ",", "."),
+                'ppn_pph' => number_format($ppn8-$ppn910, 0, ",", "."),
+                'keterangan' => 'Selisih (8-(9+10))',
                 'created_at' => now(),
             ];
         
