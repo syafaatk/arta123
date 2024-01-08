@@ -39,6 +39,8 @@ class EkualisasiController extends AdminController
             $details45 = $model->ekualisasiDetails()->whereIn('item_pemeriksaan_id', [4, 5])->get();
             $details8 = $model->ekualisasiDetails()->whereIn('item_pemeriksaan_id', [8])->get();
             $details910 = $model->ekualisasiDetails()->whereIn('item_pemeriksaan_id', [9, 10])->get();
+            $details12 = $model->ekualisasiDetails()->whereIn('item_pemeriksaan_id', [12])->get();
+            $details1314 = $model->ekualisasiDetails()->whereIn('item_pemeriksaan_id', [13, 14])->get();
         
             // Function to process details and calculate quantities
             $processDetails = function ($details, &$quantity, &$jumlah, &$dpp, &$dppg, &$ppn) {
@@ -87,6 +89,24 @@ class EkualisasiController extends AdminController
                         $dpp += $detail->dpp_faktur_pajak;
                         $dppg += $detail->dpp_gunggung;
                         $ppn += $detail->ppn_pph;
+                    } elseif ($detail->item_pemeriksaan_id == 12) {
+                        $quantity = $detail->quantity;
+                        $jumlah = $detail->jumlah;
+                        $dpp = $detail->dpp_faktur_pajak;
+                        $dppg = $detail->dpp_gunggung;
+                        $ppn = $detail->ppn_pph;
+                    } elseif ($detail->item_pemeriksaan_id == 13) {
+                        $quantity = $detail->quantity;
+                        $jumlah = $detail->jumlah;
+                        $dpp = $detail->dpp_faktur_pajak;
+                        $dppg = $detail->dpp_gunggung;
+                        $ppn = $detail->ppn_pph;
+                    } elseif ($detail->item_pemeriksaan_id == 14) {
+                        $quantity += $detail->quantity;
+                        $jumlah += $detail->jumlah;
+                        $dpp += $detail->dpp_faktur_pajak;
+                        $dppg += $detail->dpp_gunggung;
+                        $ppn += $detail->ppn_pph;
                     }
         
                     return [
@@ -108,12 +128,12 @@ class EkualisasiController extends AdminController
             // Add the row for item_pemeriksaan_id 3 with the summed quantity
             $data[] = [
                 'ID' => 3,
-                'item_pemeriksaan' => 'Selisih (1-2)',
-                'quantity' => number_format($quantity12, 0, ",", "."),
-                'jumlah' => number_format($jumlah12, 0, ",", "."),
-                'dpp_faktur_pajak' => number_format($dpp12, 0, ",", "."),
-                'dpp_gunggung' => number_format($dppg12, 0, ",", "."),
-                'ppn_pph' => number_format($ppn12, 0, ",", "."),
+                'item_pemeriksaan' => '<b>Selisih (1-2)</b>',
+                'quantity' => '<b>'.number_format($quantity12, 0, ",", "."),
+                'jumlah' => '<b>'.number_format($jumlah12, 0, ",", "."),
+                'dpp_faktur_pajak' => '<b>'.number_format($dpp12, 0, ",", "."),
+                'dpp_gunggung' => '<b>'.number_format($dppg12, 0, ",", "."),
+                'ppn_pph' => '<b>'.number_format($ppn12, 0, ",", "."),
                 'keterangan' => 'Selisih 1 dan 2',
                 // 'created_at' => now(),
             ];
@@ -124,23 +144,23 @@ class EkualisasiController extends AdminController
             // Add the row for item_pemeriksaan_id 6 with the summed quantity
             $data[] = [
                 'ID' => 6,
-                'item_pemeriksaan' => 'Total Nilai Transaksi (4+5)',
-                'quantity' => number_format($quantity45, 0, ",", "."),
-                'jumlah' => number_format($jumlah45, 0, ",", "."),
-                'dpp_faktur_pajak' => number_format($dpp45, 0, ",", "."),
-                'dpp_gunggung' => number_format($dppg45, 0, ",", "."),
-                'ppn_pph' => number_format($ppn45, 0, ",", "."),
+                'item_pemeriksaan' => '<b>Total Nilai Transaksi (4+5)</b>',
+                'quantity' => '<b>'.number_format($quantity45, 0, ",", "."),
+                'jumlah' => '<b>'.number_format($jumlah45, 0, ",", "."),
+                'dpp_faktur_pajak' => '<b>'.number_format($dpp45, 0, ",", "."),
+                'dpp_gunggung' => '<b>'.number_format($dppg45, 0, ",", "."),
+                'ppn_pph' => '<b>'.number_format($ppn45, 0, ",", "."),
                 'keterangan' => 'Total 4 dan 5',
                 // 'created_at' => now(),
             ];
             $data[] = [
                 'ID' => 7,
-                'item_pemeriksaan' => 'Selisih PPN Keluaran dan Total Transaksi (3-6)',
-                'quantity' => number_format($quantity12-$quantity45, 0, ",", "."),
-                'jumlah' => number_format($jumlah12-$jumlah45, 0, ",", "."),
-                'dpp_faktur_pajak' => number_format($dpp12-$dpp45, 0, ",", "."),
-                'dpp_gunggung' => number_format($dppg12-$dppg45, 0, ",", "."),
-                'ppn_pph' => number_format($ppn12-$ppn45, 0, ",", "."),
+                'item_pemeriksaan' => '<b>Selisih PPN Keluaran dan Total Transaksi (3-6)</b>',
+                'quantity' => '<b>'.number_format($quantity12-$quantity45, 0, ",", ".").'</b>',
+                'jumlah' => '<b>'.number_format($jumlah12-$jumlah45, 0, ",", "."),
+                'dpp_faktur_pajak' => '<b>'.number_format($dpp12-$dpp45, 0, ",", "."),
+                'dpp_gunggung' => '<b>'.number_format($dppg12-$dppg45, 0, ",", "."),
+                'ppn_pph' => '<b>'.number_format($ppn12-$ppn45, 0, ",", "."),
                 'keterangan' => 'Selisih 3 dan 6',
                 // 'created_at' => now(),
             ];
@@ -151,13 +171,30 @@ class EkualisasiController extends AdminController
 
             $data[] = [
                 'ID' => 11,
-                'item_pemeriksaan' => 'Selisih (8-(9+10))',
-                'quantity' => number_format($quantity8-$quantity910, 0, ",", "."),
-                'jumlah' => number_format($jumlah8-$jumlah910, 0, ",", "."),
-                'dpp_faktur_pajak' => number_format($dpp8-$dpp910, 0, ",", "."),
-                'dpp_gunggung' => number_format($dppg8-$dppg910, 0, ",", "."),
-                'ppn_pph' => number_format($ppn8-$ppn910, 0, ",", "."),
+                'item_pemeriksaan' => '<b>Selisih (8-(9+10))</b>',
+                'quantity' => '<b>'.number_format($quantity8-$quantity910, 0, ",", "."),
+                'jumlah' => '<b>'.number_format($jumlah8-$jumlah910, 0, ",", "."),
+                'dpp_faktur_pajak' => '<b>'.number_format($dpp8-$dpp910, 0, ",", "."),
+                'dpp_gunggung' => '<b>'.number_format($dppg8-$dppg910, 0, ",", "."),
+                'ppn_pph' => '<b>'.number_format($ppn8-$ppn910, 0, ",", "."),
                 'keterangan' => 'Selisih (8-(9+10))',
+                // 'created_at' => now(),
+            ];
+
+            $data12 = $processDetails($details12, $quantity12, $jumlah12, $dpp12, $dppg12, $ppn12);
+            $data = $data->merge($data12);
+            $data1314 = $processDetails($details1314, $quantity1314, $jumlah1314, $dpp1314, $dppg1314, $ppn1314);
+            $data = $data->merge($data1314);
+
+            $data[] = [
+                'ID' => 15,
+                'item_pemeriksaan' => '<b>Selisih (12-(13+14))</b>',
+                'quantity' => '<b>'.number_format($quantity12-$quantity1314, 0, ",", "."),
+                'jumlah' => '<b>'.number_format($jumlah12-$jumlah1314, 0, ",", "."),
+                'dpp_faktur_pajak' => '<b>'.number_format($dpp12-$dpp1314, 0, ",", "."),
+                'dpp_gunggung' => '<b>'.number_format($dppg12-$dppg1314, 0, ",", "."),
+                'ppn_pph' => '<b>'.number_format($ppn12-$ppn1314, 0, ",", "."),
+                'keterangan' => 'Selisih (12-(13+14))',
                 // 'created_at' => now(),
             ];
         

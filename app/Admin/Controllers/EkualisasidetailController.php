@@ -29,15 +29,15 @@ class EkualisasidetailController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new Ekualisasidetail());
-        $grid->column('id', __('id'));
-        $grid->column('pemeriksaan_id', __('Ekulisasi ID'))->display(function($pemeriksaan_id) {
-            return 
-            Ekualisasi::join('client_master', 'client_master.id', '=', 'pemeriksaan.client_id')
-            ->join('masa_pajak', 'masa_pajak.id', '=', 'pemeriksaan.masa_pajak_id')
-            ->select('pemeriksaan.id', DB::raw('CONCAT(client_master.nama_wp, " - ", masa_pajak.masa_pajak) AS display_text'))
-            ->where('pemeriksaan.id', $pemeriksaan_id)
-            ->value('display_text');
-        });
+        //$grid->column('id', __('id'));
+        // $grid->column('pemeriksaan_id', __('Ekulisasi ID'))->display(function($pemeriksaan_id) {
+        //     return 
+        //     Ekualisasi::join('client_master', 'client_master.id', '=', 'pemeriksaan.client_id')
+        //     ->join('masa_pajak', 'masa_pajak.id', '=', 'pemeriksaan.masa_pajak_id')
+        //     ->select('pemeriksaan.id', DB::raw('CONCAT(client_master.nama_wp, " - ", masa_pajak.masa_pajak) AS display_text'))
+        //     ->where('pemeriksaan.id', $pemeriksaan_id)
+        //     ->value('display_text');
+        // });
         $grid->column('item_pemeriksaan_id', __('Item Ekualisasi ID'))->display(function($item_pemeriksaan_id) {return Ekualisasiitem::find($item_pemeriksaan_id)->id.'. '.Ekualisasiitem::find($item_pemeriksaan_id)->item_pemeriksaan;});
         $grid->column('quantity', __('Quantity'))->text();
         $grid->column('jumlah', __('Jumlah'))->display(function ($jumlah) {
