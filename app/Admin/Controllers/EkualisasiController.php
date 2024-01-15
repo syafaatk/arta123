@@ -533,21 +533,21 @@ class EkualisasiController extends AdminController
             // Add other fields as needed
         ]);
 
-        // Update or create DetailEkualisasi records
-        for ($i = 1; $i <= 30; $i++) {
-            Ekualisasidetail::updateOrInsert(
-                ['pemeriksaan_id' => $ekualisasi->id, 'item_pemeriksaan_id' => $request->input("detail_pemeriksaan.$i.item_pemeriksaan_id")],
-                [
-                    'quantity' => $request->input("detail_pemeriksaan.$i.quantity"),
-                    'jumlah' => $request->input("detail_pemeriksaan.$i.jumlah"),
-                    'dpp_faktur_pajak' => $request->input("detail_pemeriksaan.$i.dpp_faktur_pajak"),
-                    'dpp_gunggung' => $request->input("detail_pemeriksaan.$i.dpp_gunggung"),
-                    'ppn_pph' => $request->input("detail_pemeriksaan.$i.ppn_pph"),
-                    'keterangan' => $request->input("detail_pemeriksaan.$i.keterangan"),
-                    // Add other fields as needed
-                ]
-            );
-        }
+        // // Update or create DetailEkualisasi records
+        // for ($i = 1; $i <= 30; $i++) {
+        //     Ekualisasidetail::updateOrInsert(
+        //         ['pemeriksaan_id' => $ekualisasi->id, 'item_pemeriksaan_id' => $request->input("detail_pemeriksaan.$i.item_pemeriksaan_id")],
+        //         [
+        //             'quantity' => $request->input("detail_pemeriksaan.$i.quantity"),
+        //             'jumlah' => $request->input("detail_pemeriksaan.$i.jumlah"),
+        //             'dpp_faktur_pajak' => $request->input("detail_pemeriksaan.$i.dpp_faktur_pajak"),
+        //             'dpp_gunggung' => $request->input("detail_pemeriksaan.$i.dpp_gunggung"),
+        //             'ppn_pph' => $request->input("detail_pemeriksaan.$i.ppn_pph"),
+        //             'keterangan' => $request->input("detail_pemeriksaan.$i.keterangan"),
+        //             // Add other fields as needed
+        //         ]
+        //     );
+        // }
 
         return redirect()->to('admin/pemeriksaan/masters');
     }
