@@ -128,6 +128,12 @@ class EkualisasiController extends AdminController
                         $dpp += $detail->dpp_faktur_pajak;
                         $dppg += $detail->dpp_gunggung;
                         $ppn += $detail->ppn_pph;
+                    }  elseif ($detail->item_pemeriksaan_id == 19) {
+                        $quantity = $detail->quantity;
+                        $jumlah = $detail->jumlah;
+                        $dpp = $detail->dpp_faktur_pajak;
+                        $dppg = $detail->dpp_gunggung;
+                        $ppn = $detail->ppn_pph;
                     }
         
                     return [
