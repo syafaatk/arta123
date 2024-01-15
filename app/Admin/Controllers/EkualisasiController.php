@@ -190,13 +190,13 @@ class EkualisasiController extends AdminController
 
             $data[] = [
                 'ID' => 11,
-                'item_pemeriksaan' => '<b>Selisih (8-(9+10))</b>',
-                'quantity' => '<b>'.number_format($quantity8-$quantity910, 0, ",", "."),
-                'jumlah' => '<b>'.number_format($jumlah8-$jumlah910, 0, ",", "."),
-                'dpp_faktur_pajak' => '<b>'.number_format($dpp8-$dpp910, 0, ",", "."),
-                'dpp_gunggung' => '<b>'.number_format($dppg8-$dppg910, 0, ",", "."),
-                'ppn_pph' => '<b>'.number_format($ppn8-$ppn910, 0, ",", "."),
-                'keterangan' => 'Selisih (8-(9+10))',
+                'item_pemeriksaan' => '<b>------</b>',
+                'quantity' => '',
+                'jumlah' => '',
+                'dpp_faktur_pajak' => '',
+                'dpp_gunggung' => '',
+                'ppn_pph' => '',
+                'keterangan' => '---------',
                 // 'created_at' => now(),
             ];
 
@@ -207,13 +207,13 @@ class EkualisasiController extends AdminController
 
             $data[] = [
                 'ID' => 15,
-                'item_pemeriksaan' => '<b>Selisih (12-(13+14))</b>',
-                'quantity' => '<b>'.number_format($quantity12-$quantity1314, 0, ",", "."),
-                'jumlah' => '<b>'.number_format($jumlah12-$jumlah1314, 0, ",", "."),
-                'dpp_faktur_pajak' => '<b>'.number_format($dpp12-$dpp1314, 0, ",", "."),
-                'dpp_gunggung' => '<b>'.number_format($dppg12-$dppg1314, 0, ",", "."),
-                'ppn_pph' => '<b>'.number_format($ppn12-$ppn1314, 0, ",", "."),
-                'keterangan' => 'Selisih (12-(13+14))',
+                'item_pemeriksaan' => '<b>Selisih (8-12)</b>',
+                'quantity' => '<b>'.number_format($quantity8-$quantity12, 0, ",", "."),
+                'jumlah' => '<b>'.number_format($jumlah8-$jumlah12, 0, ",", "."),
+                'dpp_faktur_pajak' => '<b>'.number_format($dpp8-$dpp12, 0, ",", "."),
+                'dpp_gunggung' => '<b>'.number_format($dppg8-$dppg12, 0, ",", "."),
+                'ppn_pph' => '<b>'.number_format($ppn8-$ppn12, 0, ",", "."),
+                'keterangan' => 'Selisih (8-12)',
                 // 'created_at' => now(),
             ];
 
