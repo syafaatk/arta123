@@ -41,6 +41,7 @@ class EkualisasiController extends AdminController
             $details910 = $model->ekualisasiDetails()->whereIn('item_pemeriksaan_id', [9, 10])->get();
             $details12 = $model->ekualisasiDetails()->whereIn('item_pemeriksaan_id', [12])->get();
             $details1314 = $model->ekualisasiDetails()->whereIn('item_pemeriksaan_id', [13, 14])->get();
+            $details161718 = $model->ekualisasiDetails()->whereIn('item_pemeriksaan_id', [16, 17, 18])->get();
         
             // Function to process details and calculate quantities
             $processDetails = function ($details, &$quantity, &$jumlah, &$dpp, &$dppg, &$ppn) {
@@ -102,6 +103,24 @@ class EkualisasiController extends AdminController
                         $dppg = $detail->dpp_gunggung;
                         $ppn = $detail->ppn_pph;
                     } elseif ($detail->item_pemeriksaan_id == 14) {
+                        $quantity += $detail->quantity;
+                        $jumlah += $detail->jumlah;
+                        $dpp += $detail->dpp_faktur_pajak;
+                        $dppg += $detail->dpp_gunggung;
+                        $ppn += $detail->ppn_pph;
+                    } elseif ($detail->item_pemeriksaan_id == 16) {
+                        $quantity = $detail->quantity;
+                        $jumlah = $detail->jumlah;
+                        $dpp = $detail->dpp_faktur_pajak;
+                        $dppg = $detail->dpp_gunggung;
+                        $ppn = $detail->ppn_pph;
+                    } elseif ($detail->item_pemeriksaan_id == 17) {
+                        $quantity += $detail->quantity;
+                        $jumlah += $detail->jumlah;
+                        $dpp += $detail->dpp_faktur_pajak;
+                        $dppg += $detail->dpp_gunggung;
+                        $ppn += $detail->ppn_pph;
+                    } elseif ($detail->item_pemeriksaan_id == 18) {
                         $quantity += $detail->quantity;
                         $jumlah += $detail->jumlah;
                         $dpp += $detail->dpp_faktur_pajak;
@@ -195,6 +214,21 @@ class EkualisasiController extends AdminController
                 'dpp_gunggung' => '<b>'.number_format($dppg12-$dppg1314, 0, ",", "."),
                 'ppn_pph' => '<b>'.number_format($ppn12-$ppn1314, 0, ",", "."),
                 'keterangan' => 'Selisih (12-(13+14))',
+                // 'created_at' => now(),
+            ];
+
+            $data161718 = $processDetails($details161718, $quantity161718, $jumlah161718, $dpp161718, $dppg161718, $ppn161718);
+            $data = $data->merge($data161718);
+
+            $data[] = [
+                'ID' => 19,
+                'item_pemeriksaan' => '<b>Total Ekspedisi & Pengangkutan di SPT PPh 21, 23 & 4(2) (16+17+18)</b>',
+                'quantity' => '<b>'.number_format($quantity161718, 0, ",", "."),
+                'jumlah' => '<b>'.number_format($jumlah161718, 0, ",", "."),
+                'dpp_faktur_pajak' => '<b>'.number_format($dpp161718, 0, ",", "."),
+                'dpp_gunggung' => '<b>'.number_format($dppg161718, 0, ",", "."),
+                'ppn_pph' => '<b>'.number_format($ppn161718, 0, ",", "."),
+                'keterangan' => 'Total (16+17+18)',
                 // 'created_at' => now(),
             ];
         
