@@ -42,6 +42,8 @@ class EkualisasiController extends AdminController
             $details12 = $model->ekualisasiDetails()->whereIn('item_pemeriksaan_id', [12])->get();
             $details1314 = $model->ekualisasiDetails()->whereIn('item_pemeriksaan_id', [13, 14])->get();
             $details161718 = $model->ekualisasiDetails()->whereIn('item_pemeriksaan_id', [16, 17, 18])->get();
+            $details19 = $model->ekualisasiDetails()->whereIn('item_pemeriksaan_id', [19])->get();
+
         
             // Function to process details and calculate quantities
             $processDetails = function ($details, &$quantity, &$jumlah, &$dpp, &$dppg, &$ppn) {
@@ -220,8 +222,11 @@ class EkualisasiController extends AdminController
             $data161718 = $processDetails($details161718, $quantity161718, $jumlah161718, $dpp161718, $dppg161718, $ppn161718);
             $data = $data->merge($data161718);
 
+            $data19 = $processDetails($details19, $quantity19, $jumlah19, $dpp19, $dppg19, $ppn19);
+            $data = $data->merge($data19);
+
             $data[] = [
-                'ID' => 19,
+                'ID' => 20,
                 'item_pemeriksaan' => '<b>Total Ekspedisi & Pengangkutan di SPT PPh 21, 23 & 4(2) (16+17+18)</b>',
                 'quantity' => '<b>'.number_format($quantity161718, 0, ",", "."),
                 'jumlah' => '<b>'.number_format($jumlah161718, 0, ",", "."),
@@ -229,6 +234,18 @@ class EkualisasiController extends AdminController
                 'dpp_gunggung' => '<b>'.number_format($dppg161718, 0, ",", "."),
                 'ppn_pph' => '<b>'.number_format($ppn161718, 0, ",", "."),
                 'keterangan' => 'Total (16+17+18)',
+                // 'created_at' => now(),
+            ];
+
+            $data[] = [
+                'ID' => 21,
+                'item_pemeriksaan' => '<b>Selisih Biaya Ekspedisi & Pengangkutan di SPT PPh 21 & 23  dan L/R ((16+17+18)-19)</b>',
+                'quantity' => '<b>'.number_format($quantity161718 - $quantity19, 0, ",", "."),
+                'jumlah' => '<b>'.number_format($jumlah161718 - $jumlah19, 0, ",", "."),
+                'dpp_faktur_pajak' => '<b>'.number_format($dpp161718 - $dpp19, 0, ",", "."),
+                'dpp_gunggung' => '<b>'.number_format($dppg161718 - $dppg19, 0, ",", "."),
+                'ppn_pph' => '<b>'.number_format($ppn161718 - $ppn19, 0, ",", "."),
+                'keterangan' => 'Selisih (16+17+18)-19',
                 // 'created_at' => now(),
             ];
         
