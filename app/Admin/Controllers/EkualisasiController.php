@@ -133,7 +133,7 @@ class EkualisasiController extends AdminController
                     return [
                         'ID' => $detail->item_pemeriksaan_id,
                         'item_pemeriksaan' => $itemName,
-                        'quantity' => $detail->quantity,
+                        'quantity' => number_format($detail->quantity, ",", "."),
                         'jumlah' => number_format($detail->jumlah, 0, ",", "."),
                         'dpp_faktur_pajak' => number_format($detail->dpp_faktur_pajak, 0, ",", "."),
                         'dpp_gunggung' => number_format($detail->dpp_gunggung, 0, ",", "."),
