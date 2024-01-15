@@ -240,11 +240,11 @@ class EkualisasiController extends AdminController
             $data[] = [
                 'ID' => 21,
                 'item_pemeriksaan' => '<b>Selisih Biaya Ekspedisi & Pengangkutan di SPT PPh 21 & 23  dan L/R ((16+17+18)-19)</b>',
-                'quantity' => '<b>'.number_format($quantity161718 - $quantity19, 0, ",", "."),
-                'jumlah' => '<b>'.number_format($jumlah161718 - $jumlah19, 0, ",", "."),
-                'dpp_faktur_pajak' => '<b>'.number_format($dpp161718 - $dpp19, 0, ",", "."),
-                'dpp_gunggung' => '<b>'.number_format($dppg161718 - $dppg19, 0, ",", "."),
-                'ppn_pph' => '<b>'.number_format($ppn161718 - $ppn19, 0, ",", "."),
+                'quantity' => '<b>'.number_format($quantity161718-$quantity19, 0, ",", "."),
+                'jumlah' => '<b>'.number_format($jumlah161718-$jumlah19, 0, ",", "."),
+                'dpp_faktur_pajak' => '<b>'.number_format($dpp161718-$dpp19, 0, ",", "."),
+                'dpp_gunggung' => '<b>'.number_format($dppg161718-$dppg19, 0, ",", "."),
+                'ppn_pph' => '<b>'.number_format($ppn161718-$ppn19, 0, ",", "."),
                 'keterangan' => 'Selisih (16+17+18)-19',
                 // 'created_at' => now(),
             ];
