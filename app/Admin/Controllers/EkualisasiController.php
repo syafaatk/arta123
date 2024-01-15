@@ -513,7 +513,7 @@ class EkualisasiController extends AdminController
             ]);
         }
 
-        return redirect()->to('admin/pemeriksaan/masters');
+        return redirect()->to('admin/ekualisasi/masters');
     }
 
     public function updateall(Request $request, $id)
@@ -549,7 +549,7 @@ class EkualisasiController extends AdminController
         //     );
         // }
 
-        return redirect()->to('admin/pemeriksaan/masters');
+        return redirect()->to('admin/ekualisasi/masters');
     }
 
 }
