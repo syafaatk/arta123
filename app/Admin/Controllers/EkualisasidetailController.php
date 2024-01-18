@@ -72,7 +72,7 @@ class EkualisasidetailController extends AdminController
         $grid->disableCreateButton();
         $grid->editButton()->display(function ($value) {
             // Customize the edit button link
-            if(in_array($this->item_pemeriksaan_id, [3,6,7]))
+            if(in_array($this->item_pemeriksaan_id, [3,6,7,8,11,14,19,20,23,26]))
             {   
                 $id = $this->id;
                 $pid = $this->pemeriksaan_id;
@@ -87,18 +87,30 @@ class EkualisasidetailController extends AdminController
             //dd($data);
             $style = <<<STYLE
             <style>
+
+                .table tr th, .table tr td {
+                    border-color: rgba(0, 0, 0, 0.22);
+                }
                 .table-responsive tr th {
                     text-align: center;
+                    border: 2px solid #ddd; /* Add border to both th and td elements */
                 }
                 .table-responsive th,
                 .table-responsive td {
-                    border: 1px solid #ddd; /* Add border to both th and td elements */
+                    border: 2px solid #ddd; /* Add border to both th and td elements */
                 }
 
                 .table-responsive {
                     border-collapse: collapse; /* Collapse borders for better styling */
                     width: 100%; /* Set width to 100% */
                 }
+
+                // tr.row-3,tr.row-6,tr.row-7,tr.row-8,tr.row-11,tr.row-14,tr.row-19,tr.row-20,tr.row-23,tr.row-26 {
+                //     background-color: rgba(255, 213, 213, 0.51);
+                // }
+
+                
+
             </style>
             STYLE;
 
@@ -122,6 +134,21 @@ class EkualisasidetailController extends AdminController
         elseif($ipid == 7):
             $details = Ekualisasi::with(['ekualisasiDetails' => function ($query) {
                     $query->whereIn('item_pemeriksaan_id', [3,6]);
+            }])
+            ->find($pid);
+        elseif($ipid == 8):
+            $details = Ekualisasi::with(['ekualisasiDetails' => function ($query) {
+                    $query->whereIn('item_pemeriksaan_id', [9,10]);
+            }])
+            ->find($pid);
+        elseif($ipid == 11):
+            $details = Ekualisasi::with(['ekualisasiDetails' => function ($query) {
+                    $query->whereIn('item_pemeriksaan_id', [12,13]);
+            }])
+            ->find($pid);
+        elseif($ipid == 14):
+            $details = Ekualisasi::with(['ekualisasiDetails' => function ($query) {
+                    $query->whereIn('item_pemeriksaan_id', [8,11]);
             }])
             ->find($pid);
         endif;
@@ -177,12 +204,54 @@ class EkualisasidetailController extends AdminController
                 $dppg -= $ekualisasiDetail->dpp_gunggung;
                 $ppn -= $ekualisasiDetail->ppn_pph;
                 $ids = $ekualisasiDetail->id;
+            } elseif ($ekualisasiDetail->item_pemeriksaan_id == 8) {
+                $quantity = $ekualisasiDetail->quantity;
+                $jumlah = $ekualisasiDetail->jumlah;
+                $dpp = $ekualisasiDetail->dpp_faktur_pajak;
+                $dppg = $ekualisasiDetail->dpp_gunggung;
+                $ppn = $ekualisasiDetail->ppn_pph;
+                $ids = $ekualisasiDetail->id;
+            } elseif ($ekualisasiDetail->item_pemeriksaan_id == 9) {
+                $quantity += $ekualisasiDetail->quantity;
+                $jumlah += $ekualisasiDetail->jumlah;
+                $dpp += $ekualisasiDetail->dpp_faktur_pajak;
+                $dppg += $ekualisasiDetail->dpp_gunggung;
+                $ppn += $ekualisasiDetail->ppn_pph;
+                $ids = $ekualisasiDetail->id;
+            } elseif($ekualisasiDetail->item_pemeriksaan_id == 10){
+                $quantity += $ekualisasiDetail->quantity;
+                $jumlah += $ekualisasiDetail->jumlah;
+                $dpp += $ekualisasiDetail->dpp_faktur_pajak;
+                $dppg += $ekualisasiDetail->dpp_gunggung;
+                $ppn += $ekualisasiDetail->ppn_pph;
+                $ids = $ekualisasiDetail->id;
+            } elseif($ekualisasiDetail->item_pemeriksaan_id == 11){
+                $quantity -= $ekualisasiDetail->quantity;
+                $jumlah -= $ekualisasiDetail->jumlah;
+                $dpp -= $ekualisasiDetail->dpp_faktur_pajak;
+                $dppg -= $ekualisasiDetail->dpp_gunggung;
+                $ppn -= $ekualisasiDetail->ppn_pph;
+                $ids = $ekualisasiDetail->id;
+            } elseif ($ekualisasiDetail->item_pemeriksaan_id == 12) {
+                $quantity += $ekualisasiDetail->quantity;
+                $jumlah += $ekualisasiDetail->jumlah;
+                $dpp += $ekualisasiDetail->dpp_faktur_pajak;
+                $dppg += $ekualisasiDetail->dpp_gunggung;
+                $ppn += $ekualisasiDetail->ppn_pph;
+                $ids = $ekualisasiDetail->id;
+            } elseif($ekualisasiDetail->item_pemeriksaan_id == 13){
+                $quantity += $ekualisasiDetail->quantity;
+                $jumlah += $ekualisasiDetail->jumlah;
+                $dpp += $ekualisasiDetail->dpp_faktur_pajak;
+                $dppg += $ekualisasiDetail->dpp_gunggung;
+                $ppn += $ekualisasiDetail->ppn_pph;
+                $ids = $ekualisasiDetail->id;
             }
             // Add more as needed
         }
         Ekualisasidetail::updateOrInsert(
             [
-                'id' => $ids+1,
+                'id' => $id,
             ],
             [
                 'quantity' => $quantity,

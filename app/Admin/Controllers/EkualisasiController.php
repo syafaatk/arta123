@@ -368,7 +368,7 @@ class EkualisasiController extends AdminController
                     $form->text("detail_pemeriksaan.$i.ppn_pph", __("PPN PPH $i"));
                     $form->text("detail_pemeriksaan.$i.keterangan", __("Keterangan $i"));
                 });
-            elseif($i >= 28 && $i <= 30 ):
+            elseif($i >= 28 && $i <= 29 ):
             $form->fieldset('Ekualisasi '.$i, function ($form) use ($i, $items)  {
                     $ekualisasiId = $form->model()->id;
                     $form->hidden("detail_pemeriksaan.$i.pemeriksaan_id")->value($ekualisasiId);
