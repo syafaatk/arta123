@@ -151,7 +151,28 @@ class EkualisasidetailController extends AdminController
                     $query->whereIn('item_pemeriksaan_id', [8,11]);
             }])
             ->find($pid);
-        endif;
+        elseif($ipid == 19):
+            $details = Ekualisasi::with(['ekualisasiDetails' => function ($query) {
+                    $query->whereIn('item_pemeriksaan_id', [15,16,17]);
+            }])
+            ->find($pid);
+        elseif($ipid == 20):
+            $details = Ekualisasi::with(['ekualisasiDetails' => function ($query) {
+                    $query->whereIn('item_pemeriksaan_id', [19,18]);
+            }])
+            ->find($pid);
+        elseif($ipid == 23):
+            $details = Ekualisasi::with(['ekualisasiDetails' => function ($query) {
+                    $query->whereIn('item_pemeriksaan_id', [21,22]);
+            }])
+            ->find($pid);
+            elseif($ipid == 26):
+                $details = Ekualisasi::with(['ekualisasiDetails' => function ($query) {
+                        $query->whereIn('item_pemeriksaan_id', [24,25]);
+                }])
+                ->find($pid);
+            endif;
+
         //ddd($details);
 
         $quantity=0;
@@ -245,6 +266,69 @@ class EkualisasidetailController extends AdminController
                 $dpp += $ekualisasiDetail->dpp_faktur_pajak;
                 $dppg += $ekualisasiDetail->dpp_gunggung;
                 $ppn += $ekualisasiDetail->ppn_pph;
+                $ids = $ekualisasiDetail->id;
+            }  elseif($ekualisasiDetail->item_pemeriksaan_id == 15){
+                $quantity = $ekualisasiDetail->quantity;
+                $jumlah = $ekualisasiDetail->jumlah;
+                $dpp = $ekualisasiDetail->dpp_faktur_pajak;
+                $dppg = $ekualisasiDetail->dpp_gunggung;
+                $ppn = $ekualisasiDetail->ppn_pph;
+                $ids = $ekualisasiDetail->id;
+            } elseif ($ekualisasiDetail->item_pemeriksaan_id == 16) {
+                $quantity += $ekualisasiDetail->quantity;
+                $jumlah += $ekualisasiDetail->jumlah;
+                $dpp += $ekualisasiDetail->dpp_faktur_pajak;
+                $dppg += $ekualisasiDetail->dpp_gunggung;
+                $ppn += $ekualisasiDetail->ppn_pph;
+                $ids = $ekualisasiDetail->id;
+            } elseif($ekualisasiDetail->item_pemeriksaan_id == 17){
+                $quantity += $ekualisasiDetail->quantity;
+                $jumlah += $ekualisasiDetail->jumlah;
+                $dpp += $ekualisasiDetail->dpp_faktur_pajak;
+                $dppg += $ekualisasiDetail->dpp_gunggung;
+                $ppn += $ekualisasiDetail->ppn_pph;
+                $ids = $ekualisasiDetail->id;
+            } elseif($ekualisasiDetail->item_pemeriksaan_id == 18){
+                $quantity -= $ekualisasiDetail->quantity;
+                $jumlah -= $ekualisasiDetail->jumlah;
+                $dpp -= $ekualisasiDetail->dpp_faktur_pajak;
+                $dppg -= $ekualisasiDetail->dpp_gunggung;
+                $ppn -= $ekualisasiDetail->ppn_pph;
+                $ids = $ekualisasiDetail->id;
+            }   elseif ($ekualisasiDetail->item_pemeriksaan_id == 19) {
+                $quantity += $ekualisasiDetail->quantity;
+                $jumlah += $ekualisasiDetail->jumlah;
+                $dpp += $ekualisasiDetail->dpp_faktur_pajak;
+                $dppg += $ekualisasiDetail->dpp_gunggung;
+                $ppn += $ekualisasiDetail->ppn_pph;
+                $ids = $ekualisasiDetail->id;
+            } elseif($ekualisasiDetail->item_pemeriksaan_id == 21){
+                $quantity = $ekualisasiDetail->quantity;
+                $jumlah = $ekualisasiDetail->jumlah;
+                $dpp = $ekualisasiDetail->dpp_faktur_pajak;
+                $dppg = $ekualisasiDetail->dpp_gunggung;
+                $ppn = $ekualisasiDetail->ppn_pph;
+                $ids = $ekualisasiDetail->id;
+            }   elseif ($ekualisasiDetail->item_pemeriksaan_id == 22) {
+                $quantity -= $ekualisasiDetail->quantity;
+                $jumlah -= $ekualisasiDetail->jumlah;
+                $dpp -= $ekualisasiDetail->dpp_faktur_pajak;
+                $dppg -= $ekualisasiDetail->dpp_gunggung;
+                $ppn -= $ekualisasiDetail->ppn_pph;
+                $ids = $ekualisasiDetail->id;
+            } elseif($ekualisasiDetail->item_pemeriksaan_id == 24){
+                $quantity = $ekualisasiDetail->quantity;
+                $jumlah = $ekualisasiDetail->jumlah;
+                $dpp = $ekualisasiDetail->dpp_faktur_pajak;
+                $dppg = $ekualisasiDetail->dpp_gunggung;
+                $ppn = $ekualisasiDetail->ppn_pph;
+                $ids = $ekualisasiDetail->id;
+            }   elseif ($ekualisasiDetail->item_pemeriksaan_id == 25) {
+                $quantity -= $ekualisasiDetail->quantity;
+                $jumlah -= $ekualisasiDetail->jumlah;
+                $dpp -= $ekualisasiDetail->dpp_faktur_pajak;
+                $dppg -= $ekualisasiDetail->dpp_gunggung;
+                $ppn -= $ekualisasiDetail->ppn_pph;
                 $ids = $ekualisasiDetail->id;
             }
             // Add more as needed
