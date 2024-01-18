@@ -35,106 +35,17 @@ class EkualisasiController extends AdminController
         $grid = new Grid(new Ekualisasi());
 
         $grid->column('id', 'Detail')->expand(function ($model) {
-            $details = $model->ekualisasiDetails()->whereIn('item_pemeriksaan_id', [1, 2])->get();
-            $details45 = $model->ekualisasiDetails()->whereIn('item_pemeriksaan_id', [4, 5])->get();
-            $details8 = $model->ekualisasiDetails()->whereIn('item_pemeriksaan_id', [8])->get();
-            $details910 = $model->ekualisasiDetails()->whereIn('item_pemeriksaan_id', [9, 10])->get();
-            $details12 = $model->ekualisasiDetails()->whereIn('item_pemeriksaan_id', [12])->get();
-            $details1314 = $model->ekualisasiDetails()->whereIn('item_pemeriksaan_id', [13, 14])->get();
-            $details161718 = $model->ekualisasiDetails()->whereIn('item_pemeriksaan_id', [16, 17, 18])->get();
-            $details19 = $model->ekualisasiDetails()->whereIn('item_pemeriksaan_id', [19])->get();
-
+            $details = $model->ekualisasiDetails()->get();
         
             // Function to process details and calculate quantities
             $processDetails = function ($details, &$quantity, &$jumlah, &$dpp, &$dppg, &$ppn) {
                 return $details->map(function ($detail) use (&$quantity, &$jumlah, &$dpp, &$dppg, &$ppn) {
-                    $itemName = $detail->item_ekualisasi->item_pemeriksaan;
-        
-                    if ($detail->item_pemeriksaan_id == 1) {
-                        $quantity = $detail->quantity;
-                        $jumlah = $detail->jumlah;
-                        $dpp = $detail->dpp_faktur_pajak;
-                        $dppg = $detail->dpp_gunggung;
-                        $ppn = $detail->ppn_pph;
-                    } elseif ($detail->item_pemeriksaan_id == 2) {
-                        $quantity -= $detail->quantity;
-                        $jumlah -= $detail->jumlah;
-                        $dpp -= $detail->dpp_faktur_pajak;
-                        $dppg -= $detail->dpp_gunggung;
-                        $ppn -= $detail->ppn_pph;
-                    } elseif ($detail->item_pemeriksaan_id == 4) {
-                        $quantity = $detail->quantity;
-                        $jumlah = $detail->jumlah;
-                        $dpp = $detail->dpp_faktur_pajak;
-                        $dppg = $detail->dpp_gunggung;
-                        $ppn = $detail->ppn_pph;
-                    } elseif ($detail->item_pemeriksaan_id == 5) {
-                        $quantity += $detail->quantity;
-                        $jumlah += $detail->jumlah;
-                        $dpp += $detail->dpp_faktur_pajak;
-                        $dppg += $detail->dpp_gunggung;
-                        $ppn += $detail->ppn_pph;
-                    } elseif ($detail->item_pemeriksaan_id == 8) {
-                        $quantity = $detail->quantity;
-                        $jumlah = $detail->jumlah;
-                        $dpp = $detail->dpp_faktur_pajak;
-                        $dppg = $detail->dpp_gunggung;
-                        $ppn = $detail->ppn_pph;
-                    } elseif ($detail->item_pemeriksaan_id == 9) {
-                        $quantity = $detail->quantity;
-                        $jumlah = $detail->jumlah;
-                        $dpp = $detail->dpp_faktur_pajak;
-                        $dppg = $detail->dpp_gunggung;
-                        $ppn = $detail->ppn_pph;
-                    } elseif ($detail->item_pemeriksaan_id == 10) {
-                        $quantity += $detail->quantity;
-                        $jumlah += $detail->jumlah;
-                        $dpp += $detail->dpp_faktur_pajak;
-                        $dppg += $detail->dpp_gunggung;
-                        $ppn += $detail->ppn_pph;
-                    } elseif ($detail->item_pemeriksaan_id == 12) {
-                        $quantity = $detail->quantity;
-                        $jumlah = $detail->jumlah;
-                        $dpp = $detail->dpp_faktur_pajak;
-                        $dppg = $detail->dpp_gunggung;
-                        $ppn = $detail->ppn_pph;
-                    } elseif ($detail->item_pemeriksaan_id == 13) {
-                        $quantity = $detail->quantity;
-                        $jumlah = $detail->jumlah;
-                        $dpp = $detail->dpp_faktur_pajak;
-                        $dppg = $detail->dpp_gunggung;
-                        $ppn = $detail->ppn_pph;
-                    } elseif ($detail->item_pemeriksaan_id == 14) {
-                        $quantity += $detail->quantity;
-                        $jumlah += $detail->jumlah;
-                        $dpp += $detail->dpp_faktur_pajak;
-                        $dppg += $detail->dpp_gunggung;
-                        $ppn += $detail->ppn_pph;
-                    } elseif ($detail->item_pemeriksaan_id == 16) {
-                        $quantity = $detail->quantity;
-                        $jumlah = $detail->jumlah;
-                        $dpp = $detail->dpp_faktur_pajak;
-                        $dppg = $detail->dpp_gunggung;
-                        $ppn = $detail->ppn_pph;
-                    } elseif ($detail->item_pemeriksaan_id == 17) {
-                        $quantity += $detail->quantity;
-                        $jumlah += $detail->jumlah;
-                        $dpp += $detail->dpp_faktur_pajak;
-                        $dppg += $detail->dpp_gunggung;
-                        $ppn += $detail->ppn_pph;
-                    } elseif ($detail->item_pemeriksaan_id == 18) {
-                        $quantity += $detail->quantity;
-                        $jumlah += $detail->jumlah;
-                        $dpp += $detail->dpp_faktur_pajak;
-                        $dppg += $detail->dpp_gunggung;
-                        $ppn += $detail->ppn_pph;
-                    }  elseif ($detail->item_pemeriksaan_id == 19) {
-                        $quantity = $detail->quantity;
-                        $jumlah = $detail->jumlah;
-                        $dpp = $detail->dpp_faktur_pajak;
-                        $dppg = $detail->dpp_gunggung;
-                        $ppn = $detail->ppn_pph;
-                    }
+                    $itemName = $detail->item_ekualisasi->item_pemeriksaan ?? 'Unknown';
+                    $quantity = $detail->quantity;
+                    $jumlah = $detail->jumlah;
+                    $dpp = $detail->dpp_faktur_pajak;
+                    $dppg = $detail->dpp_gunggung;
+                    $ppn = $detail->ppn_pph;
         
                     return [
                         'ID' => $detail->item_pemeriksaan_id,
@@ -150,111 +61,8 @@ class EkualisasiController extends AdminController
                 });
             };
         
-            $data = $processDetails($details, $quantity12, $jumlah12, $dpp12, $dppg12, $ppn12);
-        
-            // Add the row for item_pemeriksaan_id 3 with the summed quantity
-            $data[] = [
-                'ID' => 3,
-                'item_pemeriksaan' => '<b>Selisih (1-2)</b>',
-                'quantity' => '<b>'.number_format($quantity12, 0, ",", "."),
-                'jumlah' => '<b>'.number_format($jumlah12, 0, ",", "."),
-                'dpp_faktur_pajak' => '<b>'.number_format($dpp12, 0, ",", "."),
-                'dpp_gunggung' => '<b>'.number_format($dppg12, 0, ",", "."),
-                'ppn_pph' => '<b>'.number_format($ppn12, 0, ",", "."),
-                'keterangan' => 'Selisih 1 dan 2',
-                // 'created_at' => now(),
-            ];
-        
-            $data45 = $processDetails($details45, $quantity45, $jumlah45, $dpp45, $dppg45, $ppn45);
-            $data = $data->merge($data45);
-        
-            // Add the row for item_pemeriksaan_id 6 with the summed quantity
-            $data[] = [
-                'ID' => 6,
-                'item_pemeriksaan' => '<b>Total Nilai Transaksi (4+5)</b>',
-                'quantity' => '<b>'.number_format($quantity45, 0, ",", "."),
-                'jumlah' => '<b>'.number_format($jumlah45, 0, ",", "."),
-                'dpp_faktur_pajak' => '<b>'.number_format($dpp45, 0, ",", "."),
-                'dpp_gunggung' => '<b>'.number_format($dppg45, 0, ",", "."),
-                'ppn_pph' => '<b>'.number_format($ppn45, 0, ",", "."),
-                'keterangan' => 'Total 4 dan 5',
-                // 'created_at' => now(),
-            ];
-            $data[] = [
-                'ID' => 7,
-                'item_pemeriksaan' => '<b>Selisih PPN Keluaran dan Total Transaksi (3-6)</b>',
-                'quantity' => '<b>'.number_format($quantity12-$quantity45, 0, ",", ".").'</b>',
-                'jumlah' => '<b>'.number_format($jumlah12-$jumlah45, 0, ",", "."),
-                'dpp_faktur_pajak' => '<b>'.number_format($dpp12-$dpp45, 0, ",", "."),
-                'dpp_gunggung' => '<b>'.number_format($dppg12-$dppg45, 0, ",", "."),
-                'ppn_pph' => '<b>'.number_format($ppn12-$ppn45, 0, ",", "."),
-                'keterangan' => 'Selisih 3 dan 6',
-                // 'created_at' => now(),
-            ];
-            $data8 = $processDetails($details8, $quantity8, $jumlah8, $dpp8, $dppg8, $ppn8);
-            $data = $data->merge($data8);
-            $data910 = $processDetails($details910, $quantity910, $jumlah910, $dpp910, $dppg910, $ppn910);
-            $data = $data->merge($data910);
+            $data = $processDetails($details, $quantity, $jumlah, $dpp, $dppg, $ppn);
 
-            $data[] = [
-                'ID' => 11,
-                'item_pemeriksaan' => '<b>------</b>',
-                'quantity' => '',
-                'jumlah' => '',
-                'dpp_faktur_pajak' => '',
-                'dpp_gunggung' => '',
-                'ppn_pph' => '',
-                'keterangan' => '---------',
-                // 'created_at' => now(),
-            ];
-
-            $data12 = $processDetails($details12, $quantity12, $jumlah12, $dpp12, $dppg12, $ppn12);
-            $data = $data->merge($data12);
-            $data1314 = $processDetails($details1314, $quantity1314, $jumlah1314, $dpp1314, $dppg1314, $ppn1314);
-            $data = $data->merge($data1314);
-
-            $data[] = [
-                'ID' => 15,
-                'item_pemeriksaan' => '<b>Selisih (8-12)</b>',
-                'quantity' => '<b>'.number_format($quantity8-$quantity12, 0, ",", "."),
-                'jumlah' => '<b>'.number_format($jumlah8-$jumlah12, 0, ",", "."),
-                'dpp_faktur_pajak' => '<b>'.number_format($dpp8-$dpp12, 0, ",", "."),
-                'dpp_gunggung' => '<b>'.number_format($dppg8-$dppg12, 0, ",", "."),
-                'ppn_pph' => '<b>'.number_format($ppn8-$ppn12, 0, ",", "."),
-                'keterangan' => 'Selisih (8-12)',
-                // 'created_at' => now(),
-            ];
-
-            $data161718 = $processDetails($details161718, $quantity161718, $jumlah161718, $dpp161718, $dppg161718, $ppn161718);
-            $data = $data->merge($data161718);
-
-            $data19 = $processDetails($details19, $quantity19, $jumlah19, $dpp19, $dppg19, $ppn19);
-            $data = $data->merge($data19);
-
-            $data[] = [
-                'ID' => 20,
-                'item_pemeriksaan' => '<b>Total Ekspedisi & Pengangkutan di SPT PPh 21, 23 & 4(2) (16+17+18)</b>',
-                'quantity' => '<b>'.number_format($quantity161718, 0, ",", "."),
-                'jumlah' => '<b>'.number_format($jumlah161718, 0, ",", "."),
-                'dpp_faktur_pajak' => '<b>'.number_format($dpp161718, 0, ",", "."),
-                'dpp_gunggung' => '<b>'.number_format($dppg161718, 0, ",", "."),
-                'ppn_pph' => '<b>'.number_format($ppn161718, 0, ",", "."),
-                'keterangan' => 'Total (16+17+18)',
-                // 'created_at' => now(),
-            ];
-
-            $data[] = [
-                'ID' => 21,
-                'item_pemeriksaan' => '<b>Selisih Biaya Ekspedisi & Pengangkutan di SPT PPh 21 & 23  dan L/R ((16+17+18)-19)</b>',
-                'quantity' => '<b>'.number_format($quantity161718-$quantity19, 0, ",", "."),
-                'jumlah' => '<b>'.number_format($jumlah161718-$jumlah19, 0, ",", "."),
-                'dpp_faktur_pajak' => '<b>'.number_format($dpp161718-$dpp19, 0, ",", "."),
-                'dpp_gunggung' => '<b>'.number_format($dppg161718-$dppg19, 0, ",", "."),
-                'ppn_pph' => '<b>'.number_format($ppn161718-$ppn19, 0, ",", "."),
-                'keterangan' => 'Selisih (16+17+18)-19',
-                // 'created_at' => now(),
-            ];
-        
             return new Table(['ID', 'Item Ekualisasi', 'quantity', 'jumlah', 'dpp faktur pajak', 'dpp gungung', 'ppn pph', 'keterangan'], $data->toArray());
         });
         
@@ -287,6 +95,8 @@ class EkualisasiController extends AdminController
             $url = $this->id;
             return "<a href='detail?pemeriksaan_id={$url}' class='btn btn-xs btn-primary'>Edit Detail</a>";
         });
+        //return "<a href='detail?pemeriksaan_id={$url}' class='btn btn-xs btn-primary'>Edit Detail</a>
+        
 
         
             //dd($data);
@@ -311,6 +121,89 @@ class EkualisasiController extends AdminController
             echo $style;
 
         return $grid;
+    }
+
+    protected function processItemPemeriksaan($id)
+    {
+        
+        $details = Ekualisasi::with(['ekualisasiDetails' => function ($query) {
+            $query->whereIn('item_pemeriksaan_id', [1, 2]);
+        }])
+        ->find($id);
+        $quantity=0;
+        $jumlah=0;
+        $dpp=0;
+        $dppg=0;
+        $ppn=0;
+        foreach ($details->ekualisasiDetails as $ekualisasiDetail) {
+            // Access properties of each ekualisasiDetail
+            if($ekualisasiDetail->item_pemeriksaan_id == 1){
+                $quantity = $ekualisasiDetail->quantity;
+                $jumlah = $ekualisasiDetail->jumlah;
+                $dpp = $ekualisasiDetail->dpp_faktur_pajak;
+                $dppg = $ekualisasiDetail->dpp_gunggung;
+                $ppn = $ekualisasiDetail->ppn_pph;
+                $id = $ekualisasiDetail->id;
+            }elseif($ekualisasiDetail->item_pemeriksaan_id == 2){
+                $quantity -= $ekualisasiDetail->quantity;
+                $jumlah -= $ekualisasiDetail->jumlah;
+                $dpp -= $ekualisasiDetail->dpp_faktur_pajak;
+                $dppg -= $ekualisasiDetail->dpp_gunggung;
+                $ppn -= $ekualisasiDetail->ppn_pph;
+                $id = $ekualisasiDetail->id;
+            }
+            // Add more as needed
+        }
+
+
+        echo $quantity;
+        echo $jumlah;
+        echo $dpp;
+        echo $dppg;
+        echo $ppn;
+
+        Ekualisasidetail::updateOrInsert(
+            [
+                'id' => $id+1,
+            ],
+            [
+                'quantity' => $quantity,
+                'jumlah' => $jumlah,
+                'dpp_faktur_pajak' => $dpp,
+                'dpp_gunggung' => $dppg,
+                'ppn_pph' => $ppn,
+                // Add other fields as needed
+            ]
+        );
+        // // Step 1: Select data1
+        // $data1 = DB::table('detail_pemeriksaan')
+        //     ->select('id', 'pemeriksaan_id', 'item_pemeriksaan_id', 'quantity')
+        //     ->where('id', $id)
+        //     ->first();
+    
+        // // Step 2: Store data1
+        // // You can store data1 in a variable if needed for further processing
+    
+        // // Step 3: Select data2
+        // $id2 = $data1->id + 1; // Assuming id is incremental
+        // $data2 = DB::table('detail_pemeriksaan')
+        //     ->select('id', 'pemeriksaan_id', 'item_pemeriksaan_id', 'quantity')
+        //     ->where('id', $id2)
+        //     ->first();
+    
+        // // Step 4: Store data2
+        // // You can store data2 in a variable if needed for further processing
+    
+        // // Step 5: Calculate new ID ($id3)
+        // $id3 = $data2->id + 1;
+    
+        // // Step 6: Calculate new quantity ($quantity3)
+        // $quantity3 = $data1->quantity - $data2->quantity;
+    
+        // // Step 7: Update detail_pemeriksaan
+        // DB::table('detail_pemeriksaan')
+        //     ->where('id', $id3)
+        //     ->update(['quantity' => $quantity3]);
     }
 
     /**

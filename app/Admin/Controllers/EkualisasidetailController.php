@@ -70,9 +70,19 @@ class EkualisasidetailController extends AdminController
             });
         });
         $grid->disableCreateButton();
-        // Use custom styles for the table
+        $grid->editButton()->display(function ($value) {
+            // Customize the edit button link
+            if(in_array($this->item_pemeriksaan_id, [3,6,7]))
+            {   
+                $id = $this->id;
+                $pid = $this->pemeriksaan_id;
+                $ipid = $this->item_pemeriksaan_id;
+                return "<a href='/admin/ekualisasi/detail/process/{$id}/{$pid}/{$ipid}' class='btn btn-xs btn-primary'>Process</a>";
+            }
+        });
         
-        $grid->paginate(30);
+        
+        $grid->paginate(29);
         
             //dd($data);
             $style = <<<STYLE
@@ -97,6 +107,95 @@ class EkualisasidetailController extends AdminController
         return $grid;
     }
 
+    protected function processItemPemeriksaan($id,$pid,$ipid)
+    {
+        if($ipid == 3):
+            $details = Ekualisasi::with(['ekualisasiDetails' => function ($query) {
+                    $query->whereIn('item_pemeriksaan_id', [1,2]);
+            }])
+            ->find($pid);
+        elseif($ipid == 6):
+            $details = Ekualisasi::with(['ekualisasiDetails' => function ($query) {
+                    $query->whereIn('item_pemeriksaan_id', [4,5]);
+            }])
+            ->find($pid);
+        elseif($ipid == 7):
+            $details = Ekualisasi::with(['ekualisasiDetails' => function ($query) {
+                    $query->whereIn('item_pemeriksaan_id', [3,6]);
+            }])
+            ->find($pid);
+        endif;
+        //ddd($details);
+
+        $quantity=0;
+        $jumlah=0;
+        $dpp=0;
+        $dppg=0;
+        $ppn=0;
+
+        foreach ($details->ekualisasiDetails as $ekualisasiDetail) {
+            // Access properties of each ekualisasiDetail
+            if($ekualisasiDetail->item_pemeriksaan_id == 1){
+                $quantity = $ekualisasiDetail->quantity;
+                $jumlah = $ekualisasiDetail->jumlah;
+                $dpp = $ekualisasiDetail->dpp_faktur_pajak;
+                $dppg = $ekualisasiDetail->dpp_gunggung;
+                $ppn = $ekualisasiDetail->ppn_pph;
+                $ids = $ekualisasiDetail->id;
+            } elseif($ekualisasiDetail->item_pemeriksaan_id == 2){
+                $quantity -= $ekualisasiDetail->quantity;
+                $jumlah -= $ekualisasiDetail->jumlah;
+                $dpp -= $ekualisasiDetail->dpp_faktur_pajak;
+                $dppg -= $ekualisasiDetail->dpp_gunggung;
+                $ppn -= $ekualisasiDetail->ppn_pph;
+                $ids = $ekualisasiDetail->id;
+            } elseif($ekualisasiDetail->item_pemeriksaan_id == 3){
+                $quantity = $ekualisasiDetail->quantity;
+                $jumlah = $ekualisasiDetail->jumlah;
+                $dpp = $ekualisasiDetail->dpp_faktur_pajak;
+                $dppg = $ekualisasiDetail->dpp_gunggung;
+                $ppn = $ekualisasiDetail->ppn_pph;
+                $ids = $ekualisasiDetail->id;
+            } elseif ($ekualisasiDetail->item_pemeriksaan_id == 4) {
+                $quantity = $ekualisasiDetail->quantity;
+                $jumlah = $ekualisasiDetail->jumlah;
+                $dpp = $ekualisasiDetail->dpp_faktur_pajak;
+                $dppg = $ekualisasiDetail->dpp_gunggung;
+                $ppn = $ekualisasiDetail->ppn_pph;
+                $ids = $ekualisasiDetail->id;
+            } elseif ($ekualisasiDetail->item_pemeriksaan_id == 5) {
+                $quantity += $ekualisasiDetail->quantity;
+                $jumlah += $ekualisasiDetail->jumlah;
+                $dpp += $ekualisasiDetail->dpp_faktur_pajak;
+                $dppg += $ekualisasiDetail->dpp_gunggung;
+                $ppn += $ekualisasiDetail->ppn_pph;
+                $ids = $ekualisasiDetail->id;
+            } elseif($ekualisasiDetail->item_pemeriksaan_id == 6){
+                $quantity -= $ekualisasiDetail->quantity;
+                $jumlah -= $ekualisasiDetail->jumlah;
+                $dpp -= $ekualisasiDetail->dpp_faktur_pajak;
+                $dppg -= $ekualisasiDetail->dpp_gunggung;
+                $ppn -= $ekualisasiDetail->ppn_pph;
+                $ids = $ekualisasiDetail->id;
+            }
+            // Add more as needed
+        }
+        Ekualisasidetail::updateOrInsert(
+            [
+                'id' => $ids+1,
+            ],
+            [
+                'quantity' => $quantity,
+                'jumlah' => $jumlah,
+                'dpp_faktur_pajak' => $dpp,
+                'dpp_gunggung' => $dppg,
+                'ppn_pph' => $ppn,
+                // Add other fields as needed
+            ]
+        );
+
+        return redirect("admin/ekualisasi/detail?pemeriksaan_id=$pid");
+    }
     /**
      * Make a show builder.
      *

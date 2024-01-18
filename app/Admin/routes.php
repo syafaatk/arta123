@@ -26,15 +26,18 @@ Route::group([
     $router->get('/ekualisasi/item/{id}', 'EkualisasiitemController@show')->name('ekualisasi.item.show');
     $router->get('/ekualisasi/item/{id}/edit', 'EkualisasiitemController@edit')->name('ekualisasi.item.edit');
     $router->put('/ekualisasi/item/{id}', 'EkualisasiitemController@update')->name('ekualisasi.item.update');
-    $router->delete('/ekualisasi/item/{id}', 'EkualisasiitemController@destroy')->name('ekualisasi.masters');
+    $router->delete('/ekualisasi/item/{id}', 'EkualisasiitemController@destroy')->name('ekualisasi.item');
 
     $router->get('/ekualisasi/detail', 'EkualisasidetailController@index')->name('ekualisasi.detail');
     $router->get('/ekualisasi/detail/create', 'EkualisasidetailController@create')->name('ekualisasi.detail.craete');
     $router->post('/ekualisasi/detail', 'EkualisasidetailController@store')->name('ekualisasi.detail.store');
+    $router->get('/ekualisasi/detail/process/{id}', 'EkualisasidetailController@processItemPemeriksaan')->name('ekualisasi.detail.process');
     $router->get('/ekualisasi/detail/{id}', 'EkualisasidetailController@show')->name('ekualisasi.detail.show');
     $router->get('/ekualisasi/detail/{id}/edit', 'EkualisasidetailController@edit')->name('ekualisasi.detail.edit');
     $router->put('/ekualisasi/detail/{id}', 'EkualisasidetailController@update')->name('ekualisasi.detail.update');
-    $router->delete('/ekualisasi/detail/{id}', 'EkualisasidetailController@destroy')->name('ekualisasi.masters');
+    $router->delete('/ekualisasi/detail/{id}', 'EkualisasidetailController@destroy')->name('ekualisasi.detail');
+    $router->get('/ekualisasi/detail/process/{id1}/{id2}/{id3}', 'EkualisasidetailController@processItemPemeriksaan')->name('ekualisasi.detail.process');
+
 
     $router->get('/ekualisasi/masters', 'EkualisasiController@index')->name('ekualisasi.masters');
     $router->get('/ekualisasi/masters/create', 'EkualisasiController@create')->name('ekualisasi.masters.craete');
@@ -44,6 +47,7 @@ Route::group([
     $router->get('/ekualisasi/masters/{id}/edit', 'EkualisasiController@edit')->name('ekualisasi.masters.edit');
     $router->put('/ekualisasi/masters/{id}', 'EkualisasiController@updateall')->name('ekualisasi.masters.update');
     $router->delete('/ekualisasi/masters/{id}', 'EkualisasiController@destroy')->name('ekualisasi.masters');
+    $router->get('/ekualisasi/masters/process/{id}', 'EkualisasiController@processItemPemeriksaan')->name('ekualisasi.masters.process');
 
     $router->get('/pajak/klu', 'KluController@index')->name('pajak.klu');
     $router->get('/pajak/klu/create', 'KluController@create')->name('pajak.klu.craete');
