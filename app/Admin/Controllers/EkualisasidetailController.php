@@ -72,7 +72,7 @@ class EkualisasidetailController extends AdminController
         $grid->disableCreateButton();
         $grid->editButton()->display(function ($value) {
             // Customize the edit button link
-            if(in_array($this->item_pemeriksaan_id, [3,6,7,8,11,14,19,20,23,26]))
+            if(in_array($this->item_pemeriksaan_id, [3,6,7,8,11,14,19,20,23,26,29,32]))
             {   
                 $id = $this->id;
                 $pid = $this->pemeriksaan_id;

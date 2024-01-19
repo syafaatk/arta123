@@ -262,7 +262,7 @@ class EkualisasiController extends AdminController
         // Form untuk detail Ekualisasi
         $items = Ekualisasiitem::all()->pluck('item_pemeriksaan', 'id');
 
-        for ($i = 1; $i <= 31; $i++) {
+        for ($i = 1; $i <= 33; $i++) {
             if($i >= 1 and $i <= 3 ):
                 $form->fieldset('Ekualisasi '.$i, function ($form) use ($i, $items)  {
                     $ekualisasiId = $form->model()->id;
@@ -383,6 +383,21 @@ class EkualisasiController extends AdminController
                     $form->text("detail_pemeriksaan.$i.ppn_pph", __("PPN PPH $i"));
                     $form->text("detail_pemeriksaan.$i.keterangan", __("Keterangan $i"));
                 });
+            elseif($i >= 30 && $i <= 33 ):
+                $form->fieldset('Ekualisasi '.$i, function ($form) use ($i, $items)  {
+                        $ekualisasiId = $form->model()->id;
+                        $form->hidden("detail_pemeriksaan.$i.pemeriksaan_id")->value($ekualisasiId);
+                        $form->select("detail_pemeriksaan.$i.item_pemeriksaan_id", __("Item Ekualisasi $i"))
+                        ->options($items)
+                        ->value($i)
+                        ->readonly();
+                        $form->text("detail_pemeriksaan.$i.quantity", __("Quantity $i"));
+                        $form->text("detail_pemeriksaan.$i.jumlah", __("Jumlah $i"));
+                        $form->text("detail_pemeriksaan.$i.dpp_faktur_pajak", __("DPP Faktur Pajak $i"));
+                        $form->text("detail_pemeriksaan.$i.dpp_gunggung", __("DPP Gungung $i"));
+                        $form->text("detail_pemeriksaan.$i.ppn_pph", __("PPN PPH $i"));
+                        $form->text("detail_pemeriksaan.$i.keterangan", __("Keterangan $i"));
+                    });
             endif;
 
             
@@ -450,7 +465,7 @@ class EkualisasiController extends AdminController
         ]);
 
         // // Update or create DetailEkualisasi records
-        // for ($i = 1; $i <= 30; $i++) {
+        // for ($i = 1; $i <= 33; $i++) {
         //     Ekualisasidetail::updateOrInsert(
         //         ['pemeriksaan_id' => $ekualisasi->id, 'item_pemeriksaan_id' => $request->input("detail_pemeriksaan.$i.item_pemeriksaan_id")],
         //         [
