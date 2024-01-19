@@ -52,7 +52,7 @@ class EkualisasitahunanController extends AdminController
         $grid->column('keterangan', __('Keterangan'));
 
         $grid->disableCreateButton();
-        $grid->paginate(29);
+        $grid->paginate(33);
         $grid->filter(function ($filter) {
             // $filter->expand();
             $filter->column(1/2, function ($filter) {

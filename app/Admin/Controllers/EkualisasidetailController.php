@@ -82,7 +82,7 @@ class EkualisasidetailController extends AdminController
         });
         
         
-        $grid->paginate(29);
+        $grid->paginate(33);
         
             //dd($data);
             $style = <<<STYLE
