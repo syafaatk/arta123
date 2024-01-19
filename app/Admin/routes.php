@@ -49,6 +49,14 @@ Route::group([
     $router->delete('/ekualisasi/masters/{id}', 'EkualisasiController@destroy')->name('ekualisasi.masters');
     $router->get('/ekualisasi/masters/process/{id}', 'EkualisasiController@processItemPemeriksaan')->name('ekualisasi.masters.process');
 
+    $router->get('/ekualisasi/tahunan', 'EkualisasitahunanController@index')->name('ekualisasi.tahunan');
+    $router->get('/ekualisasi/tahunan/create', 'EkualisasitahunanController@create')->name('ekualisasi.tahunan.craete');
+    $router->post('/ekualisasi/tahunan', 'EkualisasitahunanController@store')->name('ekualisasi.tahunan.store');
+    $router->get('/ekualisasi/tahunan/{id}', 'EkualisasitahunanController@show')->name('ekualisasi.tahunan.show');
+    $router->get('/ekualisasi/tahunan/{id}/edit', 'EkualisasitahunanController@edit')->name('ekualisasi.tahunan.edit');
+    $router->put('/ekualisasi/tahunan/{id}', 'EkualisasitahunanController@update')->name('ekualisasi.tahunan.update');
+    $router->delete('/ekualisasi/tahunan/{id}', 'EkualisasitahunanController@destroy')->name('ekualisasi.tahunan');
+
     $router->get('/pajak/klu', 'KluController@index')->name('pajak.klu');
     $router->get('/pajak/klu/create', 'KluController@create')->name('pajak.klu.craete');
     $router->post('/pajak/klu', 'KluController@store')->name('pajak.klu.store');
