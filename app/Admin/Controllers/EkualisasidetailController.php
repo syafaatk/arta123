@@ -55,14 +55,16 @@ class EkualisasidetailController extends AdminController
             return ($this->item_pemeriksaan_id != 3 && $this->item_pemeriksaan_id != 6) ? number_format($jumlah, 0, ',', '.') : $jumlah;
         })->text();
         $grid->column('keterangan', __('Keterangan'))->text();
-        $grid->filter(function ($filter) {
+        $keteranganOptions = Ekualisasi::join('client_master', 'client_master.id', '=', 'pemeriksaan.client_id')
+        ->join('masa_pajak', 'masa_pajak.id', '=', 'pemeriksaan.masa_pajak_id')
+        ->select('pemeriksaan.id', DB::raw('CONCAT(client_master.nama_wp, " - ", masa_pajak.masa_pajak) AS display_text'))
+        ->pluck('display_text', 'pemeriksaan.id')->toArray();
+
+        $grid->filter(function ($filter) use ($keteranganOptions)  {
             // $filter->expand();
-            $filter->column(1/2, function ($filter) {
+            $filter->column(1/2, function ($filter) use ($keteranganOptions) {
                 $filter->equal('pemeriksaan_id', __('Data Ekualisasi'))
-                    ->select(Ekualisasi::join('client_master', 'client_master.id', '=', 'pemeriksaan.client_id')
-                        ->join('masa_pajak', 'masa_pajak.id', '=', 'pemeriksaan.masa_pajak_id')
-                        ->select('pemeriksaan.id', DB::raw('CONCAT(client_master.nama_wp, " - ", masa_pajak.masa_pajak) AS display_text'))
-                        ->pluck('display_text', 'pemeriksaan.id'));
+                    ->select($keteranganOptions);
             });
     
             $filter->column(1/2, function ($filter) {
@@ -80,6 +82,7 @@ class EkualisasidetailController extends AdminController
                 return "<a href='/admin/ekualisasi/detail/process/{$id}/{$pid}/{$ipid}' class='btn btn-xs btn-primary'>Process</a>";
             }
         });
+        $firstKeterangan = reset($keteranganOptions);
         
         
         $grid->paginate(33);
@@ -87,7 +90,14 @@ class EkualisasidetailController extends AdminController
             //dd($data);
             $style = <<<STYLE
             <style>
-
+                #main::before {
+                    content: "$firstKeterangan";
+                    display: block;
+                    text-align: center;
+                    font-size: 18px; /* Adjust the font size as needed */
+                    margin-bottom: 20px; /* Adjust the margin as needed */
+                    /* Add any additional styling as needed */
+                }
                 .table tr th, .table tr td {
                     border-color: rgba(0, 0, 0, 0.22);
                 }

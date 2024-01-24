@@ -49,13 +49,13 @@ Route::group([
     $router->delete('/ekualisasi/masters/{id}', 'EkualisasiController@destroy')->name('ekualisasi.masters');
     $router->get('/ekualisasi/masters/process/{id}', 'EkualisasiController@processItemPemeriksaan')->name('ekualisasi.masters.process');
 
-    $router->get('/ekualisasi/tahunan', 'EkualisasitahunanController@index')->name('ekualisasi.tahunan');
-    $router->get('/ekualisasi/tahunan/create', 'EkualisasitahunanController@create')->name('ekualisasi.tahunan.craete');
-    $router->post('/ekualisasi/tahunan', 'EkualisasitahunanController@store')->name('ekualisasi.tahunan.store');
-    $router->get('/ekualisasi/tahunan/{id}', 'EkualisasitahunanController@show')->name('ekualisasi.tahunan.show');
-    $router->get('/ekualisasi/tahunan/{id}/edit', 'EkualisasitahunanController@edit')->name('ekualisasi.tahunan.edit');
-    $router->put('/ekualisasi/tahunan/{id}', 'EkualisasitahunanController@update')->name('ekualisasi.tahunan.update');
-    $router->delete('/ekualisasi/tahunan/{id}', 'EkualisasitahunanController@destroy')->name('ekualisasi.tahunan');
+    $router->get('/ekualisasi/tahunan-detail', 'EkualisasidetailtahunanController@index')->name('ekualisasi.tahunan');
+    $router->get('/ekualisasi/tahunan-detail/create', 'EkualisasidetailtahunanController@create')->name('ekualisasi.tahunan.craete');
+    $router->post('/ekualisasi/tahunan-detail', 'EkualisasidetailtahunanController@store')->name('ekualisasi.tahunan.store');
+    $router->get('/ekualisasi/tahunan-detail/{id}', 'EkualisasidetailtahunanController@show')->name('ekualisasi.tahunan.show');
+    $router->get('/ekualisasi/tahunan-detail/{id}/edit', 'EkualisasidetailtahunanController@edit')->name('ekualisasi.tahunan.edit');
+    $router->put('/ekualisasi/tahunan-detail/{id}', 'EkualisasidetailtahunanController@update')->name('ekualisasi.tahunan.update');
+    $router->delete('/ekualisasi/tahunan-detail/{id}', 'EkualisasidetailtahunanController@destroy')->name('ekualisasi.tahunan');
 
     $router->get('/pajak/klu', 'KluController@index')->name('pajak.klu');
     $router->get('/pajak/klu/create', 'KluController@create')->name('pajak.klu.craete');

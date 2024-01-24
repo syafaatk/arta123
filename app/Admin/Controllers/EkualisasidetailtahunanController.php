@@ -13,14 +13,14 @@ use \App\Models\Client;
 use OpenAdmin\Admin\Widgets\Table;
 use Illuminate\Support\Facades\DB;
 
-class EkualisasitahunanController extends AdminController
+class EkualisasidetailtahunanController extends AdminController
 {
     /**
      * Title for current resource.
      *
      * @var string
      */
-    protected $title = 'Ekualisasi Tahunan';
+    protected $title = 'Ekualisasi Tahunan Detail';
 
     /**
      * Make a grid builder.
@@ -29,7 +29,7 @@ class EkualisasitahunanController extends AdminController
      */
     protected function grid()
     {
-        
+
         $grid = new Grid(new Ekualisasitahunan());
         $grid->column('id', __('ID'));
         $grid->column('client_id', 'Detail')->display(function ($clientId) {
@@ -55,11 +55,12 @@ class EkualisasitahunanController extends AdminController
 
         $grid->disableCreateButton();
         $grid->paginate(33);
-        $grid->filter(function ($filter) {
-            // $filter->expand();
-            $filter->column(1/2, function ($filter) {
+        $keteranganOptions = Tahunan::pluck('keterangan', 'client_id')->toArray();
+
+        $grid->filter(function ($filter) use ($keteranganOptions) {
+            $filter->column(1/2, function ($filter) use ($keteranganOptions) {
                 $filter->equal('client_id', __('Data Client'))
-                    ->select(Tahunan::pluck('keterangan', 'client_id')); // Assuming 'keterangan' is the display column
+                    ->select($keteranganOptions);
             });
         });
 
@@ -70,10 +71,18 @@ class EkualisasitahunanController extends AdminController
           });
 
           $grid->disableActions();
+          $firstKeterangan = reset($keteranganOptions);
         //dd($data);
         $style = <<<STYLE
         <style>
-
+            #main::before {
+                content: "$firstKeterangan";
+                display: block;
+                text-align: center;
+                font-size: 18px; /* Adjust the font size as needed */
+                margin-bottom: 20px; /* Adjust the margin as needed */
+                /* Add any additional styling as needed */
+            }
             .table tr th, .table tr td {
                 border-color: rgba(0, 0, 0, 0.22);
             }
