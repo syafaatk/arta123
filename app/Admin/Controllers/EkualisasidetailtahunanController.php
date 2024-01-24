@@ -6,12 +6,13 @@ use OpenAdmin\Admin\Controllers\AdminController;
 use OpenAdmin\Admin\Form;
 use OpenAdmin\Admin\Grid;
 use OpenAdmin\Admin\Show;
-use \App\Models\Ekualisasitahunan;
+use \App\Models\Ekualisasitahunandetail;
 use \App\Models\Ekualisasiitem;
 use \App\Models\Tahunan;
 use \App\Models\Client;
 use OpenAdmin\Admin\Widgets\Table;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Route;
 
 class EkualisasidetailtahunanController extends AdminController
 {
@@ -29,11 +30,10 @@ class EkualisasidetailtahunanController extends AdminController
      */
     protected function grid()
     {
-
-        $grid = new Grid(new Ekualisasitahunan());
+        $grid = new Grid(new Ekualisasitahunandetail());
         $grid->column('id', __('ID'));
         $grid->column('client_id', 'Detail')->display(function ($clientId) {
-            return Client::find($clientId)->nama_wp.'-'.$this->tahun;
+            return Client::find($clientId)->nama_wp . '-' . $this->tahun;
         })->sortable();
         $grid->column('item_pemeriksaan_id', __('Item Ekualisasi ID'))->display(function($item_pemeriksaan_id) {return Ekualisasiitem::find($item_pemeriksaan_id)->id.'. '.Ekualisasiitem::find($item_pemeriksaan_id)->item_pemeriksaan;});
         $grid->column('quantity', __('Quantity'))->display(function ($jumlah) {
@@ -71,18 +71,10 @@ class EkualisasidetailtahunanController extends AdminController
           });
 
           $grid->disableActions();
-          $firstKeterangan = reset($keteranganOptions);
+        //   dd($firstKeterangan);
         //dd($data);
         $style = <<<STYLE
         <style>
-            #main::before {
-                content: "$firstKeterangan";
-                display: block;
-                text-align: center;
-                font-size: 18px; /* Adjust the font size as needed */
-                margin-bottom: 20px; /* Adjust the margin as needed */
-                /* Add any additional styling as needed */
-            }
             .table tr th, .table tr td {
                 border-color: rgba(0, 0, 0, 0.22);
             }
@@ -123,7 +115,7 @@ class EkualisasidetailtahunanController extends AdminController
      */
     protected function detail($id)
     {
-        $show = new Show(Ekualisasitahunan::findOrFail($id));
+        $show = new Show(Ekualisasitahunandetail::findOrFail($id));
 
         $show->field('client_id', __('Id'));
 
@@ -137,7 +129,7 @@ class EkualisasidetailtahunanController extends AdminController
      */
     protected function form()
     {
-        $form = new Form(new Ekualisasitahunan());
+        $form = new Form(new Ekualisasitahunandetail());
 
         $form->text('item_pemeriksaan_id', __('Item_pemeriksaan'));
 

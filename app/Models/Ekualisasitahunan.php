@@ -7,12 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Ekualisasitahunan extends Model
 {
-    protected $table = 'pemeriksaan_tahunan';
+    protected $table = 'tahunan';
     protected $guarded = [];
     public $timestamps = false;
 
-    public function item_ekualisasi()
-    {
-        return $this->belongsTo(Ekualisasiitem::class, 'item_pemeriksaan_id');
-    }
 }

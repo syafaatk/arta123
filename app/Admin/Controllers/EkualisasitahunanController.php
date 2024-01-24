@@ -32,77 +32,30 @@ class EkualisasitahunanController extends AdminController
         
         $grid = new Grid(new Ekualisasitahunan());
         $grid->column('id', __('ID'));
-        $grid->column('client_id', 'Detail')->display(function ($clientId) {
-            return Client::find($clientId)->nama_wp.'-'.$this->tahun;
-        })->sortable();
-        $grid->column('item_pemeriksaan_id', __('Item Ekualisasi ID'))->display(function($item_pemeriksaan_id) {return Ekualisasiitem::find($item_pemeriksaan_id)->id.'. '.Ekualisasiitem::find($item_pemeriksaan_id)->item_pemeriksaan;});
-        $grid->column('quantity', __('Quantity'))->display(function ($jumlah) {
-            return ($this->item_pemeriksaan_id != 3 && $this->item_pemeriksaan_id != 6) ? number_format($jumlah, 0, ',', '.') : $jumlah;
-        });
-        $grid->column('jumlah', __('Jumlah'))->display(function ($jumlah) {
-            return ($this->item_pemeriksaan_id != 3 && $this->item_pemeriksaan_id != 6) ? number_format($jumlah, 0, ',', '.') : $jumlah;
-        });
-        $grid->column('dpp_faktur_pajak', __('DPP Faktur Pajak'))->display(function ($jumlah) {
-            return ($this->item_pemeriksaan_id != 3 && $this->item_pemeriksaan_id != 6) ? number_format($jumlah, 0, ',', '.') : $jumlah;
-        });
-        $grid->column('dpp_gunggung', __('DPP Gunggung'))->display(function ($jumlah) {
-            return ($this->item_pemeriksaan_id != 3 && $this->item_pemeriksaan_id != 6) ? number_format($jumlah, 0, ',', '.') : $jumlah;
-        });
-        $grid->column('ppn_pph', __('PPN PPH'))->display(function ($jumlah) {
-            return ($this->item_pemeriksaan_id != 3 && $this->item_pemeriksaan_id != 6) ? number_format($jumlah, 0, ',', '.') : $jumlah;
-        });
-        $grid->column('keterangan', __('Keterangan'));
-
+        $grid->column('client_id', 'Client ID');
+        $grid->column('tahun', 'Tahun');    
+        $grid->column('keterangan', 'Nama Ekualisasi Tahunan');
         $grid->disableCreateButton();
         $grid->paginate(33);
-        $grid->filter(function ($filter) {
-            // $filter->expand();
-            $filter->column(1/2, function ($filter) {
-                $filter->equal('client_id', __('Data Client'))
-                    ->select(Tahunan::pluck('keterangan', 'client_id')); // Assuming 'keterangan' is the display column
-            });
-        });
-
         $grid->actions(function ($actions) {
             $actions->disableDelete();
             $actions->disableEdit();
             $actions->disableShow();
-          });
+        });
+        $grid->filter(function ($filter) {
+            //$filter->expand();
+    
+            $filter->column(1/2, function ($filter) {
+                $filter->equal('client_id')->select(Client::all()->pluck('nama_wp', 'id'));
+            });
+        });
+        $grid->editButton()->display(function ($value) {
+            // Customize the edit button link
+            $url = $this->client_id;
+            return "<a href='tahunan-detail?client_id={$url}' class='btn btn-xs btn-primary'>Lihat Detail</a>";
+        });
 
-          $grid->disableActions();
-        //dd($data);
-        $style = <<<STYLE
-        <style>
-
-            .table tr th, .table tr td {
-                border-color: rgba(0, 0, 0, 0.22);
-            }
-            .table-responsive tr th {
-                text-align: center;
-                border: 2px solid #ddd; /* Add border to both th and td elements */
-            }
-            .table-responsive th,
-            .table-responsive td {
-                border: 2px solid #ddd; /* Add border to both th and td elements */
-            }
-
-            .table-responsive {
-                border-collapse: collapse; /* Collapse borders for better styling */
-                width: 100%; /* Set width to 100% */
-            }
-
-            // tr.row-3,tr.row-6,tr.row-7,tr.row-8,tr.row-11,tr.row-14,tr.row-19,tr.row-20,tr.row-23,tr.row-26 {
-            //     background-color: rgba(255, 213, 213, 0.51);
-            // }
-
-            
-
-        </style>
-        STYLE;
-
-        // Add custom styles to the table
-        echo $style;
-
+        $grid->disableActions();
         return $grid;
     }
 

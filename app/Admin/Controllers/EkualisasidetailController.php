@@ -82,22 +82,12 @@ class EkualisasidetailController extends AdminController
                 return "<a href='/admin/ekualisasi/detail/process/{$id}/{$pid}/{$ipid}' class='btn btn-xs btn-primary'>Process</a>";
             }
         });
-        $firstKeterangan = reset($keteranganOptions);
-        
         
         $grid->paginate(33);
         
             //dd($data);
             $style = <<<STYLE
             <style>
-                #main::before {
-                    content: "$firstKeterangan";
-                    display: block;
-                    text-align: center;
-                    font-size: 18px; /* Adjust the font size as needed */
-                    margin-bottom: 20px; /* Adjust the margin as needed */
-                    /* Add any additional styling as needed */
-                }
                 .table tr th, .table tr td {
                     border-color: rgba(0, 0, 0, 0.22);
                 }
