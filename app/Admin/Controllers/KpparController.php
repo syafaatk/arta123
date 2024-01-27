@@ -26,7 +26,7 @@ class KpparController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new Kppar());
-
+        
         $grid->column('id', __('Id'));
         
         $grid->column('name_ar', __('Name ar'));
@@ -58,7 +58,7 @@ class KpparController extends AdminController
         $show->field('created_at', __('Created at'));
         $show->field('updated_at', __('Updated at'));
         $show->field('deleted_at', __('Deleted at'));
-
+        //->css_file(Admin::asset("open-admin/css/pages/dashboard.css"))
         return $show;
     }
 
