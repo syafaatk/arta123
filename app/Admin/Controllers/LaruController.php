@@ -78,7 +78,7 @@ class LaruController extends AdminController
         // });
 
         // You display this relation in three different modes (default, tab & table)
-        $form->hasMany('paintings', function ($form) {
+        $form->hasMany('larudetails', function ($form) {
             $form->text('parent_id', __('Parent ID'));
             $form->text('item_no', __('No'));
             $form->text('item_name', __('Item'));
