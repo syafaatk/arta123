@@ -9,6 +9,8 @@ use OpenAdmin\Admin\Show;
 use \App\Models\Kpp;
 Use App\Admin\Extensions\PageExporter_KPP;
 use Barryvdh\DomPDF\Facade as PDF;
+use App\Admin\Traits\HookExample;
+use Illuminate\Support\MessageBag;
 
 class KppController extends AdminController
 {
@@ -18,7 +20,12 @@ class KppController extends AdminController
      * @var string
      */
     protected $title = 'Kpp';
+    // use HookExample;
 
+    // public function __construct()
+    // {
+    //     $this->initHooks();
+    // }
     /**
      * Make a grid builder.
      *
@@ -65,6 +72,13 @@ class KppController extends AdminController
         $form = new Form(new Kpp());
 
         $form->text('name_kpp', __('Name kpp'));
+        $form->saved(function ($form) {
+            $success = new MessageBag([
+                'title'   => 'Sukses',
+                'message' => 'Data '.$form->name_kpp.' ini telah disimpan',
+            ]);
+            return redirect('/admin/pajak/kpp')->with(compact('success'));
+        });
 
         return $form;
     }

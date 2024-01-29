@@ -7,6 +7,7 @@ use OpenAdmin\Admin\Form;
 use OpenAdmin\Admin\Grid;
 use OpenAdmin\Admin\Show;
 use \App\Models\Masapajak;
+use Illuminate\Support\MessageBag;
 
 class MasapajakController extends AdminController
 {
@@ -63,6 +64,13 @@ class MasapajakController extends AdminController
     {
         $form = new Form(new Masapajak());
         $form->text('masa_pajak', __('Masa Pajak'));
+        $form->saved(function ($form) {
+            $success = new MessageBag([
+                'title'   => 'Sukses',
+                'message' => 'Data "'.$form->masa_pajak.'" ini telah disimpan',
+            ]);
+            return redirect('/admin/pajak/masa-pajak')->with(compact('success'));
+        });
         return $form;
     }
 }

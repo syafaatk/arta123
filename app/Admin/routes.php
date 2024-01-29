@@ -12,7 +12,7 @@ Route::group([
 
     $router->get('/', 'HomeController@index')->name('home');
     $router->get('/client/masters', 'ClientController@index')->name('client.masters');
-    $router->get('/client/masters/create', 'ClientController@create')->name('client.masters.craete');
+    $router->get('/client/masters/create', 'ClientController@create')->name('client.masters.create');
     $router->post('/client/masters', 'ClientController@store')->name('client.masters.store');
     $router->get('/client/masters/{id}', 'ClientController@show')->name('client.masters.show');
     $router->get('/client/masters/{id}/edit', 'ClientController@edit')->name('client.masters.edit');
@@ -21,7 +21,7 @@ Route::group([
     
 
     $router->get('/ekualisasi/item', 'EkualisasiitemController@index')->name('ekualisasi.item');
-    $router->get('/ekualisasi/item/create', 'EkualisasiitemController@create')->name('ekualisasi.item.craete');
+    $router->get('/ekualisasi/item/create', 'EkualisasiitemController@create')->name('ekualisasi.item.create');
     $router->post('/ekualisasi/item', 'EkualisasiitemController@store')->name('ekualisasi.item.store');
     $router->get('/ekualisasi/item/{id}', 'EkualisasiitemController@show')->name('ekualisasi.item.show');
     $router->get('/ekualisasi/item/{id}/edit', 'EkualisasiitemController@edit')->name('ekualisasi.item.edit');
@@ -29,7 +29,7 @@ Route::group([
     $router->delete('/ekualisasi/item/{id}', 'EkualisasiitemController@destroy')->name('ekualisasi.item');
 
     $router->get('/ekualisasi/detail', 'EkualisasidetailController@index')->name('ekualisasi.detail');
-    $router->get('/ekualisasi/detail/create', 'EkualisasidetailController@create')->name('ekualisasi.detail.craete');
+    $router->get('/ekualisasi/detail/create', 'EkualisasidetailController@create')->name('ekualisasi.detail.create');
     $router->post('/ekualisasi/detail', 'EkualisasidetailController@store')->name('ekualisasi.detail.store');
     $router->get('/ekualisasi/detail/process/{id}', 'EkualisasidetailController@processItemPemeriksaan')->name('ekualisasi.detail.process');
     $router->get('/ekualisasi/detail/{id}', 'EkualisasidetailController@show')->name('ekualisasi.detail.show');
@@ -40,7 +40,7 @@ Route::group([
 
 
     $router->get('/ekualisasi/masters', 'EkualisasiController@index')->name('ekualisasi.masters');
-    $router->get('/ekualisasi/masters/create', 'EkualisasiController@create')->name('ekualisasi.masters.craete');
+    $router->get('/ekualisasi/masters/create', 'EkualisasiController@create')->name('ekualisasi.masters.create');
     $router->post('/ekualisasi/masters', 'EkualisasiController@storeall')->name('ekualisasi.masters.store');
     $router->get('/ekualisasi/masters/{id}', 'EkualisasiController@show')->name('ekualisasi.masters.show');
     $router->get('/ekualisasi/masters/detail/{id}', 'EkualisasiController@detailall')->name('ekualisasi.masters.detailall');
@@ -50,7 +50,7 @@ Route::group([
     $router->get('/ekualisasi/masters/process/{id}', 'EkualisasiController@processItemPemeriksaan')->name('ekualisasi.masters.process');
 
     $router->get('/ekualisasi/tahunan', 'EkualisasitahunanController@index')->name('ekualisasi.tahunan');
-    $router->get('/ekualisasi/tahunan/create', 'EkualisasitahunanController@create')->name('ekualisasi.tahunan.craete');
+    $router->get('/ekualisasi/tahunan/create', 'EkualisasitahunanController@create')->name('ekualisasi.tahunan.create');
     $router->post('/ekualisasi/tahunan', 'EkualisasitahunanController@store')->name('ekualisasi.tahunan.store');
     $router->get('/ekualisasi/tahunan/{id}', 'EkualisasitahunanController@show')->name('ekualisasi.tahunan.show');
     $router->get('/ekualisasi/tahunan/{id}/edit', 'EkualisasitahunanController@edit')->name('ekualisasi.tahunan.edit');
@@ -59,7 +59,7 @@ Route::group([
 
 
     $router->get('/ekualisasi/tahunan-detail', 'EkualisasidetailtahunanController@index')->name('ekualisasi.tahunan-detail');
-    $router->get('/ekualisasi/tahunan-detail/create', 'EkualisasidetailtahunanController@create')->name('ekualisasi.tahunan-detail.craete');
+    $router->get('/ekualisasi/tahunan-detail/create', 'EkualisasidetailtahunanController@create')->name('ekualisasi.tahunan-detail.create');
     $router->post('/ekualisasi/tahunan-detail', 'EkualisasidetailtahunanController@store')->name('ekualisasi.tahunan-detail.store');
     $router->get('/ekualisasi/tahunan-detail/{id}', 'EkualisasidetailtahunanController@show')->name('ekualisasi.tahunan-detail.show');
     $router->get('/ekualisasi/tahunan-detail/{id}/edit', 'EkualisasidetailtahunanController@edit')->name('ekualisasi.tahunan-detail.edit');
@@ -67,7 +67,7 @@ Route::group([
     $router->delete('/ekualisasi/tahunan-detail/{id}', 'EkualisasidetailtahunanController@destroy')->name('ekualisasi.tahunan-detail');
 
     $router->get('/pajak/klu', 'KluController@index')->name('pajak.klu');
-    $router->get('/pajak/klu/create', 'KluController@create')->name('pajak.klu.craete');
+    $router->get('/pajak/klu/create', 'KluController@create')->name('pajak.klu.create');
     $router->post('/pajak/klu', 'KluController@store')->name('pajak.klu.store');
     $router->get('/pajak/klu/{id}', 'KluController@show')->name('pajak.klu.show');
     $router->get('/pajak/klu/{id}/edit', 'KluController@edit')->name('pajak.klu.edit');
@@ -75,7 +75,7 @@ Route::group([
     $router->delete('/pajak/klu/{id}', 'KluController@destroy')->name('pajak.klu');
 
     $router->get('/pajak/masa-pajak', 'MasapajakController@index')->name('pajak.masa-pajak');
-    $router->get('/pajak/masa-pajak/create', 'MasapajakController@create')->name('pajak.masa-pajak.craete');
+    $router->get('/pajak/masa-pajak/create', 'MasapajakController@create')->name('pajak.masa-pajak.create');
     $router->post('/pajak/masa-pajak', 'MasapajakController@store')->name('pajak.masa-pajak.store');
     $router->get('/pajak/masa-pajak/{id}', 'MasapajakController@show')->name('pajak.masa-pajak.show');
     $router->get('/pajak/masa-pajak/{id}/edit', 'MasapajakController@edit')->name('pajak.masa-pajak.edit');
@@ -83,7 +83,7 @@ Route::group([
     $router->delete('/pajak/masa-pajak/{id}', 'MasapajakController@destroy')->name('pajak.masa-pajak');
 
     $router->get('/pajak/kpp', 'KppController@index')->name('pajak.kpp');
-    $router->get('/pajak/kpp/create', 'KppController@create')->name('pajak.kpp.craete');
+    $router->get('/pajak/kpp/create', 'KppController@create')->name('pajak.kpp.create');
     $router->post('/pajak/kpp', 'KppController@store')->name('pajak.kpp.store');
     $router->get('/pajak/kpp/{id}', 'KppController@show')->name('pajak.kpp.show');
     $router->get('/pajak/kpp/{id}/edit', 'KppController@edit')->name('pajak.kpp.edit');
@@ -91,11 +91,27 @@ Route::group([
     $router->delete('/pajak/kpp/{id}', 'KppController@destroy')->name('pajak.kpp');
 
     $router->get('/pajak/kppar', 'KpparController@index')->name('pajak.kppar');
-    $router->get('/pajak/kppar/create', 'KpparController@create')->name('pajak.kppar.craete');
+    $router->get('/pajak/kppar/create', 'KpparController@create')->name('pajak.kppar.create');
     $router->post('/pajak/kppar', 'KpparController@store')->name('pajak.kppar.store');
     $router->get('/pajak/kppar/{id}', 'KpparController@show')->name('pajak.kppar.show');
     $router->get('/pajak/kppar/{id}/edit', 'KpparController@edit')->name('pajak.kppar.edit');
     $router->put('/pajak/kppar/{id}', 'KpparController@update')->name('pajak.kppar.update');
     $router->delete('/pajak/kppar/{id}', 'KpparController@destroy')->name('pajak.kppar');
+
+    $router->get('/laru', 'LaruController@index')->name('laru');
+    $router->get('/laru/create', 'LaruController@create')->name('laru.create');
+    $router->post('/laru', 'LaruController@store')->name('laru.store');
+    $router->get('/laru/{id}', 'LaruController@show')->name('laru.show');
+    $router->get('/laru/{id}/edit', 'LaruController@edit')->name('laru.edit');
+    $router->put('/laru/{id}', 'LaruController@update')->name('laru.update');
+    $router->delete('/laru/{id}', 'LaruController@destroy')->name('laru');
+
+    $router->get('/larudetail', 'LarudetailController@index')->name('larudetail');
+    $router->get('/larudetail/create', 'LarudetailController@create')->name('larudetail.create');
+    $router->post('/larudetail', 'LarudetailController@store')->name('larudetail.store');
+    $router->get('/larudetail/{id}', 'LarudetailController@show')->name('larudetail.show');
+    $router->get('/larudetail/{id}/edit', 'LarudetailController@edit')->name('larudetail.edit');
+    $router->put('/larudetail/{id}', 'LarudetailController@update')->name('larudetail.update');
+    $router->delete('/larudetail/{id}', 'LarudetailController@destroy')->name('larudetail');
     
 });
