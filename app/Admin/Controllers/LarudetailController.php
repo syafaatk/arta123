@@ -33,6 +33,7 @@ class LarudetailController extends AdminController
         $grid->column('non_final', __('Non Final'))->text();
         $grid->column('total', __('Total'))->text();
         $grid->column('tax', __('Tax'))->text();
+        $grid->disableCreateButton();
         return $grid;
     }
 
