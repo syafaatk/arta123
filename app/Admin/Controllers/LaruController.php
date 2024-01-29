@@ -7,6 +7,7 @@ use OpenAdmin\Admin\Form;
 use OpenAdmin\Admin\Grid;
 use OpenAdmin\Admin\Show;
 use \App\Models\Laru;
+use OpenAdmin\Admin\Widgets\Table;
 
 class LaruController extends AdminController
 {
@@ -25,8 +26,49 @@ class LaruController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new Laru());
+        $grid->column('id', 'Detail')->expand(function ($model) {
+            $details = $model->Larudetails()->get();
+            $judulParentJson = json_decode($model->judul_parent, true);
+        
+            // Function to process details and calculate quantities
+            $processDetails = function ($details, $judulParentJson) {
+                $data = [];
+        
+                foreach ($judulParentJson as $parentId => $itemName) {
+                    // Add parent title before each group of details
+                    $data[] = [
+                        'Parent_id' => $parentId,
+                        'Item Name' => '<li>'.$itemName.'</li>',
+                        'final' => '',
+                        'non final' => '',
+                        'total' => '',
+                        'tax' => '',
+                    ];
+        
+                    // Get details for the current parent_id
+                    $groupedDetail = $details->where('parent_id', $parentId);
+        
+                    // Process and append details to data
+                    $groupedDetail->each(function ($detail) use (&$data) {
+                        $data[] = [
+                            'Parent_id' => $detail->parent_id.'.'.$detail->item_no,
+                            'Item Name' => '<ol>'.$detail->item_name.'</ol>',
+                            'final' => number_format($detail->final, 0, ",", "."),
+                            'non final' => number_format($detail->non_final, 0, ",", "."),
+                            'total' => number_format($detail->total, 0, ",", "."),
+                            'tax' => number_format($detail->tax, 0, ",", "."),
+                        ];
+                    });
+                }
+        
+                return $data;
+            };
+        
+            $data = $processDetails($details, $judulParentJson);
+        
+            return new Table(['Parent_id', 'Item Name', 'final', 'non final', 'total', 'tax'], $data);
+        });
 
-        $grid->column('id', __('Id'));
         $grid->column('client_id', __('Client_Id'));
         $grid->column('tahun', __('Tahun'));
         $grid->column('keterangan', __('Keterangan'));
