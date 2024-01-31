@@ -100,7 +100,7 @@ Route::group([
 
     $router->get('/laru', 'LaruController@index')->name('laru');
     $router->get('/laru/create', 'LaruController@create')->name('laru.create');
-    $router->post('/laru', 'LaruController@store')->name('laru.store');
+    $router->post('/laru', 'LaruController@storeall')->name('laru.store');
     $router->get('/laru/{id}', 'LaruController@show')->name('laru.show');
     $router->get('/laru/{id}/edit', 'LaruController@edit')->name('laru.edit');
     $router->put('/laru/{id}', 'LaruController@update')->name('laru.update');
@@ -113,5 +113,13 @@ Route::group([
     $router->get('/larudetail/{id}/edit', 'LarudetailController@edit')->name('larudetail.edit');
     $router->put('/larudetail/{id}', 'LarudetailController@update')->name('larudetail.update');
     $router->delete('/larudetail/{id}', 'LarudetailController@destroy')->name('larudetail');
+
+    $router->get('/laruitem', 'LaruitemController@index')->name('laruitem');
+    $router->get('/laruitem/create', 'LaruitemController@create')->name('laruitem.create');
+    $router->post('/laruitem', 'LaruitemController@store')->name('laruitem.store');
+    $router->get('/laruitem/{id}', 'LaruitemController@show')->name('laruitem.show');
+    $router->get('/laruitem/{id}/edit', 'LaruitemController@edit')->name('laruitem.edit');
+    $router->put('/laruitem/{id}', 'LaruitemController@update')->name('laruitem.update');
+    $router->delete('/laruitem/{id}', 'LaruitemController@destroy')->name('laruitem');
     
 });

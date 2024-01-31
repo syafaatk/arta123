@@ -7,6 +7,13 @@ use OpenAdmin\Admin\Form;
 use OpenAdmin\Admin\Grid;
 use OpenAdmin\Admin\Show;
 use \App\Models\Laru;
+use \App\Models\Larudetail;
+use \App\Models\Laruitem;
+use \App\Models\Client;
+use Illuminate\Http\Request;
+
+use \App\Models\Ekualisasitahunan;
+
 use OpenAdmin\Admin\Widgets\Table;
 
 class LaruController extends AdminController
@@ -72,6 +79,11 @@ class LaruController extends AdminController
         $grid->column('client_id', __('Client_Id'));
         $grid->column('tahun', __('Tahun'));
         $grid->column('keterangan', __('Keterangan'));
+        $grid->editButton()->display(function ($value) {
+            // Customize the edit button link
+            $url = $this->id;
+            return "<a href='/admin/larudetail?laru_id={$url}' class='btn btn-xs btn-primary'>Edit Detail</a>";
+        });
         return $grid;
     }
 
@@ -86,9 +98,9 @@ class LaruController extends AdminController
         $show = new Show(Laru::findOrFail($id));
 
         $show->field('id', __('Id'));
-        $grid->field('client_id', __('Client_Id'));
-        $grid->field('tahun', __('Tahun'));
-        $grid->field('keterangan', __('Keterangan'));
+        $show->field('client_id', __('Client_Id'));
+        $show->field('tahun', __('Tahun'));
+        $show->field('keterangan', __('Keterangan'));
 
         return $show;
     }
@@ -101,31 +113,63 @@ class LaruController extends AdminController
     protected function form()
     {
         $form = new Form(new Laru);
-        $form->text('client_id', __('Data Client'));
-        $form->text('tahun', __('Data Ekualisasi Tahunan'));
+        
+        $form->select('id',__("Data Ekualisasi Tahunan"))->options(
+            Ekualisasitahunan::select('id','keterangan','client_id')
+            ->whereIn('id', function ($query) {
+                $query->select('id')->from('larus');
+            })
+            ->get()
+            ->mapWithKeys(function ($item) {
+                return [$item->id => $item->client_id.'-'.$item->keterangan];
+            })
+        );
+        $form->select('client_id',__("Nama Client"))->options(
+            Client::select('id','nama_wp','id')
+                ->get()
+                ->mapWithKeys(function ($item) {
+                    return [$item->id => $item->id . '-' . $item->nama_wp];
+                })
+        );
+        $form->text('tahun', __('Tahun'));
         $form->text('keterangan', __('Keterangan'));
         $form->textarea('judul_parent', __('Judul'));
-        // Subtable fields
-        // $form->hasMany('paintings', function (Form\NestedForm $form) {
-        //     $form->text('title');
-        //     $form->image('body');
-        //     $form->datetime('completed_at');
-        // });
-
-        // You can use the second parameter to set the label
-        // $form->hasMany('paintings','Painting', function (Form\NestedForm $form) {
-        //     $form->text('title');
-        //     $form->image('body');
-        //     $form->date('completed_at')->default(date('Y-m-d'));
-        // });
 
         // You display this relation in three different modes (default, tab & table)
         $form->hasMany('larudetails', function ($form) {
             $form->text('parent_id', __('Parent ID'));
-            $form->text('item_no', __('No'));
+            $form->text('item_no', __('Item No'));
             $form->text('item_name', __('Item'));
+            $form->text('column_order', __('Urutan No'));
         })->mode("table");
 
         return $form;
+    }
+
+    public function storeall(Request $request)
+    {
+        $laru = new Laru();
+        $laru->client_id = $request->client_id;
+        $laru->tahun = $request->tahun;
+        $laru->keterangan = $request->keterangan;
+        $laru->judul_parent = $request->judul_parent;
+        $laru->save();
+
+        // Mendapatkan data item dari tabel laruitems
+        $laruItems = Laruitem::select('id','parent_id','item_no','item_name','column_order')->get();
+
+        // Simpan detail larudetails
+        foreach ($laruItems as $detail) {
+            $larudetail = new Larudetail();
+            $larudetail->laru_id = $laru->id; // Mengambil ID baru yang disimpan dari Laru
+            $larudetail->parent_id = $detail['parent_id'];
+            
+            $larudetail->item_no = $detail['item_no'];
+            $larudetail->item_name = $detail['item_name'];
+            $larudetail->column_order = $detail['column_order'];
+            $larudetail->save();
+        }
+
+        return redirect()->to('admin/laru');
     }
 }

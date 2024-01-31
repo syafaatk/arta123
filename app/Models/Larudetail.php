@@ -8,6 +8,7 @@ use \App\Models\Laru;
 
 class Larudetail extends Model
 {
+
     protected $fillable = [
         'parent_id',
         'item_no',
@@ -16,6 +17,7 @@ class Larudetail extends Model
         'non_final',
         'total',
         'tax',
+        'column_order',
     ];
 
     public function laru()

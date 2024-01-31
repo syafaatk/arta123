@@ -7,6 +7,7 @@ use OpenAdmin\Admin\Form;
 use OpenAdmin\Admin\Grid;
 use OpenAdmin\Admin\Show;
 use \App\Models\Larudetail;
+use \App\Models\Laru;
 
 class LarudetailController extends AdminController
 {
@@ -24,8 +25,8 @@ class LarudetailController extends AdminController
      */
     protected function grid()
     {
-        $grid = new Grid(new Larudetail());
-
+        $grid = new Grid(new Larudetail);
+        $grid->column('column_order', __('No'));
         $grid->column('id', __('Id'))->hide();
         $grid->column('parent_id', __('No'))->display(function(){return $this->parent_id . '.' . $this->item_no;});
         $grid->column('item_name', __('Item'))->text();
@@ -33,7 +34,17 @@ class LarudetailController extends AdminController
         $grid->column('non_final', __('Non Final'))->text();
         $grid->column('total', __('Total'))->text();
         $grid->column('tax', __('Tax'))->text();
+        $grid->paginate(33);
         $grid->disableCreateButton();
+        $keteranganOptions = Laru::pluck('keterangan', 'id')->toArray();
+        $grid->filter(function ($filter) use ($keteranganOptions)  {
+            // $filter->expand();
+            $filter->column(1/2, function ($filter) use ($keteranganOptions) {
+                $filter->equal('laru_id', __('Data Laru'))
+                    ->select($keteranganOptions);
+            });
+        });
+        
         return $grid;
     }
 
