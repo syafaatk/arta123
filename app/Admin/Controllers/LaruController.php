@@ -149,10 +149,18 @@ class LaruController extends AdminController
     public function storeall(Request $request)
     {
         $laru = new Laru();
+        $laru->id = CONCAT($request->client_id,$request->tahun);
         $laru->client_id = $request->client_id;
         $laru->tahun = $request->tahun;
         $laru->keterangan = $request->keterangan;
-        $laru->judul_parent = $request->judul_parent;
+        $laru->judul_parent = '{
+            "1": "PEREDARAAN USAHA",
+            "2": "HARGA POKOK PENJUALAN",
+            "3": "LABA-RUGI BRUTO (Penjualan Bersih - HPP)",
+            "4": "BIAYA OPERASIONAL",
+            "5": "BIAYA LAINNYA",
+            "6": "LABA-RUGI BERSIH (Laba Rugi Bruto - Biaya Operasional)"
+          }';
         $laru->save();
 
         // Mendapatkan data item dari tabel laruitems
