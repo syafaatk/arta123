@@ -149,7 +149,7 @@ class LaruController extends AdminController
     public function storeall(Request $request)
     {
         $laru = new Laru();
-        $laru->id = CONCAT($request->client_id,$request->tahun);
+        $laru->id = $request->client_id.$request->tahun;
         $laru->client_id = $request->client_id;
         $laru->tahun = $request->tahun;
         $laru->keterangan = $request->keterangan;
