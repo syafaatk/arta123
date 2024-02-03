@@ -45,7 +45,7 @@ class LaruController extends AdminController
                     // Add parent title before each group of details
 
                     $data[] = [
-                        'Parent_id' => '<ol style="margin-left:-25px;margin-bottom:0px;"><b>'.$parentId.'</b></ol>',
+                        'Parent_id' => '<ol style="margin-left:-25px;margin-bottom:0px;"><b>'.$parentId.'.</b></ol>',
                         'Item Name' => '<b>'.$itemName.'</b>',
                         'final' => '',
                         'non final' => '',

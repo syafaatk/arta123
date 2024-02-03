@@ -30,10 +30,20 @@ class LarudetailController extends AdminController
         $grid->column('id', __('Id'))->hide();
         $grid->column('parent_id', __('No'))->display(function(){return $this->parent_id . '.' . $this->item_no;});
         $grid->column('item_name', __('Item'))->text();
-        $grid->column('final', __('Final'))->text();
-        $grid->column('non_final', __('Non Final'))->text();
-        $grid->column('total', __('Total'))->text();
-        $grid->column('tax', __('Tax'))->text();
+
+        $grid->column('final', __('Final'))->display(function ($jumlah) {
+            return ($this->item_no != 36 && $this->item_no != 66) ? number_format($jumlah, 0, ',', '.') : $jumlah;
+        })->text();
+        $grid->column('non_final', __('Non Final'))->display(function ($jumlah) {
+            return ($this->item_no != 36 && $this->item_no != 66) ? number_format($jumlah, 0, ',', '.') : $jumlah;
+        })->text();
+        $grid->column('total', __('Total'))->display(function ($jumlah) {
+            return ($this->item_no != 36 && $this->item_no != 66) ? number_format($jumlah, 0, ',', '.') : $jumlah;
+        })->text();
+        $grid->column('tax', __('Tax'))->display(function ($jumlah) {
+            return ($this->item_no != 36 && $this->item_no != 66) ? number_format($jumlah, 0, ',', '.') : $jumlah;
+        })->text();
+
         $grid->paginate(33);
         $grid->disableCreateButton();
         $keteranganOptions = Laru::pluck('keterangan', 'id')->toArray();
@@ -81,10 +91,10 @@ class LarudetailController extends AdminController
         $form->text('parent_id', __('Parent ID'));
         $form->text('item_no', __('No'));
         $form->text('item_name', __('Item'));
-        $form->text('final', __('Final'));
-        $form->text('non_final', __('Non Final'));
-        $form->text('total', __('Total'));
-        $form->text('tax', __('Tax'));
+        $form->number('final', __('Final'));
+        $form->number('non_final', __('Non Final'));
+        $form->number('total', __('Total'));
+        $form->number('tax', __('Tax'));
 
         return $form;
     }
