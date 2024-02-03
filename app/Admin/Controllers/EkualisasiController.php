@@ -51,7 +51,6 @@ class EkualisasiController extends AdminController
                         'ID' => $detail->item_pemeriksaan_id,
                         'item_pemeriksaan' => $itemName,
                         'quantity' => number_format($detail->quantity, 0, ",", "."),
-                        'jumlah' => number_format($detail->jumlah, 0, ",", "."),
                         'dpp_faktur_pajak' => number_format($detail->dpp_faktur_pajak, 0, ",", "."),
                         'dpp_gunggung' => number_format($detail->dpp_gunggung, 0, ",", "."),
                         'ppn_pph' => number_format($detail->ppn_pph, 0, ",", "."),
@@ -63,7 +62,7 @@ class EkualisasiController extends AdminController
         
             $data = $processDetails($details, $quantity, $jumlah, $dpp, $dppg, $ppn);
 
-            return new Table(['ID', 'Item Ekualisasi', 'quantity', 'jumlah', 'dpp faktur pajak', 'dpp gungung', 'ppn pph', 'keterangan'], $data->toArray());
+            return new Table(['ID', 'Item Ekualisasi', 'quantity', 'dpp faktur pajak', 'dpp gungung', 'ppn pph', 'keterangan'], $data->toArray());
         });
         
 

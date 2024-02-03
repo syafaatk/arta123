@@ -7,6 +7,7 @@ use OpenAdmin\Admin\Form;
 use OpenAdmin\Admin\Grid;
 use OpenAdmin\Admin\Show;
 use \App\Models\Ekualisasitahunan;
+use \App\Models\Ekualisasitahunandetail;
 use \App\Models\Ekualisasiitem;
 use \App\Models\Tahunan;
 use \App\Models\Client;
@@ -31,7 +32,36 @@ class EkualisasitahunanController extends AdminController
     {
         
         $grid = new Grid(new Ekualisasitahunan());
-        $grid->column('id', __('ID'));
+        $grid->column('id', 'Detail')->expand(function ($model) {
+            $details = $model->ekualisasiDetails()->get();
+        
+            // Function to process details and calculate quantities
+            $processDetails = function ($details, &$quantity, &$jumlah, &$dpp, &$dppg, &$ppn) {
+                return $details->map(function ($detail) use (&$quantity, &$jumlah, &$dpp, &$dppg, &$ppn) {
+                    $itemName = $detail->item_ekualisasi->item_pemeriksaan ?? 'Unknown';
+                    // $quantity = $detail->quantity;
+                    $jumlah = $detail->jumlah;
+                    $dpp = $detail->dpp_faktur_pajak;
+                    $dppg = $detail->dpp_gunggung;
+                    $ppn = $detail->ppn_pph;
+        
+                    return [
+                        'ID' => $detail->item_pemeriksaan_id,
+                        'item_pemeriksaan' => $itemName,
+                        'quantity' => number_format($detail->quantity, 0, ",", "."),
+                        'dpp_faktur_pajak' => number_format($detail->dpp_faktur_pajak, 0, ",", "."),
+                        'dpp_gunggung' => number_format($detail->dpp_gunggung, 0, ",", "."),
+                        'ppn_pph' => number_format($detail->ppn_pph, 0, ",", "."),
+                        'keterangan' => $detail->keterangan,
+                        // 'created_at' => $detail->created_at,
+                    ];
+                });
+            };
+        
+            $data = $processDetails($details, $quantity, $jumlah, $dpp, $dppg, $ppn);
+
+            return new Table(['ID', 'Item Ekualisasi', 'quantity', 'dpp faktur pajak', 'dpp gungung', 'ppn pph', 'keterangan'], $data->toArray());
+        });
         $grid->column('client_id', 'Client ID');
         $grid->column('tahun', 'Tahun');    
         $grid->column('keterangan', 'Nama Ekualisasi Tahunan');
