@@ -6,8 +6,11 @@ use OpenAdmin\Admin\Controllers\AdminController;
 use OpenAdmin\Admin\Form;
 use OpenAdmin\Admin\Grid;
 use OpenAdmin\Admin\Show;
+use \App\Models\Ekualisasitahunandetail;
 use \App\Models\Larudetail;
 use \App\Models\Laru;
+use DB;
+use OpenAdmin\Admin\Widgets\Box;
 
 class LarudetailController extends AdminController
 {
@@ -26,6 +29,15 @@ class LarudetailController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new Larudetail);
+        $grid->header(function ($query) {
+            $query->rightJoin('pemeriksaan_tahunan', 'pemeriksaan_tahunan.id', '=', 'larudetails.laru_id')
+                  ->rightJoin('item_pemeriksaan', 'item_pemeriksaan.id', '=', 'pemeriksaan_tahunan.item_pemeriksaan_id')
+                  ->select(DB::raw('item_pemeriksaan.item_pemeriksaan ,pemeriksaan_tahunan.quantity,pemeriksaan_tahunan.dpp_faktur_pajak,pemeriksaan_tahunan.dpp_gunggung,pemeriksaan_tahunan.ppn_pph'));
+            $status = $query->whereIn('pemeriksaan_tahunan.item_pemeriksaan_id', [2,8,11,14])
+                ->get();
+            $doughnut = view('admin.chart.final', compact('status'));
+            return new Box('Data Ekualisasi Tahunan', $doughnut);
+        });
         $grid->column('column_order', __('No'));
         $grid->column('id', __('Id'))->hide();
         $grid->column('parent_id', __('No'))->display(function(){return $this->parent_id . '.' . $this->item_no;});

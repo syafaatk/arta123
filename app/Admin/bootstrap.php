@@ -19,3 +19,4 @@
  */
 
 OpenAdmin\Admin\Form::forget(['editor']);
+Admin::js('/admin-assets/chart.min.js');
