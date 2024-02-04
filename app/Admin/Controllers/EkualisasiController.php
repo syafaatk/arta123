@@ -33,7 +33,6 @@ class EkualisasiController extends AdminController
      protected function grid()
     {
         $grid = new Grid(new Ekualisasi());
-
         $grid->column('id', 'Detail')->expand(function ($model) {
             $details = $model->ekualisasiDetails()->get();
         
@@ -71,6 +70,11 @@ class EkualisasiController extends AdminController
         $grid->column('tanggal_masa_pajak', __('Tanggal Masa Pajak'))->filter('range', 'date');;
         $grid->column('diperiksa_oleh', __('Diperiksa Oleh'));
         $grid->column('mengetahui', __('Mengetahui'));
+        $grid->column('status', __('Status'))->label([
+            "draft"=>"warning",
+            "revision"=>"danger",
+            "done"=>"success",
+        ]);
         
         // $grid->column('created_at', __('Created at'));
         // $grid->column('updated_at', __('Updated at'));
@@ -174,35 +178,6 @@ class EkualisasiController extends AdminController
                 // Add other fields as needed
             ]
         );
-        // // Step 1: Select data1
-        // $data1 = DB::table('detail_pemeriksaan')
-        //     ->select('id', 'pemeriksaan_id', 'item_pemeriksaan_id', 'quantity')
-        //     ->where('id', $id)
-        //     ->first();
-    
-        // // Step 2: Store data1
-        // // You can store data1 in a variable if needed for further processing
-    
-        // // Step 3: Select data2
-        // $id2 = $data1->id + 1; // Assuming id is incremental
-        // $data2 = DB::table('detail_pemeriksaan')
-        //     ->select('id', 'pemeriksaan_id', 'item_pemeriksaan_id', 'quantity')
-        //     ->where('id', $id2)
-        //     ->first();
-    
-        // // Step 4: Store data2
-        // // You can store data2 in a variable if needed for further processing
-    
-        // // Step 5: Calculate new ID ($id3)
-        // $id3 = $data2->id + 1;
-    
-        // // Step 6: Calculate new quantity ($quantity3)
-        // $quantity3 = $data1->quantity - $data2->quantity;
-    
-        // // Step 7: Update detail_pemeriksaan
-        // DB::table('detail_pemeriksaan')
-        //     ->where('id', $id3)
-        //     ->update(['quantity' => $quantity3]);
     }
 
     /**
@@ -231,6 +206,7 @@ class EkualisasiController extends AdminController
         $show->field('tanggal_masa_pajak', __('Tanggal Masa Pajak'));
         $show->field('diperiksa_oleh', __('Diperiksa Oleh'));
         $show->field('mengetahui', __('Mengetahui'));
+        $show->field('status', __('Status'))->using(['draft' => 'Draft', 'revision' => 'Revision', 'done' => 'Done']);
         $show->field('created_at', __('Created at'));
         $show->field('updated_at', __('Updated at'));
         $show->field('deleted_at', __('Deleted at'));
@@ -246,23 +222,25 @@ class EkualisasiController extends AdminController
     protected function form()
     {
         $form = new Form(new Ekualisasi());
-        // $form->select('client_id', __("Nama Client"))->options(Client::all()->pluck('nama_wp', 'id'));
-        $form->select('client_id',__("Nama Client"))->options(
-            Client::select('id','nama_wp','npwp_wp')
-                ->get()
-                ->mapWithKeys(function ($item) {
-                    return [$item->id => $item->nama_wp . ' - ' . $item->npwp_wp];
-                })
-        );
-        $form->select('masa_pajak_id', __("Masa Pajak"))->options(Masapajak::all()->pluck('masa_pajak', 'id'));
-        $form->date('tanggal_masa_pajak', __('Tanggal Masa Pajak'))->default(date('Y-m-dd'));
-        $form->text('diperiksa_oleh', __('Diperiksa Oleh'));
-        $form->text('mengetahui', __('Mengetahui'));
+        $form->tab('Basic info', function ($form) {
+            // $form->select('client_id', __("Nama Client"))->options(Client::all()->pluck('nama_wp', 'id'));
+            $form->select('client_id',__("Nama Client"))->options(
+                Client::select('id','nama_wp','npwp_wp')
+                    ->get()
+                    ->mapWithKeys(function ($item) {
+                        return [$item->id => $item->nama_wp . ' - ' . $item->npwp_wp];
+                    })
+            );
+            $form->select('masa_pajak_id', __("Masa Pajak"))->options(Masapajak::all()->pluck('masa_pajak', 'id'));
+            $form->date('tanggal_masa_pajak', __('Tanggal Masa Pajak'))->default(date('Y-m-dd'));
+            $form->text('diperiksa_oleh', __('Diperiksa Oleh'));
+            $form->text('mengetahui', __('Mengetahui'));
+            $form->select('status','Status')->options(['draft' => 'Draft', 'revision' => 'Revision', 'done' => 'Done']);
+        })->tab('Detail', function ($form) {
         // Form untuk detail Ekualisasi
-        $items = Ekualisasiitem::all()->pluck('item_pemeriksaan', 'id');
+            $items = Ekualisasiitem::all()->pluck('item_pemeriksaan', 'id');
 
-        for ($i = 1; $i <= 33; $i++) {
-            if($i >= 1 and $i <= 3 ):
+            for ($i = 1; $i <= 33; $i++) {
                 $form->fieldset('Ekualisasi '.$i, function ($form) use ($i, $items)  {
                     $ekualisasiId = $form->model()->id;
                     $form->hidden("detail_pemeriksaan.$i.pemeriksaan_id")->value($ekualisasiId);
@@ -277,132 +255,8 @@ class EkualisasiController extends AdminController
                     $form->text("detail_pemeriksaan.$i.ppn_pph", __("PPN PPH $i"));
                     $form->text("detail_pemeriksaan.$i.keterangan", __("Keterangan $i"));
                 });
-            elseif($i >= 4 && $i <= 7 ):
-            $form->fieldset('Ekualisasi '.$i, function ($form) use ($i, $items)  {
-                    $ekualisasiId = $form->model()->id;
-                    $form->hidden("detail_pemeriksaan.$i.pemeriksaan_id")->value($ekualisasiId);
-                    $form->select("detail_pemeriksaan.$i.item_pemeriksaan_id", __("Item Ekualisasi $i"))
-                    ->options($items)
-                    ->value($i)
-                    ->readonly();
-                    $form->text("detail_pemeriksaan.$i.quantity", __("Quantity $i"));
-                    $form->text("detail_pemeriksaan.$i.jumlah", __("Jumlah $i"));
-                    $form->text("detail_pemeriksaan.$i.dpp_faktur_pajak", __("DPP Faktur Pajak $i"));
-                    $form->text("detail_pemeriksaan.$i.dpp_gunggung", __("DPP Gungung $i"));
-                    $form->text("detail_pemeriksaan.$i.ppn_pph", __("PPN PPH $i"));
-                    $form->text("detail_pemeriksaan.$i.keterangan", __("Keterangan $i"));
-                });
-            elseif($i >= 8 && $i <= 11 ):
-            $form->fieldset('Ekualisasi '.$i, function ($form) use ($i, $items)  {
-                    $ekualisasiId = $form->model()->id;
-                    $form->hidden("detail_pemeriksaan.$i.pemeriksaan_id")->value($ekualisasiId);
-                    $form->select("detail_pemeriksaan.$i.item_pemeriksaan_id", __("Item Ekualisasi $i"))
-                    ->options($items)
-                    ->value($i)
-                    ->readonly();
-                    $form->text("detail_pemeriksaan.$i.quantity", __("Quantity $i"));
-                    $form->text("detail_pemeriksaan.$i.jumlah", __("Jumlah $i"));
-                    $form->text("detail_pemeriksaan.$i.dpp_faktur_pajak", __("DPP Faktur Pajak $i"));
-                    $form->text("detail_pemeriksaan.$i.dpp_gunggung", __("DPP Gungung $i"));
-                    $form->text("detail_pemeriksaan.$i.ppn_pph", __("PPN PPH $i"));
-                    $form->text("detail_pemeriksaan.$i.keterangan", __("Keterangan $i"));
-                });
-            elseif($i >= 12 && $i <= 15 ):
-            $form->fieldset('Ekualisasi '.$i, function ($form) use ($i, $items)  {
-                    $ekualisasiId = $form->model()->id;
-                    $form->hidden("detail_pemeriksaan.$i.pemeriksaan_id")->value($ekualisasiId);
-                    $form->select("detail_pemeriksaan.$i.item_pemeriksaan_id", __("Item Ekualisasi $i"))
-                    ->options($items)
-                    ->value($i)
-                    ->readonly();
-                    $form->text("detail_pemeriksaan.$i.quantity", __("Quantity $i"));
-                    $form->text("detail_pemeriksaan.$i.jumlah", __("Jumlah $i"));
-                    $form->text("detail_pemeriksaan.$i.dpp_faktur_pajak", __("DPP Faktur Pajak $i"));
-                    $form->text("detail_pemeriksaan.$i.dpp_gunggung", __("DPP Gungung $i"));
-                    $form->text("detail_pemeriksaan.$i.ppn_pph", __("PPN PPH $i"));
-                    $form->text("detail_pemeriksaan.$i.keterangan", __("Keterangan $i"));
-                });
-            elseif($i >= 16 && $i <= 21 ):
-            $form->fieldset('Ekualisasi '.$i, function ($form) use ($i, $items)  {
-                    $ekualisasiId = $form->model()->id;
-                    $form->hidden("detail_pemeriksaan.$i.pemeriksaan_id")->value($ekualisasiId);
-                    $form->select("detail_pemeriksaan.$i.item_pemeriksaan_id", __("Item Ekualisasi $i"))
-                    ->options($items)
-                    ->value($i)
-                    ->readonly();
-                    $form->text("detail_pemeriksaan.$i.quantity", __("Quantity $i"));
-                    $form->text("detail_pemeriksaan.$i.jumlah", __("Jumlah $i"));
-                    $form->text("detail_pemeriksaan.$i.dpp_faktur_pajak", __("DPP Faktur Pajak $i"));
-                    $form->text("detail_pemeriksaan.$i.dpp_gunggung", __("DPP Gungung $i"));
-                    $form->text("detail_pemeriksaan.$i.ppn_pph", __("PPN PPH $i"));
-                    $form->text("detail_pemeriksaan.$i.keterangan", __("Keterangan $i"));
-                });
-            elseif($i >= 22 && $i <= 24 ):
-            $form->fieldset('Ekualisasi '.$i, function ($form) use ($i, $items)  {
-                    $ekualisasiId = $form->model()->id;
-                    $form->hidden("detail_pemeriksaan.$i.pemeriksaan_id")->value($ekualisasiId);
-                    $form->select("detail_pemeriksaan.$i.item_pemeriksaan_id", __("Item Ekualisasi $i"))
-                    ->options($items)
-                    ->value($i)
-                    ->readonly();
-                    $form->text("detail_pemeriksaan.$i.quantity", __("Quantity $i"));
-                    $form->text("detail_pemeriksaan.$i.jumlah", __("Jumlah $i"));
-                    $form->text("detail_pemeriksaan.$i.dpp_faktur_pajak", __("DPP Faktur Pajak $i"));
-                    $form->text("detail_pemeriksaan.$i.dpp_gunggung", __("DPP Gungung $i"));
-                    $form->text("detail_pemeriksaan.$i.ppn_pph", __("PPN PPH $i"));
-                    $form->text("detail_pemeriksaan.$i.keterangan", __("Keterangan $i"));
-                });
-            elseif($i >= 25 && $i <= 27 ):
-            $form->fieldset('Ekualisasi '.$i, function ($form) use ($i, $items)  {
-                    $ekualisasiId = $form->model()->id;
-                    $form->hidden("detail_pemeriksaan.$i.pemeriksaan_id")->value($ekualisasiId);
-                    $form->select("detail_pemeriksaan.$i.item_pemeriksaan_id", __("Item Ekualisasi $i"))
-                    ->options($items)
-                    ->value($i)
-                    ->readonly();
-                    $form->text("detail_pemeriksaan.$i.quantity", __("Quantity $i"));
-                    $form->text("detail_pemeriksaan.$i.jumlah", __("Jumlah $i"));
-                    $form->text("detail_pemeriksaan.$i.dpp_faktur_pajak", __("DPP Faktur Pajak $i"));
-                    $form->text("detail_pemeriksaan.$i.dpp_gunggung", __("DPP Gungung $i"));
-                    $form->text("detail_pemeriksaan.$i.ppn_pph", __("PPN PPH $i"));
-                    $form->text("detail_pemeriksaan.$i.keterangan", __("Keterangan $i"));
-                });
-            elseif($i >= 28 && $i <= 29 ):
-            $form->fieldset('Ekualisasi '.$i, function ($form) use ($i, $items)  {
-                    $ekualisasiId = $form->model()->id;
-                    $form->hidden("detail_pemeriksaan.$i.pemeriksaan_id")->value($ekualisasiId);
-                    $form->select("detail_pemeriksaan.$i.item_pemeriksaan_id", __("Item Ekualisasi $i"))
-                    ->options($items)
-                    ->value($i)
-                    ->readonly();
-                    $form->text("detail_pemeriksaan.$i.quantity", __("Quantity $i"));
-                    $form->text("detail_pemeriksaan.$i.jumlah", __("Jumlah $i"));
-                    $form->text("detail_pemeriksaan.$i.dpp_faktur_pajak", __("DPP Faktur Pajak $i"));
-                    $form->text("detail_pemeriksaan.$i.dpp_gunggung", __("DPP Gungung $i"));
-                    $form->text("detail_pemeriksaan.$i.ppn_pph", __("PPN PPH $i"));
-                    $form->text("detail_pemeriksaan.$i.keterangan", __("Keterangan $i"));
-                });
-            elseif($i >= 30 && $i <= 33 ):
-                $form->fieldset('Ekualisasi '.$i, function ($form) use ($i, $items)  {
-                        $ekualisasiId = $form->model()->id;
-                        $form->hidden("detail_pemeriksaan.$i.pemeriksaan_id")->value($ekualisasiId);
-                        $form->select("detail_pemeriksaan.$i.item_pemeriksaan_id", __("Item Ekualisasi $i"))
-                        ->options($items)
-                        ->value($i)
-                        ->readonly();
-                        $form->text("detail_pemeriksaan.$i.quantity", __("Quantity $i"));
-                        $form->text("detail_pemeriksaan.$i.jumlah", __("Jumlah $i"));
-                        $form->text("detail_pemeriksaan.$i.dpp_faktur_pajak", __("DPP Faktur Pajak $i"));
-                        $form->text("detail_pemeriksaan.$i.dpp_gunggung", __("DPP Gungung $i"));
-                        $form->text("detail_pemeriksaan.$i.ppn_pph", __("PPN PPH $i"));
-                        $form->text("detail_pemeriksaan.$i.keterangan", __("Keterangan $i"));
-                    });
-            endif;
-
-            
-            
-            // Tambahkan kolom-kolom lainnya sesuai kebutuhan
-        }
+            }
+        });
         return $form;
     }
 
@@ -424,6 +278,7 @@ class EkualisasiController extends AdminController
             'tanggal_masa_pajak' => $request->input('tanggal_masa_pajak'),
             'diperiksa_oleh' => $request->input('diperiksa_oleh'),
             'mengetahui' => $request->input('mengetahui'),
+            'status' => $request->input('status'),
         ]);
 
         // Save DetailEkualisasi records
@@ -460,6 +315,7 @@ class EkualisasiController extends AdminController
             'tanggal_masa_pajak' => $request->input('tanggal_masa_pajak'),
             'diperiksa_oleh' => $request->input('diperiksa_oleh'),
             'mengetahui' => $request->input('mengetahui'),
+            'status' => $request->input('status'),
             // Add other fields as needed
         ]);
 

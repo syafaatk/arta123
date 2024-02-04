@@ -15,6 +15,7 @@ class Ekualisasi extends Model
         'tanggal_masa_pajak',
         'diperiksa_oleh',
         'mengetahui',
+        'status',
         // Add other attributes as needed
     ];
 
