@@ -104,6 +104,7 @@ class LaruController extends AdminController
         $show->field('client_id', __('Client_Id'));
         $show->field('tahun', __('Tahun'));
         $show->field('keterangan', __('Keterangan'));
+        $show->field('file_laru')->image();
 
         return $show;
     }
@@ -137,7 +138,8 @@ class LaruController extends AdminController
         $form->text('tahun', __('Tahun'));
         $form->text('keterangan', __('Keterangan'));
         $form->textarea('judul_parent', __('Judul'));
-
+        $form->image('file_laru', 'File Laru')->move('files/Larus/')->rules('mimes:pdf,jpeg,png')->uniqueName();
+        $form->divider();
         // You display this relation in three different modes (default, tab & table)
         $form->hasMany('larudetails', function ($form) {
             $form->text('parent_id', __('Parent ID'));
