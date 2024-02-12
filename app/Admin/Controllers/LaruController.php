@@ -161,7 +161,7 @@ class LaruController extends AdminController
         $laru->judul_parent = '{
             "1": "PEREDARAAN USAHA",
             "2": "HARGA POKOK PENJUALAN",
-            "3": "LABA-RUGI BRUTO (Penjualan Bersih - HPP)",
+            "3": "LABA-RUGI BRUTO",
             "4": "BIAYA OPERASIONAL",
             "5": "BIAYA LAINNYA",
             "6": "LABA-RUGI BERSIH (Laba Rugi Bruto - Biaya Operasional)"
