@@ -56,7 +56,7 @@ class LarudetailController extends AdminController
             return ($this->item_no != 36 && $this->item_no != 66) ? number_format($jumlah, 0, ',', '.') : $jumlah;
         })->text();
 
-        $grid->paginate(33);
+        $grid->paginate(35);
         $grid->disableCreateButton();
         $keteranganOptions = Laru::pluck('keterangan', 'id')->toArray();
         $grid->filter(function ($filter) use ($keteranganOptions)  {
