@@ -113,6 +113,8 @@ Route::group([
     $router->get('/larudetail/{id}/edit', 'LarudetailController@edit')->name('larudetail.edit');
     $router->put('/larudetail/{id}', 'LarudetailController@update')->name('larudetail.update');
     $router->delete('/larudetail/{id}', 'LarudetailController@destroy')->name('larudetail');
+    $router->get('/larudetail/process/{id1}/{id2}/{id3}/{id4}', 'LarudetailController@processItemLaru')->name('larudetail.process');
+
 
     $router->get('/laruitem', 'LaruitemController@index')->name('laruitem');
     $router->get('/laruitem/create', 'LaruitemController@create')->name('laruitem.create');

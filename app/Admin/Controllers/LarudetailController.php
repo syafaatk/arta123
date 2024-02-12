@@ -66,6 +66,17 @@ class LarudetailController extends AdminController
                     ->select($keteranganOptions);
             });
         });
+        $grid->editButton()->display(function ($value) {
+            // Customize the edit button link
+            if(in_array($this->parent_id, [3]) AND in_array($this->item_no, [1]))
+            {   
+                $id = $this->id;
+                $lid = $this->laru_id;
+                $pid = $this->parent_id;
+                $ipid = $this->item_no;
+                return "<a href='/admin/larudetail/process/{$id}/{$lid}/{$pid}/{$ipid}' class='btn btn-xs btn-primary'>Process</a>";
+            }
+        });
         
         return $grid;
     }
@@ -109,5 +120,51 @@ class LarudetailController extends AdminController
         $form->number('tax', __('Tax'));
 
         return $form;
+    }
+
+    protected function processItemLaru($id,$lid,$pid,$ipid)
+    {
+        if($pid == 3):
+            $details = Laru::with(['larudetails' => function ($query) {
+                    $query->whereIn('column_order', [1,6]);
+            }])
+            ->find($lid);
+        endif;
+
+        //ddd($details);
+
+        $final=0;
+        $nonfinal=0;
+        $total=0;
+        $tax=0;
+
+        foreach ($details->larudetails as $laruDetail) {
+            // Access properties of each laruDetail
+            if($laruDetail->column_order == 1){
+                $final = $laruDetail->final;
+                $nonfinal = $laruDetail->non_final;
+                $total = $laruDetail->total;
+                $tax = $laruDetail->tax;
+            } elseif($laruDetail->column_order == 6){
+                $final -= $laruDetail->final;
+                $nonfinal -= $laruDetail->non_final;
+                $total -= $laruDetail->total;
+                $tax -= $laruDetail->tax;
+            }
+            // Add more as needed
+        }
+        Larudetail::updateOrInsert(
+            [
+                'id' => $id,
+            ],
+            [
+                'final' => $final,
+                'non_final' => $nonfinal,
+                'total' => $total,
+                'tax' => $tax,
+            ]
+        );
+
+        return redirect("admin/larudetail?laru_id=$lid");
     }
 }
