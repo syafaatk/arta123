@@ -124,4 +124,29 @@ Route::group([
     $router->put('/laruitem/{id}', 'LaruitemController@update')->name('laruitem.update');
     $router->delete('/laruitem/{id}', 'LaruitemController@destroy')->name('laruitem');
     
+    $router->get('/neraca', 'NeracaController@index')->name('neraca');
+    $router->get('/neraca/create', 'NeracaController@create')->name('neraca.create');
+    $router->post('/neraca', 'NeracaController@storeall')->name('neraca.store');
+    $router->get('/neraca/{id}', 'NeracaController@show')->name('neraca.show');
+    $router->get('/neraca/{id}/edit', 'NeracaController@edit')->name('neraca.edit');
+    $router->put('/neraca/{id}', 'NeracaController@update')->name('neraca.update');
+    $router->delete('/neraca/{id}', 'NeracaController@destroy')->name('neraca');
+
+    $router->get('/neracadetail', 'NeracadetailController@index')->name('neracadetail');
+    $router->get('/neracadetail/create', 'NeracadetailController@create')->name('neracadetail.create');
+    $router->post('/neracadetail', 'NeracadetailController@store')->name('neracadetail.store');
+    $router->get('/neracadetail/{id}', 'NeracadetailController@show')->name('neracadetail.show');
+    $router->get('/neracadetail/{id}/edit', 'NeracadetailController@edit')->name('neracadetail.edit');
+    $router->put('/neracadetail/{id}', 'NeracadetailController@update')->name('neracadetail.update');
+    $router->delete('/neracadetail/{id}', 'NeracadetailController@destroy')->name('neracadetail');
+    $router->get('/neracadetail/process/{id1}/{id2}/{id3}/{id4}', 'NeracadetailController@processItemNeraca')->name('neracadetail.process');
+
+
+    $router->get('/neracaitem', 'NeracaitemController@index')->name('neracaitem');
+    $router->get('/neracaitem/create', 'NeracaitemController@create')->name('neracaitem.create');
+    $router->post('/neracaitem', 'NeracaitemController@store')->name('neracaitem.store');
+    $router->get('/neracaitem/{id}', 'NeracaitemController@show')->name('neracaitem.show');
+    $router->get('/neracaitem/{id}/edit', 'NeracaitemController@edit')->name('neracaitem.edit');
+    $router->put('/neracaitem/{id}', 'NeracaitemController@update')->name('neracaitem.update');
+    $router->delete('/neracaitem/{id}', 'NeracaitemController@destroy')->name('neracaitem');
 });

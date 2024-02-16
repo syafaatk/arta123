@@ -7,12 +7,12 @@ use OpenAdmin\Admin\Form;
 use OpenAdmin\Admin\Grid;
 use OpenAdmin\Admin\Show;
 use \App\Models\Ekualisasitahunandetail;
-use \App\Models\Larudetail;
-use \App\Models\Laru;
+use \App\Models\Neracadetail;
+use \App\Models\Neraca;
 use DB;
 use OpenAdmin\Admin\Widgets\Box;
 
-class LarudetailController extends AdminController
+class NeracadetailController extends AdminController
 {
     /**
      * Title for current resource.
@@ -28,9 +28,9 @@ class LarudetailController extends AdminController
      */
     protected function grid()
     {
-        $grid = new Grid(new Larudetail);
+        $grid = new Grid(new Neracadetail);
         $grid->header(function ($query) {
-            $query->rightJoin('pemeriksaan_tahunan', 'pemeriksaan_tahunan.id', '=', 'larudetails.laru_id')
+            $query->rightJoin('pemeriksaan_tahunan', 'pemeriksaan_tahunan.id', '=', 'neracadetails.neraca_id')
                   ->rightJoin('item_pemeriksaan', 'item_pemeriksaan.id', '=', 'pemeriksaan_tahunan.item_pemeriksaan_id')
                   ->select(DB::raw('item_pemeriksaan.item_pemeriksaan ,pemeriksaan_tahunan.quantity,pemeriksaan_tahunan.dpp_faktur_pajak,pemeriksaan_tahunan.dpp_gunggung,pemeriksaan_tahunan.ppn_pph'));
             $status = $query->whereIn('pemeriksaan_tahunan.item_pemeriksaan_id', [2,11,18,22,25,28,31])
@@ -42,39 +42,29 @@ class LarudetailController extends AdminController
         $grid->column('id', __('Id'))->hide();
         $grid->column('parent_id', __('No'))->display(function(){return $this->parent_id . '.' . $this->item_no;});
         $grid->column('item_name', __('Item'))->text();
-
-        $grid->column('final', __('Final'))->display(function ($jumlah) {
-            return ($this->item_no != 36 && $this->item_no != 66) ? number_format($jumlah, 0, ',', '.') : $jumlah;
-        })->text();
-        $grid->column('non_final', __('Non Final'))->display(function ($jumlah) {
-            return ($this->item_no != 36 && $this->item_no != 66) ? number_format($jumlah, 0, ',', '.') : $jumlah;
-        })->text();
         $grid->column('total', __('Total'))->display(function ($jumlah) {
-            return ($this->item_no != 36 && $this->item_no != 66) ? number_format($jumlah, 0, ',', '.') : $jumlah;
-        })->text();
-        $grid->column('tax', __('Tax'))->display(function ($jumlah) {
             return ($this->item_no != 36 && $this->item_no != 66) ? number_format($jumlah, 0, ',', '.') : $jumlah;
         })->text();
 
         $grid->paginate(35);
         $grid->disableCreateButton();
-        $keteranganOptions = Laru::pluck('keterangan', 'id')->toArray();
+        $keteranganOptions = Neraca::pluck('keterangan', 'id')->toArray();
         $grid->filter(function ($filter) use ($keteranganOptions)  {
             // $filter->expand();
             $filter->column(1/2, function ($filter) use ($keteranganOptions) {
-                $filter->equal('laru_id', __('Data Laru'))
+                $filter->equal('neraca_id', __('Data Neraca'))
                     ->select($keteranganOptions);
             });
         });
         $grid->editButton()->display(function ($value) {
             // Customize the edit button link
-            if(in_array($this->parent_id, [3,4,5]) AND in_array($this->item_no, [1]))
+            if(in_array($this->parent_id, [3]) AND in_array($this->item_no, [1]))
             {   
                 $id = $this->id;
-                $lid = $this->laru_id;
+                $lid = $this->neraca_id;
                 $pid = $this->parent_id;
                 $ipid = $this->item_no;
-                return "<a href='/admin/larudetail/process/{$id}/{$lid}/{$pid}/{$ipid}' class='btn btn-xs btn-primary'>Process</a>";
+                return "<a href='/admin/neracadetail/process/{$id}/{$lid}/{$pid}/{$ipid}' class='btn btn-xs btn-primary'>Process</a>";
             }
         });
         
@@ -89,16 +79,13 @@ class LarudetailController extends AdminController
      */
     protected function detail($id)
     {
-        $show = new Show(Larudetail::findOrFail($id));
+        $show = new Show(Neracadetail::findOrFail($id));
 
         $show->field('id', __('Id'));
         $show->field('parent_id', __('Parent ID'));
         $show->field('item_no', __('No'));
         $show->field('item_name', __('Item'));
-        $show->field('final', __('Final'));
-        $show->field('non_final', __('Non Final'));
         $show->field('total', __('Total'));
-        $show->field('tax', __('Tax'));
 
         return $show;
     }
@@ -110,22 +97,19 @@ class LarudetailController extends AdminController
      */
     protected function form()
     {
-        $form = new Form(new Larudetail);
+        $form = new Form(new Neracadetail);
         $form->text('parent_id', __('Parent ID'));
         $form->text('item_no', __('No'));
         $form->text('item_name', __('Item'));
-        $form->number('final', __('Final'));
-        $form->number('non_final', __('Non Final'));
         $form->number('total', __('Total'));
-        $form->number('tax', __('Tax'));
 
         return $form;
     }
 
-    protected function processItemLaru($id,$lid,$pid,$ipid)
+    protected function processItemNaru($id,$lid,$pid,$ipid)
     {
         if($pid == 3):
-            $details = Laru::with(['larudetails' => function ($query) {
+            $details = Neraca::with(['neracadetails' => function ($query) {
                     $query->whereIn('column_order', [1,6]);
             }])
             ->find($lid);
@@ -133,38 +117,26 @@ class LarudetailController extends AdminController
 
         //ddd($details);
 
-        $final=0;
-        $nonfinal=0;
         $total=0;
-        $tax=0;
 
-        foreach ($details->larudetails as $laruDetail) {
-            // Access properties of each laruDetail
-            if($laruDetail->column_order == 1){
-                $final = $laruDetail->final;
-                $nonfinal = $laruDetail->non_final;
-                $total = $laruDetail->total;
-                $tax = $laruDetail->tax;
-            } elseif($laruDetail->column_order == 6){
-                $final -= $laruDetail->final;
-                $nonfinal -= $laruDetail->non_final;
-                $total -= $laruDetail->total;
-                $tax -= $laruDetail->tax;
+        foreach ($details->neracadetails as $neracaDetail) {
+            // Access properties of each neracaDetail
+            if($neracaDetail->column_order == 1){
+                $total = $neracaDetail->total;
+            } elseif($neracaDetail->column_order == 6){
+                $total -= $neracaDetail->total;
             }
             // Add more as needed
         }
-        Larudetail::updateOrInsert(
+        Neracadetail::updateOrInsert(
             [
                 'id' => $id,
             ],
             [
-                'final' => $final,
-                'non_final' => $nonfinal,
                 'total' => $total,
-                'tax' => $tax,
             ]
         );
 
-        return redirect("admin/larudetail?laru_id=$lid");
+        return redirect("admin/neracadetail?neraca_id=$lid");
     }
 }
