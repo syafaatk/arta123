@@ -30,6 +30,14 @@ class NeracadetailController extends AdminController
     {
         $grid = new Grid(new Neracadetail);
         //$grid->column('column_order', __('No'));
+        $grid->header(function ($query) {
+            $status = $query->rightJoin('neracas', 'neracas.id', '=', 'neracadetails.neraca_id')
+                    ->rightJoin('client_master', 'client_master.id', '=', 'neracas.client_id')
+                    ->select(DB::raw('neracas.id ,neracas.keterangan,client_master.nama_wp,neracas.tahun'))->get();
+
+            $doughnut = view('admin.chart.neraca', compact('status'));
+            return new Box('Data Neraca Detail', $doughnut);
+        });
         $grid->column('id', __('Id'))->hide();
         $grid->column('parent_id', __('No'))->display(function(){return $this->parent_id . '.' . $this->item_no;});
         $grid->column('item_name', __('Item'))->text();
