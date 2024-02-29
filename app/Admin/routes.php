@@ -139,7 +139,7 @@ Route::group([
     $router->get('/neracadetail/{id}/edit', 'NeracadetailController@edit')->name('neracadetail.edit');
     $router->put('/neracadetail/{id}', 'NeracadetailController@update')->name('neracadetail.update');
     $router->delete('/neracadetail/{id}', 'NeracadetailController@destroy')->name('neracadetail');
-    $router->get('/neracadetail/process/{id1}/{id2}/{id3}/{id4}', 'NeracadetailController@processItemNeraca')->name('neracadetail.process');
+    $router->get('/neracadetail/process/{id1}/{id2}/{id3}/{id4}/{id5}', 'NeracadetailController@processItemNeraca')->name('neracadetail.process');
 
 
     $router->get('/neracaitem', 'NeracaitemController@index')->name('neracaitem');

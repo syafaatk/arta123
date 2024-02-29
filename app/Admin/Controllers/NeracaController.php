@@ -47,6 +47,7 @@ class NeracaController extends AdminController
                     $data[] = [
                         'Parent_id' => '<ol style="margin-left:-25px;margin-bottom:0px;"><b>'.$parentId.'.</b></ol>',
                         'Item Name' => '<b>'.$itemName.'</b>',
+                        'totalx' => '',
                         'total' => '',
                     ];
         
@@ -112,17 +113,6 @@ class NeracaController extends AdminController
     protected function form()
     {
         $form = new Form(new Neraca);
-        
-        $form->select('id',__("Data Ekualisasi Tahunan"))->options(
-            Ekualisasitahunan::select('id','keterangan','client_id')
-            ->whereIn('id', function ($query) {
-                $query->select('id')->from('neracas');
-            })
-            ->get()
-            ->mapWithKeys(function ($item) {
-                return [$item->id => $item->client_id.'-'.$item->keterangan];
-            })
-        );
         $form->select('client_id',__("Nama Client"))->options(
             Client::select('id','nama_wp','id')
                 ->get()
@@ -156,8 +146,10 @@ class NeracaController extends AdminController
         $neraca->judul_parent = '{
             "1": "AKTIVA LANCAR",
             "2": "AKTIVA TETAP",
-            "3": "KEWAJIBAN LANCAR",
-            "4": "MODAL"
+            "3": "TOTAL AKTIVA",
+            "4": "KEWAJIBAN LANCAR",
+            "5": "MODAL",
+            "6": "TOTAL PASSIVA"
           }';
         $neraca->save();
 
