@@ -60,7 +60,7 @@ class NeracadetailController extends AdminController
         });
         $grid->editButton()->display(function ($value) {
             // Customize the edit button link
-            if(in_array($this->parent_id, [1,2,3,4,5,6]) AND in_array($this->column_order, [11,22,33,44,55,66]))
+            if(in_array($this->parent_id, [1,2,3,4,5,6]) AND in_array($this->column_order, [10,20,30,40,50,60]))
             {   
                 $id = $this->id;
                 $lid = $this->neraca_id;
@@ -111,34 +111,34 @@ class NeracadetailController extends AdminController
 
     protected function processItemNeraca($id,$lid,$pid,$ipid,$cid)
     {
-        if($cid == 11):
+        if($cid == 10):
             $details = Neraca::with(['neracadetails' => function ($query) {
-                    $query->whereIn('column_order', [1,2,3]);
+                    $query->whereIn('column_order', [11,12,13,14]);
             }])
             ->find($lid);
-        elseif($cid == 22):
+        elseif($cid == 20):
             $details = Neraca::with(['neracadetails' => function ($query) {
-                    $query->whereIn('column_order', [4,5]);
+                    $query->whereIn('column_order', [21,22]);
             }])
             ->find($lid);
-        elseif($cid == 33):
+        elseif($cid == 30):
             $details = Neraca::with(['neracadetails' => function ($query) {
-                    $query->whereIn('column_order', [11,22]);
+                    $query->whereIn('column_order', [10,20]);
             }])
             ->find($lid);
-        elseif($cid == 44):
+        elseif($cid == 40):
             $details = Neraca::with(['neracadetails' => function ($query) {
-                    $query->whereIn('column_order', [6,7]);
+                    $query->whereIn('column_order', [31,32]);
             }])
             ->find($lid);
-        elseif($cid == 55):
+        elseif($cid == 50):
             $details = Neraca::with(['neracadetails' => function ($query) {
-                    $query->whereIn('column_order', [8,9,10]);
+                    $query->whereIn('column_order', [41,42,43]);
             }])
             ->find($lid);
-        elseif($cid == 66):
+        elseif($cid == 60):
             $details = Neraca::with(['neracadetails' => function ($query) {
-                    $query->whereIn('column_order', [44,55]);
+                    $query->whereIn('column_order', [40,50]);
             }])
             ->find($lid);
         endif;
@@ -149,33 +149,35 @@ class NeracadetailController extends AdminController
 
         foreach ($details->neracadetails as $neracaDetail) {
             // Access properties of each neracaDetail
-            if($neracaDetail->column_order == 1){
+            if($neracaDetail->column_order == 11){
                 $total = $neracaDetail->total;
-            } elseif($neracaDetail->column_order == 2){
+            } elseif($neracaDetail->column_order == 12){
                 $total += $neracaDetail->total;
-            } elseif($neracaDetail->column_order == 3){
+            } elseif($neracaDetail->column_order == 13){
                 $total += $neracaDetail->total;
-            } if($neracaDetail->column_order == 4){
-                $total = $neracaDetail->total;
-            } elseif($neracaDetail->column_order == 5){
+            } elseif($neracaDetail->column_order == 14){
                 $total += $neracaDetail->total;
-            } if($neracaDetail->column_order == 11){
+            } if($neracaDetail->column_order == 21){
                 $total = $neracaDetail->total;
             } elseif($neracaDetail->column_order == 22){
                 $total += $neracaDetail->total;
-            } if($neracaDetail->column_order == 6){
+            } if($neracaDetail->column_order == 10){
                 $total = $neracaDetail->total;
-            } elseif($neracaDetail->column_order == 7){
+            } elseif($neracaDetail->column_order == 20){
                 $total += $neracaDetail->total;
-            } if($neracaDetail->column_order == 8){
+            } if($neracaDetail->column_order == 31){
                 $total = $neracaDetail->total;
-            } elseif($neracaDetail->column_order == 9){
+            } elseif($neracaDetail->column_order == 32){
                 $total += $neracaDetail->total;
-            } elseif($neracaDetail->column_order == 10){
-                $total += $neracaDetail->total;
-            } if($neracaDetail->column_order == 44){
+            } if($neracaDetail->column_order == 41){
                 $total = $neracaDetail->total;
-            } elseif($neracaDetail->column_order == 55){
+            } elseif($neracaDetail->column_order == 42){
+                $total += $neracaDetail->total;
+            } elseif($neracaDetail->column_order == 43){
+                $total += $neracaDetail->total;
+            } if($neracaDetail->column_order == 40){
+                $total = $neracaDetail->total;
+            } elseif($neracaDetail->column_order == 50){
                 $total += $neracaDetail->total;
             } 
             // Add more as needed
