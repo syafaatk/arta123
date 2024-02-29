@@ -47,7 +47,6 @@ class NeracaController extends AdminController
                     $data[] = [
                         'Parent_id' => '<ol style="margin-left:-25px;margin-bottom:0px;"><b>'.$parentId.'.</b></ol>',
                         'Item Name' => '<b>'.$itemName.'</b>',
-                        'totalx' => '',
                         'total' => '',
                     ];
         
@@ -59,7 +58,6 @@ class NeracaController extends AdminController
                         $data[] = [
                             'Parent_id' => '<ol start="'.$no.'" style="margin-bottom:0px;"><li>'.$detail->item_no.'</li></ol>',
                             'Item Name' => $detail->item_name,
-                            'totalx' => 0,
                             'total' => number_format($detail->total, 0, ",", "."),
                         ];
                         $not++;
@@ -72,7 +70,7 @@ class NeracaController extends AdminController
         
             $data = $processDetails($details, $judulParentJson);
         
-            return new Table(['No', 'Item Name', 'total tahun sebelumnya','total tahun aktif'], $data);
+            return new Table(['No', 'Item Name', 'total'], $data);
         });
 
         $grid->column('client_id', __('Client_Id'));

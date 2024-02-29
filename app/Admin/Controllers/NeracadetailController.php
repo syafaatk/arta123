@@ -29,19 +29,13 @@ class NeracadetailController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new Neracadetail);
-        $grid->header(function ($query) {
-            $query->rightJoin('pemeriksaan_tahunan', 'pemeriksaan_tahunan.id', '=', 'neracadetails.neraca_id')
-                  ->rightJoin('item_pemeriksaan', 'item_pemeriksaan.id', '=', 'pemeriksaan_tahunan.item_pemeriksaan_id')
-                  ->select(DB::raw('item_pemeriksaan.item_pemeriksaan ,pemeriksaan_tahunan.quantity,pemeriksaan_tahunan.dpp_faktur_pajak,pemeriksaan_tahunan.dpp_gunggung,pemeriksaan_tahunan.ppn_pph'));
-            $status = $query->whereIn('pemeriksaan_tahunan.item_pemeriksaan_id', [2,11,18,22,25,28,31])
-                ->get();
-            $doughnut = view('admin.chart.final', compact('status'));
-            return new Box('Data Neraca Tahun Lalu', $doughnut);
-        });
-        $grid->column('column_order', __('No'));
+        //$grid->column('column_order', __('No'));
         $grid->column('id', __('Id'))->hide();
         $grid->column('parent_id', __('No'))->display(function(){return $this->parent_id . '.' . $this->item_no;});
         $grid->column('item_name', __('Item'))->text();
+        $grid->column('column_order', 'Total Sebelumnya')->display(function ($column_order) {
+            return Neracadetail::where('column_order',$column_order)->where('neraca_id',$this->neraca_id-1)->sum('total');
+        });
         $grid->column('total', __('Total'))->display(function ($jumlah) {
             return ($this->item_no != 36 && $this->item_no != 66) ? number_format($jumlah, 0, ',', '.') : $jumlah;
         })->text();
