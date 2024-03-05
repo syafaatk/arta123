@@ -128,12 +128,12 @@ class NeracadetailController extends AdminController
             ->find($lid);
         elseif($cid == 40):
             $details = Neraca::with(['neracadetails' => function ($query) {
-                    $query->whereIn('column_order', [31,32]);
+                    $query->whereIn('column_order', [41,42]);
             }])
             ->find($lid);
         elseif($cid == 50):
             $details = Neraca::with(['neracadetails' => function ($query) {
-                    $query->whereIn('column_order', [41,42,43]);
+                    $query->whereIn('column_order', [51,52,53,54]);
             }])
             ->find($lid);
         elseif($cid == 60):
