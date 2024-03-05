@@ -26,10 +26,11 @@ class NeracaitemController extends AdminController
     {
         $grid = new Grid(new Neracaitem);
 
-        $grid->column('id', __('Id'));
+        //$grid->column('id', __('Id'));
         $grid->column('parent_id', __('parent_id'))->text();
         $grid->column('item_no', __('Item No'))->text();
         $grid->column('item_name', __('Item Neraca'))->text();
+        $grid->column('column_order', __('Column Order'))->text();
 
         return $grid;
     }
