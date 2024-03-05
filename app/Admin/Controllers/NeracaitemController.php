@@ -45,7 +45,10 @@ class NeracaitemController extends AdminController
         $show = new Show(Neracaitem::findOrFail($id));
 
         $show->field('id', __('Id'));
+        $show->field('parent_id', __('parent_id'));
+        $show->field('item_no', __('Item No'));
         $show->field('item_name', __('Item Neraca'));
+        $show->field('column_order', __('Column Order'));
         $show->field('created_at', __('Created at'));
         $show->field('updated_at', __('Updated at'));
         $show->field('deleted_at', __('Deleted at'));
@@ -61,7 +64,10 @@ class NeracaitemController extends AdminController
     protected function form()
     {
         $form = new Form(new Neracaitem);
+        $form->text('parent_id', __('parent_id'));
+        $form->text('item_no', __('Item No'));
         $form->text('item_name', __('Item Neraca'));
+        $form->text('column_order', __('Column Order'));
         return $form;
     }
 }
