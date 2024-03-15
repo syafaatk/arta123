@@ -2,14 +2,15 @@
 echo "<table border='1' class='table grid-table table-sm table-hover select-table'>";
 echo "
 <tr>
+    <th style='border: 1px solid rgb(62, 57, 57);'>No</th>
     <th style='border: 1px solid rgb(62, 57, 57);'>Item Pemeriksaan</th>
     <th style='border: 1px solid rgb(62, 57, 57);'>Quantity</th>
     <th style='border: 1px solid rgb(62, 57, 57);'>DPP Faktur Pajak</th>
     <th style='border: 1px solid rgb(62, 57, 57);'>DPP Gunggung</th>
     <th style='border: 1px solid rgb(62, 57, 57);'>PPN PPH</th>
 </tr>";
-
-for ($i = 0; $i < 220; $i += 33) {
+$no=1;
+for ($i = 0; $i < 245; $i += 35) {
     // Memeriksa apakah nilai $status[$i] tidak null
     if (isset($status[$i])) {
         $statusArray = json_decode($status[$i], true);
@@ -23,6 +24,7 @@ for ($i = 0; $i < 220; $i += 33) {
         $ppn_pph = number_format(floatval($statusArray['ppn_pph']), 0, ',', '.');
 
         // Menambahkan nilai item_pemeriksaan ke dalam tabel
+        echo "<td style='border: 1px solid rgb(62, 57, 57);'>".$no++."</td>";
         echo "<td style='border: 1px solid rgb(62, 57, 57);'>" . $item_pemeriksaan . "</td>";
 
         // Menambahkan nilai quantity ke dalam tabel
