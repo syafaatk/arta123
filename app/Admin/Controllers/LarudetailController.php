@@ -69,7 +69,14 @@ class LarudetailController extends AdminController
         });
         $grid->editButton()->display(function ($value) {
             // Customize the edit button link
-            if(in_array($this->parent_id, [3,4,5]) AND in_array($this->item_no, [1]))
+            if(in_array($this->parent_id, [2]) AND in_array($this->item_no, [4]))
+            {   
+                $id = $this->id;
+                $lid = $this->laru_id;
+                $pid = $this->parent_id;
+                $ipid = $this->item_no;
+                return "<a href='/admin/larudetail/process/{$id}/{$lid}/{$pid}/{$ipid}' class='btn btn-xs btn-primary'>Process</a>";
+            }else if(in_array($this->parent_id, [3,4,5,6]) AND in_array($this->item_no, [1]))
             {   
                 $id = $this->id;
                 $lid = $this->laru_id;
@@ -125,11 +132,31 @@ class LarudetailController extends AdminController
 
     protected function processItemLaru($id,$lid,$pid,$ipid)
     {
-        if($pid == 3):
+        if($pid == 2):
+            $details = Laru::with(['larudetails' => function ($query) {
+                    $query->whereIn('column_order', [3,4,5]);
+            }])
+            ->find($lid);
+        elseif($pid == 3):
             $details = Laru::with(['larudetails' => function ($query) {
                     $query->whereIn('column_order', [1,6]);
             }])
             ->find($lid);
+        elseif($pid == 4):
+            $details = Laru::with(['larudetails' => function ($query) {
+                    $query->whereIn('column_order', [9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28]);
+            }])
+            ->find($lid);    
+        elseif($pid == 5):
+            $details = Laru::with(['larudetails' => function ($query) {
+                    $query->whereIn('column_order', [30,31,32,33,34]);
+            }])
+            ->find($lid);    
+        elseif($pid == 5):
+            $details = Laru::with(['larudetails' => function ($query) {
+                    $query->whereIn('column_order', [7,8]);
+            }])
+            ->find($lid);    
         endif;
 
         //ddd($details);
@@ -146,11 +173,156 @@ class LarudetailController extends AdminController
                 $nonfinal = $laruDetail->non_final;
                 $total = $laruDetail->total;
                 $tax = $laruDetail->tax;
-            } elseif($laruDetail->column_order == 6){
+            }elseif($laruDetail->column_order == 6){
                 $final -= $laruDetail->final;
                 $nonfinal -= $laruDetail->non_final;
                 $total -= $laruDetail->total;
                 $tax -= $laruDetail->tax;
+            }elseif($laruDetail->column_order == 3){
+                $final = $laruDetail->final;
+                $nonfinal = $laruDetail->non_final;
+                $total = $laruDetail->total;
+                $tax = $laruDetail->tax;
+            }elseif($laruDetail->column_order == 4){
+                $final += $laruDetail->final;
+                $nonfinal += $laruDetail->non_final;
+                $total += $laruDetail->total;
+                $tax += $laruDetail->tax;
+            }elseif($laruDetail->column_order == 5){
+                $final -= $laruDetail->final;
+                $nonfinal -= $laruDetail->non_final;
+                $total -= $laruDetail->total;
+                $tax -= $laruDetail->tax;
+            }elseif($laruDetail->column_order == 7){
+                $final = $laruDetail->final;
+                $nonfinal = $laruDetail->non_final;
+                $total = $laruDetail->total;
+                $tax = $laruDetail->tax;
+            }elseif($laruDetail->column_order == 8){
+                $final -= $laruDetail->final;
+                $nonfinal += $laruDetail->non_final;
+                $total -= $laruDetail->total;
+                $tax -= $laruDetail->tax;
+            }elseif($laruDetail->column_order == 9){
+                $final = $laruDetail->final;
+                $nonfinal = $laruDetail->non_final;
+                $total = $laruDetail->total;
+                $tax = $laruDetail->tax;
+            }elseif($laruDetail->column_order == 11){
+                $final += $laruDetail->final;
+                $nonfinal += $laruDetail->non_final;
+                $total += $laruDetail->total;
+                $tax += $laruDetail->tax;
+            }elseif($laruDetail->column_order == 12){
+                $final += $laruDetail->final;
+                $nonfinal += $laruDetail->non_final;
+                $total += $laruDetail->total;
+                $tax += $laruDetail->tax;
+            }elseif($laruDetail->column_order == 13){
+                $final += $laruDetail->final;
+                $nonfinal += $laruDetail->non_final;
+                $total += $laruDetail->total;
+                $tax += $laruDetail->tax;
+            }elseif($laruDetail->column_order == 14){
+                $final += $laruDetail->final;
+                $nonfinal += $laruDetail->non_final;
+                $total += $laruDetail->total;
+                $tax += $laruDetail->tax;
+            }elseif($laruDetail->column_order == 15){
+                $final += $laruDetail->final;
+                $nonfinal += $laruDetail->non_final;
+                $total += $laruDetail->total;
+                $tax += $laruDetail->tax;
+            }elseif($laruDetail->column_order == 16){
+                $final += $laruDetail->final;
+                $nonfinal += $laruDetail->non_final;
+                $total += $laruDetail->total;
+                $tax += $laruDetail->tax;
+            }elseif($laruDetail->column_order == 17){
+                $final += $laruDetail->final;
+                $nonfinal += $laruDetail->non_final;
+                $total += $laruDetail->total;
+                $tax += $laruDetail->tax;
+            }elseif($laruDetail->column_order == 18){
+                $final += $laruDetail->final;
+                $nonfinal += $laruDetail->non_final;
+                $total += $laruDetail->total;
+                $tax += $laruDetail->tax;
+            }elseif($laruDetail->column_order == 19){
+                $final += $laruDetail->final;
+                $nonfinal += $laruDetail->non_final;
+                $total += $laruDetail->total;
+                $tax += $laruDetail->tax;
+            }elseif($laruDetail->column_order == 20){
+                $final += $laruDetail->final;
+                $nonfinal += $laruDetail->non_final;
+                $total += $laruDetail->total;
+                $tax += $laruDetail->tax;
+            }elseif($laruDetail->column_order == 21){
+                $final += $laruDetail->final;
+                $nonfinal += $laruDetail->non_final;
+                $total += $laruDetail->total;
+                $tax += $laruDetail->tax;
+            }elseif($laruDetail->column_order == 22){
+                $final += $laruDetail->final;
+                $nonfinal += $laruDetail->non_final;
+                $total += $laruDetail->total;
+                $tax += $laruDetail->tax;
+            }elseif($laruDetail->column_order == 23){
+                $final += $laruDetail->final;
+                $nonfinal += $laruDetail->non_final;
+                $total += $laruDetail->total;
+                $tax += $laruDetail->tax;
+            }elseif($laruDetail->column_order == 24){
+                $final += $laruDetail->final;
+                $nonfinal += $laruDetail->non_final;
+                $total += $laruDetail->total;
+                $tax += $laruDetail->tax;
+            }elseif($laruDetail->column_order == 25){
+                $final += $laruDetail->final;
+                $nonfinal += $laruDetail->non_final;
+                $total += $laruDetail->total;
+                $tax += $laruDetail->tax;
+            }elseif($laruDetail->column_order == 26){
+                $final += $laruDetail->final;
+                $nonfinal += $laruDetail->non_final;
+                $total += $laruDetail->total;
+                $tax += $laruDetail->tax;
+            }elseif($laruDetail->column_order == 27){
+                $final += $laruDetail->final;
+                $nonfinal += $laruDetail->non_final;
+                $total += $laruDetail->total;
+                $tax += $laruDetail->tax;
+            }elseif($laruDetail->column_order == 28){
+                $final += $laruDetail->final;
+                $nonfinal += $laruDetail->non_final;
+                $total += $laruDetail->total;
+                $tax += $laruDetail->tax;
+            }elseif($laruDetail->column_order == 30){
+                $final = $laruDetail->final;
+                $nonfinal = $laruDetail->non_final;
+                $total = $laruDetail->total;
+                $tax = $laruDetail->tax;
+            }elseif($laruDetail->column_order == 31){
+                $final += $laruDetail->final;
+                $nonfinal += $laruDetail->non_final;
+                $total += $laruDetail->total;
+                $tax += $laruDetail->tax;
+            }elseif($laruDetail->column_order == 32){
+                $final += $laruDetail->final;
+                $nonfinal += $laruDetail->non_final;
+                $total += $laruDetail->total;
+                $tax += $laruDetail->tax;
+            }elseif($laruDetail->column_order == 33){
+                $final += $laruDetail->final;
+                $nonfinal += $laruDetail->non_final;
+                $total += $laruDetail->total;
+                $tax += $laruDetail->tax;
+            }elseif($laruDetail->column_order == 34){
+                $final += $laruDetail->final;
+                $nonfinal += $laruDetail->non_final;
+                $total += $laruDetail->total;
+                $tax += $laruDetail->tax;
             }
             // Add more as needed
         }
