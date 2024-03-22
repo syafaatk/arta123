@@ -8,8 +8,7 @@ echo "
     <th style='border: 1px solid rgb(62, 57, 57);'>ID LR</th>
     <th style='border: 1px solid rgb(62, 57, 57);'>Item LR</th>
     <th style='border: 1px solid rgb(62, 57, 57);'>Quantity</th>
-    <th style='border: 1px solid rgb(62, 57, 57);'>DPP Faktur Pajak</th>
-    <th style='border: 1px solid rgb(62, 57, 57);'>DPP Gunggung</th>
+    <th style='border: 1px solid rgb(62, 57, 57);'>Jumlah</th>
     <th style='border: 1px solid rgb(62, 57, 57);'>PPN PPH</th>
 </tr>";
 $no=1;
@@ -25,8 +24,7 @@ for ($i = 0; $i < 245; $i += 35) {
         $item_pemeriksaan = $statusArray['item_pemeriksaan'];
         $item_name = $statusArray['item_name'];
         $quantity = number_format(floatval($statusArray['quantity']), 0, ',', '.');
-        $dpp_faktur_pajak = number_format(floatval($statusArray['dpp_faktur_pajak']), 0, ',', '.');
-        $dpp_gunggung = number_format(floatval($statusArray['dpp_gunggung']), 0, ',', '.');
+        $jumlah = number_format(floatval($statusArray['dpp_faktur_pajak'])+floatval($statusArray['dpp_gunggung']), 0, ',', '.');
         $ppn_pph = number_format(floatval($statusArray['ppn_pph']), 0, ',', '.');
 
         // Menambahkan nilai item_pemeriksaan ke dalam tabel
@@ -39,11 +37,8 @@ for ($i = 0; $i < 245; $i += 35) {
         // Menambahkan nilai quantity ke dalam tabel
         echo "<td style='border: 1px solid rgb(62, 57, 57);'>" . $quantity . "</td>";
 
-        // Menambahkan nilai dpp_faktur_pajak ke dalam tabel
-        echo "<td style='border: 1px solid rgb(62, 57, 57);'>" . $dpp_faktur_pajak . "</td>";
-
-        // Menambahkan nilai dpp_gunggung ke dalam tabel
-        echo "<td style='border: 1px solid rgb(62, 57, 57);'>" . $dpp_gunggung . "</td>";
+        // Menambahkan nilai jumlah ke dalam tabel
+        echo "<td style='border: 1px solid rgb(62, 57, 57);'>" . $jumlah . "</td>";
 
         // Menambahkan nilai ppn_pph ke dalam tabel
         echo "<td style='border: 1px solid rgb(62, 57, 57);'>" . $ppn_pph . "</td>";
