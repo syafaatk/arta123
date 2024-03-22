@@ -41,10 +41,11 @@ class NeracadetailController extends AdminController
         $grid->column('id', __('Id'))->hide();
         $grid->column('parent_id', __('No'))->display(function(){return $this->parent_id . '.' . $this->item_no;});
         $grid->column('item_name', __('Item'))->text();
-        $grid->column('column_order', 'Total Sebelumnya')->display(function ($column_order) {
-            return Neracadetail::where('column_order',$column_order)->where('neraca_id',$this->neraca_id-1)->sum('total');
+        $grid->column('column_order', 'Total Tahun Sebelumnya')->display(function ($column_order) {
+            $jumlah = Neracadetail::where('column_order',$column_order)->where('neraca_id',$this->neraca_id-1)->sum('total');
+            return (number_format($jumlah, 0, ',', '.'));
         });
-        $grid->column('total', __('Total'))->display(function ($jumlah) {
+        $grid->column('total', __('Total Tahun Berjalan'))->display(function ($jumlah) {
             return ($this->item_no != 36 && $this->item_no != 66) ? number_format($jumlah, 0, ',', '.') : $jumlah;
         })->text();
 
