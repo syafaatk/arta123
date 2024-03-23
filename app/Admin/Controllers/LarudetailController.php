@@ -122,10 +122,10 @@ class LarudetailController extends AdminController
         $form->text('parent_id', __('Parent ID'));
         $form->text('item_no', __('No'));
         $form->text('item_name', __('Item'));
-        $form->number('final', __('Final'));
-        $form->number('non_final', __('Non Final'));
-        $form->number('total', __('Total'));
-        $form->number('tax', __('Tax'));
+        $form->text('final', __('Final'));
+        $form->text('non_final', __('Non Final'));
+        $form->text('total', __('Total'));
+        $form->text('tax', __('Tax'));
 
         return $form;
     }
