@@ -12,7 +12,7 @@ echo "
     <th style='border: 1px solid rgb(62, 57, 57);'>PPN PPH</th>
 </tr>";
 $no=1;
-for ($i = 0; $i < 245; $i += 35) {
+for ($i = 0; $i < 245; $i += 36) {
     // Memeriksa apakah nilai $status[$i] tidak null
     if (isset($status[$i])) {
         $statusArray = json_decode($status[$i], true);
