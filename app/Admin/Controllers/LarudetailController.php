@@ -154,7 +154,12 @@ class LarudetailController extends AdminController
             ->find($lid);    
         elseif($pid == 5):
             $details = Laru::with(['larudetails' => function ($query) {
-                    $query->whereIn('column_order', [7,8]);
+                    $query->whereIn('column_order', [30,31,32,33,34]);
+            }])
+            ->find($lid);    
+        elseif($pid == 6):
+            $details = Laru::with(['larudetails' => function ($query) {
+                    $query->whereIn('column_order', [7,8,29]);
             }])
             ->find($lid);    
         endif;
@@ -303,6 +308,11 @@ class LarudetailController extends AdminController
                 $nonfinal += $laruDetail->non_final;
                 $total += $laruDetail->total;
                 $tax += $laruDetail->tax;
+            }elseif($laruDetail->column_order == 29){
+                $final -= $laruDetail->final;
+                $nonfinal -= $laruDetail->non_final;
+                $total -= $laruDetail->total;
+                $tax -= $laruDetail->tax;
             }elseif($laruDetail->column_order == 30){
                 $final = $laruDetail->final;
                 $nonfinal = $laruDetail->non_final;
