@@ -180,6 +180,14 @@ class NeracadetailController extends AdminController
                 $total = $neracaDetail->total;
             } elseif($neracaDetail->column_order == 50){
                 $total += $neracaDetail->total;
+            }  if($neracaDetail->column_order == 51){
+                $total = $neracaDetail->total;
+            } elseif($neracaDetail->column_order == 52){
+                $total += $neracaDetail->total;
+            }  elseif($neracaDetail->column_order == 53){
+                $total += $neracaDetail->total;
+            }  elseif($neracaDetail->column_order == 54){
+                $total += $neracaDetail->total;
             } 
             // Add more as needed
         }
