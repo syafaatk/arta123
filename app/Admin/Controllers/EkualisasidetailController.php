@@ -48,6 +48,9 @@ class EkualisasidetailController extends AdminController
         $grid->column('dpp_gunggung', __('DPP Gunggung'))->display(function ($jumlah) {
             return ($this->item_pemeriksaan_id != 3 && $this->item_pemeriksaan_id != 6) ? number_format($jumlah, 0, ',', '.') : $jumlah;
         })->text();
+        $grid->column('Jumlah')->display(function () {
+            return $this->dpp_faktur_pajak+$this->dpp_gunggung;
+        });
         $grid->column('ppn_pph', __('PPN PPH'))->display(function ($jumlah) {
             return ($this->item_pemeriksaan_id != 3 && $this->item_pemeriksaan_id != 6) ? number_format($jumlah, 0, ',', '.') : $jumlah;
         })->text();
