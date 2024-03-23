@@ -144,7 +144,7 @@ class LarudetailController extends AdminController
             ->find($lid);
         elseif($pid == 4):
             $details = Laru::with(['larudetails' => function ($query) {
-                    $query->whereIn('column_order', [9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28]);
+                    $query->whereIn('column_order', [9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29]);
             }])
             ->find($lid);    
         elseif($pid == 5):
@@ -159,7 +159,7 @@ class LarudetailController extends AdminController
             ->find($lid);    
         elseif($pid == 6):
             $details = Laru::with(['larudetails' => function ($query) {
-                    $query->whereIn('column_order', [7,8,29]);
+                    $query->whereIn('column_order', [7,8,30]);
             }])
             ->find($lid);    
         endif;
@@ -309,20 +309,20 @@ class LarudetailController extends AdminController
                 $total += $laruDetail->total;
                 $tax += $laruDetail->tax;
             }elseif($laruDetail->column_order == 29){
-                $final -= $laruDetail->final;
-                $nonfinal -= $laruDetail->non_final;
-                $total -= $laruDetail->total;
-                $tax -= $laruDetail->tax;
-            }elseif($laruDetail->column_order == 30){
-                $final = $laruDetail->final;
-                $nonfinal = $laruDetail->non_final;
-                $total = $laruDetail->total;
-                $tax = $laruDetail->tax;
-            }elseif($laruDetail->column_order == 31){
                 $final += $laruDetail->final;
                 $nonfinal += $laruDetail->non_final;
                 $total += $laruDetail->total;
                 $tax += $laruDetail->tax;
+            }elseif($laruDetail->column_order == 30){
+                $final -= $laruDetail->final;
+                $nonfinal -= $laruDetail->non_final;
+                $total -= $laruDetail->total;
+                $tax -= $laruDetail->tax;
+            }elseif($laruDetail->column_order == 31){
+                $final = $laruDetail->final;
+                $nonfinal = $laruDetail->non_final;
+                $total = $laruDetail->total;
+                $tax = $laruDetail->tax;
             }elseif($laruDetail->column_order == 32){
                 $final += $laruDetail->final;
                 $nonfinal += $laruDetail->non_final;
