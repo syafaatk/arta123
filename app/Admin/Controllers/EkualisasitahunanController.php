@@ -39,11 +39,12 @@ class EkualisasitahunanController extends AdminController
             $processDetails = function ($details, &$quantity, &$jumlah, &$dpp, &$dppg, &$ppn) {
                 return $details->map(function ($detail) use (&$quantity, &$jumlah, &$dpp, &$dppg, &$ppn) {
                     $itemName = $detail->item_ekualisasi->item_pemeriksaan ?? 'Unknown';
-                    // $quantity = $detail->quantity;
-                    $jumlah = $detail->jumlah;
+                    $quantity = $detail->quantity;
+                    //$jumlah = $detail->jumlah;
                     $dpp = $detail->dpp_faktur_pajak;
                     $dppg = $detail->dpp_gunggung;
                     $ppn = $detail->ppn_pph;
+                    $jumlah = $dpp + $dppg;
         
                     return [
                         'ID' => $detail->item_pemeriksaan_id,
@@ -51,6 +52,7 @@ class EkualisasitahunanController extends AdminController
                         'quantity' => number_format($detail->quantity, 0, ",", "."),
                         'dpp_faktur_pajak' => number_format($detail->dpp_faktur_pajak, 0, ",", "."),
                         'dpp_gunggung' => number_format($detail->dpp_gunggung, 0, ",", "."),
+                        'jumlah' => number_format($jumlah, 0, ",", "."),
                         'ppn_pph' => number_format($detail->ppn_pph, 0, ",", "."),
                         'keterangan' => $detail->keterangan,
                         // 'created_at' => $detail->created_at,
@@ -58,9 +60,9 @@ class EkualisasitahunanController extends AdminController
                 });
             };
         
-            $data = $processDetails($details, $quantity, $jumlah, $dpp, $dppg, $ppn);
+            $data = $processDetails($details, $quantity, $dpp, $dppg,$jumlah, $ppn);
 
-            return new Table(['ID', 'Item Ekualisasi', 'quantity', 'dpp faktur pajak', 'dpp gungung', 'ppn pph', 'keterangan'], $data->toArray());
+            return new Table(['ID', 'Item Ekualisasi', 'quantity', 'dpp faktur pajak', 'dpp gungung','jumlah', 'ppn pph', 'keterangan'], $data->toArray());
         });
         $grid->column('client_id', 'Client ID');
         $grid->column('tahun', 'Tahun');    

@@ -41,9 +41,10 @@ class EkualisasiController extends AdminController
                 return $details->map(function ($detail) use (&$quantity, &$jumlah, &$dpp, &$dppg, &$ppn) {
                     $itemName = $detail->item_ekualisasi->item_pemeriksaan ?? 'Unknown';
                     $quantity = $detail->quantity;
-                    $jumlah = $detail->jumlah;
+                    //$jumlah = $detail->jumlah;
                     $dpp = $detail->dpp_faktur_pajak;
                     $dppg = $detail->dpp_gunggung;
+                    $jumlah = $dpp+$dppg;
                     $ppn = $detail->ppn_pph;
         
                     return [
@@ -52,6 +53,8 @@ class EkualisasiController extends AdminController
                         'quantity' => number_format($detail->quantity, 0, ",", "."),
                         'dpp_faktur_pajak' => number_format($detail->dpp_faktur_pajak, 0, ",", "."),
                         'dpp_gunggung' => number_format($detail->dpp_gunggung, 0, ",", "."),
+                        'dpp_gunggung' => number_format($detail->dpp_gunggung, 0, ",", "."),
+                        'jumlah' => number_format($jumlah, 0, ",", "."),
                         'ppn_pph' => number_format($detail->ppn_pph, 0, ",", "."),
                         'keterangan' => $detail->keterangan,
                         // 'created_at' => $detail->created_at,
@@ -61,7 +64,7 @@ class EkualisasiController extends AdminController
         
             $data = $processDetails($details, $quantity, $jumlah, $dpp, $dppg, $ppn);
 
-            return new Table(['ID', 'Item Ekualisasi', 'quantity', 'dpp faktur pajak', 'dpp gungung', 'ppn pph', 'keterangan'], $data->toArray());
+            return new Table(['ID', 'Item Ekualisasi', 'quantity', 'dpp faktur pajak', 'dpp gungung','jumlah', 'ppn pph', 'keterangan'], $data->toArray());
         });
         
 
