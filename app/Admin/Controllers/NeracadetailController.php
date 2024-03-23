@@ -61,7 +61,7 @@ class NeracadetailController extends AdminController
         });
         $grid->editButton()->display(function ($value) {
             // Customize the edit button link
-            if(in_array($this->parent_id, [1,2,3,4,5,6]) AND in_array($this->column_order, [10,30,40,50,60]))
+            if(in_array($this->parent_id, [1,2,3,4,5,6]) AND in_array($this->column_order, [10,30,40,50,52,60]))
             {   
                 $id = $this->id;
                 $lid = $this->neraca_id;
@@ -137,6 +137,11 @@ class NeracadetailController extends AdminController
                     $query->whereIn('column_order', [51,52,53,54]);
             }])
             ->find($lid);
+        elseif($cid == 52):
+            $details = Neraca::with(['neracadetails' => function ($query) {
+                    $query->whereIn('column_order', [52,53,54]);
+            }])
+            ->find($lid-1);
         elseif($cid == 60):
             $details = Neraca::with(['neracadetails' => function ($query) {
                     $query->whereIn('column_order', [40,50]);
