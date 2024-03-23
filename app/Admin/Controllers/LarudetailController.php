@@ -205,7 +205,7 @@ class LarudetailController extends AdminController
                 $tax = $laruDetail->tax;
             }elseif($laruDetail->column_order == 8){
                 $final -= $laruDetail->final;
-                $nonfinal += $laruDetail->non_final;
+                $nonfinal -= $laruDetail->non_final;
                 $total -= $laruDetail->total;
                 $tax -= $laruDetail->tax;
             }elseif($laruDetail->column_order == 9){
