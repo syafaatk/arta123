@@ -56,7 +56,7 @@ class NeracaController extends AdminController
                     $groupedDetail = $details->where('parent_id', $parentId);
                     $not=1;
                     // Process and append details to data
-                    $groupedDetail->each(function ($detail) use (&$data, &$no, &$not, &$detailsblm) {
+                    $groupedDetail->each(function ($detail) use (&$data, &$no, &$not) {
                         //ddd($detailsblm->total);
                         $data[] = [
                             'Parent_id' => '<ol start="'.$no.'" style="margin-bottom:0px;"><li>'.$detail->item_no.'</li></ol>',
