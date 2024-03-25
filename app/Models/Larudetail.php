@@ -18,6 +18,7 @@ class Larudetail extends Model
         'total',
         'tax',
         'column_order',
+        'ket'
     ];
 
     public function laru()
