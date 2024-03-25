@@ -29,9 +29,11 @@ class EkualisasiitemController extends AdminController
 
         $grid->column('id', __('Id'));
         $grid->column('item_pemeriksaan', __('Item Ekualisasi'))->text();
-        $grid->column('created_at', __('Created at'));
-        $grid->column('updated_at', __('Updated at'));
-        $grid->column('deleted_at', __('Deleted at'));
+        $grid->column('tipe_ppn_pph', __('Tipe PPn/PPh'))->select([0 => 'PPn', 1 => 'PPh', 2 => '-'])->label([
+            "0"=>"warning",
+            "2"=>"danger",
+            "1"=>"success",
+        ]);
 
         return $grid;
     }
@@ -48,6 +50,7 @@ class EkualisasiitemController extends AdminController
 
         $show->field('id', __('Id'));
         $show->field('item_pemeriksaan', __('Item Ekualisasi'));
+        $show->field('tipe_ppn_pph', __('Tipe PPn/PPh'));
         $show->field('created_at', __('Created at'));
         $show->field('updated_at', __('Updated at'));
         $show->field('deleted_at', __('Deleted at'));
@@ -64,6 +67,7 @@ class EkualisasiitemController extends AdminController
     {
         $form = new Form(new Ekualisasiitem());
         $form->text('item_pemeriksaan', __('Item Ekualisasi'));
+        $form->select('tipe_ppn_pph','Tipe PPn/PPh')->options([0 => 'PPn', 1 => 'PPh', 2 => '-']);
         return $form;
     }
 }

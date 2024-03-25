@@ -36,8 +36,8 @@ class EkualisasitahunanController extends AdminController
             $details = $model->ekualisasiDetails()->get();
         
             // Function to process details and calculate quantities
-            $processDetails = function ($details, &$quantity, &$jumlah, &$dpp, &$dppg, &$ppn) {
-                return $details->map(function ($detail) use (&$quantity, &$jumlah, &$dpp, &$dppg, &$ppn) {
+            $processDetails = function ($details, &$quantity, &$jumlah, &$dpp, &$dppg, &$ppn, &$tipeppn) {
+                return $details->map(function ($detail) use (&$quantity, &$jumlah, &$dpp, &$dppg, &$ppn, &$tipeppn) {
                     $itemName = $detail->item_ekualisasi->item_pemeriksaan ?? 'Unknown';
                     $quantity = $detail->quantity;
                     //$jumlah = $detail->jumlah;
@@ -45,24 +45,40 @@ class EkualisasitahunanController extends AdminController
                     $dppg = $detail->dpp_gunggung;
                     $ppn = $detail->ppn_pph;
                     $jumlah = $dpp + $dppg;
+                    $tipeppn = $detail->item_ekualisasi->tipe_ppn_pph ?? 'Unknown';
+
+                    if($tipeppn == 0):
+                        $tipe = "<span class='badge bg-warning'>PPn</badge>";
+                        $ppn = $detail->ppn_pph;
+                        $pph = 0;
+                    elseif($tipeppn == 1):
+                        $tipe = "<span class='badge bg-success'>PPh</badge>";
+                        $pph = $detail->ppn_pph;
+                        $ppn = 0;
+                    else:
+                        $tipe = "<span class='badge bg-danger'>-</badge>";
+                        $ppn = 0;
+                        $pph = 0;
+                    endif;
         
                     return [
                         'ID' => $detail->item_pemeriksaan_id,
-                        'item_pemeriksaan' => $itemName,
+                        'item_pemeriksaan' => $itemName.' '.$tipe,
                         'quantity' => number_format($detail->quantity, 0, ",", "."),
                         'dpp_faktur_pajak' => number_format($detail->dpp_faktur_pajak, 0, ",", "."),
                         'dpp_gunggung' => number_format($detail->dpp_gunggung, 0, ",", "."),
                         'jumlah' => number_format($jumlah, 0, ",", "."),
-                        'ppn_pph' => number_format($detail->ppn_pph, 0, ",", "."),
+                        'ppn' => number_format($ppn, 0, ",", "."),
+                        'pph' => number_format($pph, 0, ",", "."),
                         'keterangan' => $detail->keterangan,
                         // 'created_at' => $detail->created_at,
                     ];
                 });
             };
         
-            $data = $processDetails($details, $quantity, $dpp, $dppg,$jumlah, $ppn);
+            $data = $processDetails($details, $quantity, $dpp, $dppg,$jumlah, $ppn, $ppn);
 
-            return new Table(['ID', 'Item Ekualisasi', 'quantity', 'dpp faktur pajak', 'dpp gungung','jumlah', 'ppn pph', 'keterangan'], $data->toArray());
+            return new Table(['ID', 'Item Ekualisasi', 'quantity', 'dpp faktur pajak', 'dpp gungung','jumlah', 'PPn','PPh', 'Ket'], $data->toArray());
         });
         $grid->column('client_id', 'Client ID');
         $grid->column('tahun', 'Tahun');    

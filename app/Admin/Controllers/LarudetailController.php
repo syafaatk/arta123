@@ -33,7 +33,7 @@ class LarudetailController extends AdminController
             $query->rightJoin('pemeriksaan_tahunan', 'pemeriksaan_tahunan.id', '=', 'larudetails.laru_id')
                   ->rightJoin('item_pemeriksaan', 'item_pemeriksaan.id', '=', 'pemeriksaan_tahunan.item_pemeriksaan_id')
                   ->leftJoin('laruitems', 'item_pemeriksaan.item_laru', '=', 'laruitems.id')
-                  ->select(DB::raw('pemeriksaan_tahunan.item_pemeriksaan_id,item_pemeriksaan.item_pemeriksaan, item_pemeriksaan.item_laru, laruitems.item_name ,pemeriksaan_tahunan.quantity,pemeriksaan_tahunan.dpp_faktur_pajak,pemeriksaan_tahunan.dpp_gunggung,pemeriksaan_tahunan.ppn_pph'));
+                  ->select(DB::raw('pemeriksaan_tahunan.item_pemeriksaan_id,item_pemeriksaan.item_pemeriksaan, item_pemeriksaan.item_laru,item_pemeriksaan.tipe_ppn_pph, laruitems.item_name ,pemeriksaan_tahunan.quantity,pemeriksaan_tahunan.dpp_faktur_pajak,pemeriksaan_tahunan.dpp_gunggung,pemeriksaan_tahunan.ppn_pph'));
             $status = $query->whereIn('pemeriksaan_tahunan.item_pemeriksaan_id', [1,8,19,21,24,27,30])
                 ->get();
             $doughnut = view('admin.chart.final', compact('status'));

@@ -35,30 +35,35 @@ class NeracaController extends AdminController
         $grid = new Grid(new Neraca());
         $grid->column('id', 'Detail')->expand(function ($model) {
             $details = $model->Neracadetails()->get();
+
             $judulParentJson = json_decode($model->judul_parent, true);
         
             // Function to process details and calculate quantities
-            $processDetails = function ($details, $judulParentJson) {
+            $processDetails = function ($details,$judulParentJson) {
                 $data = [];
                 $no = 1;
+                
                 foreach ($judulParentJson as $parentId => $itemName) {
                     // Add parent title before each group of details
 
                     $data[] = [
                         'Parent_id' => '<ol style="margin-left:-25px;margin-bottom:0px;"><b>'.$parentId.'.</b></ol>',
                         'Item Name' => '<b>'.$itemName.'</b>',
-                        'total' => '',
+                        'total sebelumnya' => '',
+                        'total berjalan' => '',
                     ];
         
                     // Get details for the current parent_id
                     $groupedDetail = $details->where('parent_id', $parentId);
                     $not=1;
                     // Process and append details to data
-                    $groupedDetail->each(function ($detail) use (&$data, &$no, &$not) {
+                    $groupedDetail->each(function ($detail) use (&$data, &$no, &$not, &$detailsblm) {
+                        //ddd($detailsblm->total);
                         $data[] = [
                             'Parent_id' => '<ol start="'.$no.'" style="margin-bottom:0px;"><li>'.$detail->item_no.'</li></ol>',
                             'Item Name' => $detail->item_name,
-                            'total' => number_format($detail->total, 0, ",", "."),
+                            'total sebelumnya' => "0",
+                            'total berjalan' => number_format($detail->total, 0, ",", "."),
                         ];
                         $not++;
                     });
@@ -70,7 +75,7 @@ class NeracaController extends AdminController
         
             $data = $processDetails($details, $judulParentJson);
         
-            return new Table(['No', 'Item Name', 'total'], $data);
+            return new Table(['No', 'Item Name','Total Sebelumnya','Total Berjalan'], $data);
         });
 
         $grid->column('client_id', __('Client_Id'));
