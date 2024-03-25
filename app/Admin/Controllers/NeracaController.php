@@ -49,7 +49,6 @@ class NeracaController extends AdminController
                     $data[] = [
                         'Parent_id' => '<ol style="margin-left:-25px;margin-bottom:0px;"><b>'.$parentId.'.</b></ol>',
                         'Item Name' => '<b>'.$itemName.'</b>',
-                        'total sebelumnya' => '',
                         'total berjalan' => '',
                     ];
         
@@ -62,7 +61,6 @@ class NeracaController extends AdminController
                         $data[] = [
                             'Parent_id' => '<ol start="'.$no.'" style="margin-bottom:0px;"><li>'.$detail->item_no.'</li></ol>',
                             'Item Name' => $detail->item_name,
-                            'total sebelumnya' => "0",
                             'total berjalan' => number_format($detail->total, 0, ",", "."),
                         ];
                         $not++;
