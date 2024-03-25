@@ -47,6 +47,7 @@ class LaruController extends AdminController
                     $data[] = [
                         'Parent_id' => '<ol style="margin-left:-25px;margin-bottom:0px;"><b>'.$parentId.'.</b></ol>',
                         'Item Name' => '<b>'.$itemName.'</b>',
+                        'Ket' => '',
                         'final' => '',
                         'non final' => '',
                         'total' => '',
@@ -56,11 +57,21 @@ class LaruController extends AdminController
                     // Get details for the current parent_id
                     $groupedDetail = $details->where('parent_id', $parentId);
                     $not=1;
+                    
                     // Process and append details to data
                     $groupedDetail->each(function ($detail) use (&$data, &$no, &$not) {
+                        if($detail->ket == 0):
+                            $ket = "<span class='badge bg-warning'>PPh 21</badge>";
+                        elseif($detail->ket == 1):
+                            $ket = "<span class='badge bg-success'>Unifikasi</badge>";
+                        else:
+                            $ket = "<span class='badge bg-danger'>-</badge>";
+                        endif;
+
                         $data[] = [
                             'Parent_id' => '<ol start="'.$no.'" style="margin-bottom:0px;"><li>'.$detail->item_no.'</li></ol>',
                             'Item Name' => $detail->item_name,
+                            'Ket' => $ket,
                             'final' => number_format($detail->final, 0, ",", "."),
                             'non final' => number_format($detail->non_final, 0, ",", "."),
                             'total' => number_format($detail->total, 0, ",", "."),
@@ -76,7 +87,7 @@ class LaruController extends AdminController
         
             $data = $processDetails($details, $judulParentJson);
         
-            return new Table(['No', 'Item Name', 'final', 'non final', 'total', 'tax'], $data);
+            return new Table(['No', 'Item Name','Ket', 'final', 'non final', 'total', 'tax'], $data);
         });
 
         $grid->column('client_id', __('Client_Id'));
