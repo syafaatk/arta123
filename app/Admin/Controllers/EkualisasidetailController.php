@@ -38,7 +38,14 @@ class EkualisasidetailController extends AdminController
         //     ->where('pemeriksaan.id', $pemeriksaan_id)
         //     ->value('display_text');
         // });
-        $grid->column('item_pemeriksaan_id', __('Item Ekualisasi ID'))->display(function($item_pemeriksaan_id) {return Ekualisasiitem::find($item_pemeriksaan_id)->id.'. '.Ekualisasiitem::find($item_pemeriksaan_id)->item_pemeriksaan;});
+        $grid->column('item_pemeriksaan_id', __('Item Ekualisasi ID'))
+                ->display(function($item_pemeriksaan_id) {
+                    return 
+                    Ekualisasiitem::find($item_pemeriksaan_id)
+                    ->id.'. '.Ekualisasiitem::find($item_pemeriksaan_id)
+                ->item_pemeriksaan.' '.((Ekualisasiitem::find($item_pemeriksaan_id)->tipe_ppn_pph == 0)?"<span class='badge bg-warning'>PPn</span>":"<span class='badge bg-success'>PPh</span>");
+            }
+        );
         $grid->column('quantity', __('Quantity'))->display(function ($jumlah) {
             return ($this->item_pemeriksaan_id != 3 && $this->item_pemeriksaan_id != 6) ? number_format($jumlah, 0, ',', '.') : $jumlah;
         })->text();

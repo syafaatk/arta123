@@ -48,15 +48,15 @@ class EkualisasiController extends AdminController
                     $tipeppn = $detail->item_ekualisasi->tipe_ppn_pph ?? 'Unknown';
 
                     if($tipeppn == 0):
-                        $tipe = "<span class='badge bg-warning'>PPn</badge>";
+                        $tipe = "<span class='badge bg-warning'>PPn</span>";
                         $ppn = $detail->ppn_pph;
                         $pph = 0;
                     elseif($tipeppn == 1):
-                        $tipe = "<span class='badge bg-success'>PPh</badge>";
+                        $tipe = "<span class='badge bg-success'>PPh</span>";
                         $pph = $detail->ppn_pph;
                         $ppn = 0;
                     else:
-                        $tipe = "<span class='badge bg-danger'>-</badge>";
+                        $tipe = "<span class='badge bg-danger'>-</span>";
                         $ppn = 0;
                         $pph = 0;
                     endif;
