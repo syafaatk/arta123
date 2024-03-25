@@ -62,7 +62,7 @@ class EkualisasidetailController extends AdminController
         $grid->column('ppn_pph', __('PPN PPH'))->display(function ($jumlah) {
             return ($this->item_pemeriksaan_id != 3 && $this->item_pemeriksaan_id != 6) ? number_format($jumlah, 0, ',', '.') : $jumlah;
         })->text();
-        $grid->column('keterangan', __('Keterangan'))->text();
+        // $grid->column('keterangan', __('Keterangan'))->text();
         $keteranganOptions = Ekualisasi::join('client_master', 'client_master.id', '=', 'pemeriksaan.client_id')
         ->join('masa_pajak', 'masa_pajak.id', '=', 'pemeriksaan.masa_pajak_id')
         ->select('pemeriksaan.id', DB::raw('CONCAT(client_master.nama_wp, " - ", masa_pajak.masa_pajak) AS display_text'))
