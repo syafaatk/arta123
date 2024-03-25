@@ -73,7 +73,7 @@ class NeracaController extends AdminController
         
             $data = $processDetails($details, $judulParentJson);
         
-            return new Table(['No', 'Item Name','Total Sebelumnya','Total Berjalan'], $data);
+            return new Table(['No', 'Item Name','Total Berjalan'], $data);
         });
 
         $grid->column('client_id', __('Client_Id'));
