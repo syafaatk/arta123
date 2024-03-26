@@ -34,47 +34,62 @@ class NeracaController extends AdminController
     {
         $grid = new Grid(new Neraca());
         $grid->column('id', 'Detail')->expand(function ($model) {
+            // Get details for the current year
             $details = $model->Neracadetails()->get();
-
+        
+            // Get details for the previous year
+            $previousYearDetails = $model->getPreviousYearNeracadetails($this->id); // Assuming you have a method to get previous year's details
+            //ddd($previousYearDetails);
             $judulParentJson = json_decode($model->judul_parent, true);
         
             // Function to process details and calculate quantities
-            $processDetails = function ($details,$judulParentJson) {
+            $processDetails = function ($details, $previousYearDetails, $judulParentJson) {
                 $data = [];
                 $no = 1;
-                
+                $i = 0;
                 foreach ($judulParentJson as $parentId => $itemName) {
                     // Add parent title before each group of details
-
-                    $data[] = [
+                    $data[$i] = [
                         'Parent_id' => '<ol style="margin-left:-25px;margin-bottom:0px;"><b>'.$parentId.'.</b></ol>',
                         'Item Name' => '<b>'.$itemName.'</b>',
-                        'total berjalan' => '',
+                        'Total Tahun Sebelumnya' => '',
+                        'Total Tahun Berjalan' => '',
                     ];
-        
+                    $i++;
                     // Get details for the current parent_id
                     $groupedDetail = $details->where('parent_id', $parentId);
-                    $not=1;
+                    $groupedPreviousYearDetail = $previousYearDetails->where('parent_id', $parentId);
+        
                     // Process and append details to data
-                    $groupedDetail->each(function ($detail) use (&$data, &$no, &$not) {
-                        //ddd($detailsblm->total);
-                        $data[] = [
-                            'Parent_id' => '<ol start="'.$no.'" style="margin-bottom:0px;"><li>'.$detail->item_no.'</li></ol>',
+                    $groupedDetail->each(function ($detail) use (&$data, &$no, &$parentId, &$i, &$groupedPreviousYearDetail) {
+                        
+                        $data[$i] = [
+                            'Parent_id' => '<ol start="'.$parentId.'" style="margin-bottom:0px;"><li>'.$detail->item_no.'</li></ol>',
                             'Item Name' => $detail->item_name,
-                            'total berjalan' => number_format($detail->total, 0, ",", "."),
+                            'Total Tahun Berjalan' => number_format($detail->total, 0, ",", "."),
                         ];
-                        $not++;
+                        if($groupedPreviousYearDetail!==null):
+                            $data[$i]['Total Tahun Sebelumnya'] = "data tidak ditemukan";
+                        endif;
+                        $groupedPreviousYearDetail->each(function ($previousYearDetail) use (&$data, &$no, &$i, &$detail) {
+                            if($detail->column_order == $previousYearDetail->column_order):
+                                $data[$i]['Total Tahun Sebelumnya'] = number_format($previousYearDetail->total, 0, ",", ".");
+                            endif;
+                        });
+                        $no++;
+                        $i++;
                     });
-                    $no++;
                 }
+                //ddd($data);
         
                 return $data;
             };
         
-            $data = $processDetails($details, $judulParentJson);
+            $data = $processDetails($details, $previousYearDetails, $judulParentJson);
         
-            return new Table(['No', 'Item Name','Total Berjalan'], $data);
+            return new Table(['No', 'Item Name', 'Total Tahun Berjalan', 'Total Tahun Sebelumnya'], $data);
         });
+        
 
         $grid->column('client_id', __('Client_Id'));
         $grid->column('tahun', __('Tahun'));

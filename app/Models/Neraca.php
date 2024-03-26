@@ -20,4 +20,12 @@ class Neraca extends Model
     {
         return $this->hasMany(Neracadetail::class,'neraca_id');
     }
+
+    public function getPreviousYearNeracadetails($nid)
+    {
+        // Assuming $this->neraca_id represents the current year
+        $previousYearNeracadetails = Neracadetail::where('neraca_id', $nid - 1)->get();
+        return $previousYearNeracadetails;
+    }
+
 }
