@@ -93,6 +93,28 @@ class LaruController extends AdminController
         $grid->column('client_id', __('Client_Id'));
         $grid->column('tahun', __('Tahun'));
         $grid->column('keterangan', __('Keterangan'));
+        $grid->column('Gross Profit Ratio')->display(function () {
+            $pendapatan = Larudetail::where('column_order','3')->where('laru_id', $this->id)->first();
+            $gross = Larudetail::where('column_order','8')->where('laru_id', $this->id)->first();
+            $netto = Larudetail::where('column_order','36')->where('laru_id', $this->id)->first();
+            
+            // ddd($gross->total);
+            // ddd($pendapatan->total);
+            // ddd($pendapatan->total);
+            $jumlah = 100*$gross->total/$pendapatan->total;
+            return number_format($jumlah, 3, '.', '').' %';
+        });
+        $grid->column('Net Profit Ratio')->display(function () {
+            $pendapatan = Larudetail::where('column_order','3')->where('laru_id', $this->id)->first();
+            $gross = Larudetail::where('column_order','8')->where('laru_id', $this->id)->first();
+            $netto = Larudetail::where('column_order','36')->where('laru_id', $this->id)->first();
+            
+            // ddd($gross->total);
+            // ddd($pendapatan->total);
+            // ddd($pendapatan->total);
+            $jumlah = 100*$netto->total/$pendapatan->total;
+            return number_format($jumlah, 3, '.', '').' %';
+        });
         $grid->editButton()->display(function ($value) {
             // Customize the edit button link
             $url = $this->id;

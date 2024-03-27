@@ -41,7 +41,11 @@ class NeracaController extends AdminController
             $previousYearDetails = $model->getPreviousYearNeracadetails($this->id); // Assuming you have a method to get previous year's details
             //ddd($previousYearDetails);
             $judulParentJson = json_decode($model->judul_parent, true);
-        
+            $tahuna = (string)$model->tahun;
+            $tahunb = (string)$model->tahun-1;
+            $a = "Total ".$tahuna;
+            $b = "Total ".$tahunb;
+            //ddd($tahun);
             // Function to process details and calculate quantities
             $processDetails = function ($details, $previousYearDetails, $judulParentJson) {
                 $data = [];
@@ -52,8 +56,8 @@ class NeracaController extends AdminController
                     $data[$i] = [
                         'Parent_id' => '<ol style="margin-left:-25px;margin-bottom:0px;"><b>'.$parentId.'.</b></ol>',
                         'Item Name' => '<b>'.$itemName.'</b>',
-                        'Total Tahun Sebelumnya' => '',
                         'Total Tahun Berjalan' => '',
+                        'Total Tahun Sebelumnya' => '',
                     ];
                     $i++;
                     // Get details for the current parent_id
@@ -87,7 +91,7 @@ class NeracaController extends AdminController
         
             $data = $processDetails($details, $previousYearDetails, $judulParentJson);
         
-            return new Table(['No', 'Item Name', 'Total Tahun Berjalan', 'Total Tahun Sebelumnya'], $data);
+            return new Table(['No', 'Item Name', $a, $b], $data);
         });
         
 
