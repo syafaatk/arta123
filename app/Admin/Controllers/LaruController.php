@@ -120,6 +120,13 @@ class LaruController extends AdminController
             $url = $this->id;
             return "<a href='/admin/larudetail?laru_id={$url}' class='btn btn-xs btn-primary'>Edit Detail</a>";
         });
+        $grid->filter(function ($filter) {
+            //$filter->expand();
+    
+            $filter->column(1/2, function ($filter) {
+                $filter->equal('client_id')->select(Client::all()->pluck('nama_wp', 'id'));
+            });
+        });
         return $grid;
     }
 

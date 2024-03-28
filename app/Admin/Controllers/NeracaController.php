@@ -95,13 +95,20 @@ class NeracaController extends AdminController
         });
         
 
-        $grid->column('client_id', __('Client_Id'));
+        $grid->column('client_id', __('Nama Client'))->display(function($clientId) {return Client::find($clientId)->nama_wp;});
         $grid->column('tahun', __('Tahun'));
         $grid->column('keterangan', __('Keterangan'));
         $grid->editButton()->display(function ($value) {
             // Customize the edit button link
             $url = $this->id;
             return "<a href='/admin/neracadetail?neraca_id={$url}' class='btn btn-xs btn-primary'>Edit Detail</a>";
+        });
+        $grid->filter(function ($filter) {
+            //$filter->expand();
+    
+            $filter->column(1/2, function ($filter) {
+                $filter->equal('client_id')->select(Client::all()->pluck('nama_wp', 'id'));
+            });
         });
         return $grid;
     }
