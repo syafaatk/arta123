@@ -56,11 +56,11 @@ class EkualisasidetailtahunanController extends AdminController
 
         $grid->disableCreateButton();
         $grid->paginate(33);
-        $keteranganOptions = Tahunan::pluck('keterangan', 'client_id')->toArray();
+        $keteranganOptions = Tahunan::pluck('keterangan', 'id')->toArray();
 
         $grid->filter(function ($filter) use ($keteranganOptions) {
             $filter->column(1/2, function ($filter) use ($keteranganOptions) {
-                $filter->equal('client_id', __('Data Client'))
+                $filter->equal('id', __('Data Client'))
                     ->select($keteranganOptions);
             });
         });
