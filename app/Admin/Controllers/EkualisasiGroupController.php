@@ -101,14 +101,7 @@ class EkualisasiGroupController extends AdminController
         $filter->column(1/2, function ($filter) {
             $filter->equal('client_id')->select(Client::all()->pluck('nama_wp', 'id'));
         });
-
-        $filter->column(1/2, function ($filter) {
-            $filter->where(function ($query) {
-                $query->whereHas('pemeriksaan', function ($query) {
-                    $query->where('status', $this->input);
-                });
-            }, 'Status')->select(['draft' => 'Draft', 'done' => 'Done']);
-        });
+        
     });
 
     // Disable create button
