@@ -38,7 +38,7 @@ Route::group([
     $router->delete('/ekualisasi/detail/{id}', 'EkualisasidetailController@destroy')->name('ekualisasi.detail');
     $router->get('/ekualisasi/detail/process/{id1}/{id2}/{id3}', 'EkualisasidetailController@processItemPemeriksaan')->name('ekualisasi.detail.process');
 
-
+    $router->get('/ekualisasi/groups', 'EkualisasiGroupController@index')->name('ekualisasi.groups');
     $router->get('/ekualisasi/masters', 'EkualisasiController@index')->name('ekualisasi.masters');
     $router->get('/ekualisasi/masters/create', 'EkualisasiController@create')->name('ekualisasi.masters.create');
     $router->post('/ekualisasi/masters', 'EkualisasiController@storeall')->name('ekualisasi.masters.store');
