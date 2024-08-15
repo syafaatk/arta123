@@ -6,6 +6,7 @@ use OpenAdmin\Admin\Controllers\AdminController;
 use OpenAdmin\Admin\Grid;
 use App\Models\Client;
 use App\Models\Ekualisasigroup;
+use App\Models\Ekualisasi;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
@@ -37,8 +38,9 @@ class EkualisasiGroupController extends AdminController
     // Define the columns for the grid
     $grid->column('id', 'Detail')->expand(function ($model) {
         // Mengambil semua data pemeriksaan yang terkait dengan client_id ini
-        $details = $model->pemeriksaan()->with('MasaPajak', 'clientDataSummary')->get();
-    
+        //$details = $model->pemeriksaan()->with('MasaPajak', 'clientDataSummary')->get();
+        $details = Ekualisasi::getPemeriksaanByClientAndYear($model->client_id, $model->year);
+        //dd($details);
         // Fungsi untuk memproses detail dan mengisi variabel referensi
         $processDetails = function ($details) {
             return $details->map(function ($detail) {
