@@ -35,7 +35,7 @@ class EkualisasiGroupController extends AdminController
         $grid = new Grid(new Ekualisasigroup());
 
         // Define the columns for the grid
-        $grid->column('client_id', 'Detail')->expand(function ($model) {
+        $grid->column('id', 'Detail')->expand(function ($model) {
             // Mengambil semua data pemeriksaan yang terkait dengan client_id ini
             $details = $model->pemeriksaan()->get();
         
@@ -50,6 +50,13 @@ class EkualisasiGroupController extends AdminController
                     $diperiksa_oleh = $detail->diperiksa_oleh;
                     $mengetahui = $detail->mengetahui;
                     $status = $detail->status;
+                    if($status == "draft"):
+                        $status = "<span class='badge bg-warning'>Draft</span>";
+                    elseif($status == "done"):
+                        $status = "<span class='badge bg-success'>Done</span>";
+                    else:
+                        $status = "<span class='badge bg-danger'>-</span>";
+                    endif;
         
                     return [
                         'Nama WP' => $client,
@@ -69,11 +76,23 @@ class EkualisasiGroupController extends AdminController
             return new Table(['Nama WP','Masa Pajak ID', 'Tanggal Masa Pajak', 'Diperiksa Oleh', 'Mengetahui', 'Status'], $data->toArray());
         });
         
-        
+        $grid->column('client_id', __('ID Client'));
         $grid->column('nama_wp', __('Nama Client'));
         $grid->column('year', __('Year'));
-        $grid->column('total_data', __('Total Data per Year'));
-
+        $grid->column('total_data', __('Total Data per Year'))->display(function(){return $this->total_data . ' Bulan';});
+        $grid->actions(function ($actions) {
+            $actions->disableDelete();
+            $actions->disableEdit();
+            $actions->disableShow();
+        });
+        $grid->filter(function ($filter) {
+            //$filter->expand();
+    
+            $filter->column(1/2, function ($filter) {
+                $filter->equal('client_id')->select(Client::all()->pluck('nama_wp', 'id'));
+            });
+        });
+        $grid->disableCreateButton();
         return $grid;
     }
 }
