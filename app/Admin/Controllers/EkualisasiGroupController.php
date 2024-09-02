@@ -150,12 +150,12 @@ class EkualisasiGroupController extends AdminController
     $grid->column('total_data', __('Total Data per Year'))->display(function() {
         $totalData = $this->total_data;
         $totalDraft = $this->jumlah_draft;
-    
+        $totalComplete = $$this->total_data-$this->jumlah_draft;
         // Determine badge color and text based on conditions
         if ($totalData == 12) {
             if ($totalDraft > 0) {
                 $badgeColor = 'warning';
-                $badgeText = "Complete: $totalData-$totalDraft - Drafts: $totalDraft";
+                $badgeText = "Complete: $totalComplete - Drafts: $totalDraft";
             } else {
                 $badgeColor = 'success';
                 $badgeText = "Complete: $totalData";
@@ -163,7 +163,7 @@ class EkualisasiGroupController extends AdminController
         } else {
             if ($totalDraft > 0) {
                 $badgeColor = 'danger';
-                $badgeText = "Complete: $totalData-$totalDraft - Draft: $totalDraft";
+                $badgeText = "Complete: $totalComplete - Draft: $totalDraft";
             } else {
                 $badgeColor = 'secondary'; // Or any other color if needed
                 $badgeText = "$totalData Bulan";
