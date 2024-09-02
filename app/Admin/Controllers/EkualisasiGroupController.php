@@ -148,9 +148,9 @@ class EkualisasiGroupController extends AdminController
     $grid->column('nama_wp', __('Nama Client'));
     $grid->column('year', __('Year'));
     $grid->column('total_data', __('Total Data per Year'))->display(function() {
-        $totalData = $this->total_data;
-        $totalDraft = $this->jumlah_draft;
-        $totalComplete = $$this->total_data-$this->jumlah_draft;
+        $totalData = (int) $this->total_data;
+        $totalDraft = (int) $this->jumlah_draft;
+        $totalComplete = $totalData - $totalDraft;
         // Determine badge color and text based on conditions
         if ($totalData == 12) {
             if ($totalDraft > 0) {
