@@ -154,23 +154,27 @@ class EkualisasiGroupController extends AdminController
         // Determine badge color and text based on conditions
         if ($totalData == 12) {
             if ($totalDraft > 0) {
-                $badgeColor = 'warning';
-                $badgeText = "Complete: $totalComplete - Drafts: $totalDraft";
-            } else {
-                $badgeColor = 'success';
-                $badgeText = "Complete: $totalData";
+                $badgeColor1 = 'success';
+                $badgeText1 = "Complete: $totalComplete";
+                $badgeColor2 = 'warning';
+                $badgeText2 = "Drafts: $totalDraft";
+            }if($totalDraft = 0) {
+                $badgeColor1 = 'success';
+                $badgeText1 = "Complete: $totalData";
             }
         } else {
             if ($totalDraft > 0) {
-                $badgeColor = 'danger';
-                $badgeText = "Complete: $totalComplete - Draft: $totalDraft";
+                $badgeColor1 = 'danger';
+                $badgeText1 = "Complete: $totalComplete";
+                $badgeColor2 = 'warning';
+                $badgeText2 = "Drafts: $totalDraft";
             } else {
                 $badgeColor = 'secondary'; // Or any other color if needed
                 $badgeText = "$totalData Bulan";
             }
         }
     
-        return "<span class='badge bg-$badgeColor'>$badgeText</span>";
+        return "<span class='badge bg-$badgeColor1'>$badgeText1</span><span class='badge bg-$badgeColor2'>$badgeText2</span>";
     });
     
     
