@@ -160,7 +160,9 @@ class EkualisasiGroupController extends AdminController
                 $badgeText2 = "Drafts: $totalDraft";
             }if($totalDraft = 0) {
                 $badgeColor1 = 'success';
-                $badgeText1 = "Complete: $totalData";
+                $badgeText1 = "Complete: $totalComplete";
+                $badgeColor2 = 'success';
+                $badgeText2 = "Drafts: $totalDraft";
             }
         } else {
             if ($totalDraft > 0) {
