@@ -161,7 +161,7 @@ class EkualisasiGroupController extends AdminController
         // Determine badge color and text based on conditions
         if ($totalData == 12) {
             if ($totalDraft > 0 && $totalComplete > 0) {
-                $badgeColor1 = 'success';
+                $badgeColor1 = 'warning';
                 $badgeText1 = "Complete: $totalComplete";
                 $badgeColor2 = 'warning';
                 $badgeText2 = "Drafts: $totalDraft";
