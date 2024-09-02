@@ -155,7 +155,7 @@ class EkualisasiGroupController extends AdminController
         if ($totalData == 12) {
             if ($totalDraft > 0) {
                 $badgeColor = 'warning';
-                $badgeText = "Complate: $totalData - Drafts: $totalDraft";
+                $badgeText = "Complete: $totalData-$totalDraft - Drafts: $totalDraft";
             } else {
                 $badgeColor = 'success';
                 $badgeText = "Complete: $totalData";
@@ -163,7 +163,7 @@ class EkualisasiGroupController extends AdminController
         } else {
             if ($totalDraft > 0) {
                 $badgeColor = 'danger';
-                $badgeText = "Complate: $totalData - Draft: $totalDraft";
+                $badgeText = "Complete: $totalData-$totalDraft - Draft: $totalDraft";
             } else {
                 $badgeColor = 'secondary'; // Or any other color if needed
                 $badgeText = "$totalData Bulan";
