@@ -40,11 +40,12 @@ class EkualisasiGroupController extends AdminController
         // Mengambil semua data pemeriksaan yang terkait dengan client_id ini
         //$details = $model->pemeriksaan()->with('MasaPajak', 'clientDataSummary')->get();
         $details = Ekualisasi::getPemeriksaanByClientAndYear($model->client_id, $model->year);
-        //dd($details);
+    
         // Fungsi untuk memproses detail dan mengisi variabel referensi
         $processDetails = function ($details) {
             return $details->map(function ($detail) {
                 // Mengisi variabel dengan data dari $detail
+                $id = $detail->id;
                 $client = $detail->clientDataSummary->nama_wp ?? 'Unknown';
                 $masa_pajak_id = $detail->MasaPajak->masa_pajak ?? 'Unknown';
                 $tanggal_masa_pajak = $detail->tanggal_masa_pajak;
@@ -61,6 +62,9 @@ class EkualisasiGroupController extends AdminController
                     $status = "<span class='badge bg-danger'>-</span>";
                 }
     
+                // Menambahkan kolom Action dengan link
+                $action = "<a href='".("/admin/ekualisasi/detail?pemeriksaan_id={$id}")."' target='_blank' class='btn btn-primary btn-sm'>Detail</a>";
+    
                 return [
                     'Nama WP' => $client,
                     'Masa Pajak' => $masa_pajak_id,
@@ -68,6 +72,7 @@ class EkualisasiGroupController extends AdminController
                     'Diperiksa Oleh' => $diperiksa_oleh,
                     'Mengetahui' => $mengetahui,
                     'Status' => $status,
+                    'Action' => $action,
                 ];
             });
         };
@@ -76,8 +81,10 @@ class EkualisasiGroupController extends AdminController
         $data = $processDetails($details);
     
         // Menampilkan data dalam tabel dengan kolom yang telah ditentukan
-        return new Table(['Nama WP', 'Masa Pajak', 'Tanggal Masa Pajak', 'Diperiksa Oleh', 'Mengetahui', 'Status'], $data->toArray());
+        return new Table(['Nama WP', 'Masa Pajak', 'Tanggal Masa Pajak', 'Diperiksa Oleh', 'Mengetahui', 'Status', 'Action'], $data->toArray());
     });
+    
+    
     
     // Define other columns
     $grid->column('client_id', __('ID Client'));
@@ -86,6 +93,7 @@ class EkualisasiGroupController extends AdminController
     $grid->column('total_data', __('Total Data per Year'))->display(function() {
         return $this->total_data . ' Bulan';
     });
+    
 
     // Customize actions
     $grid->actions(function ($actions) {
