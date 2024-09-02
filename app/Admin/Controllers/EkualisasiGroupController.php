@@ -160,26 +160,23 @@ class EkualisasiGroupController extends AdminController
     
         // Determine badge color and text based on conditions
         if ($totalData == 12) {
-            if ($totalDraft > 0 && $totalComplete > 0) {
-                $badgeColor1 = 'warning';
-                $badgeText1 = "Complete: $totalComplete";
-                $badgeColor2 = 'warning';
-                $badgeText2 = "Drafts: $totalDraft";
-            }if ($totalDraft > 0 && $totalComplete == 12) {
-                $badgeColor1 = 'success';
-                $badgeText1 = "Complete: $totalComplete";
-                $badgeColor2 = 'warning';
-                $badgeText2 = "Drafts: $totalDraft";
-            }if ($totalDraft > 0 && $totalComplete == 0) {
-                $badgeColor1 = 'danger';
-                $badgeText1 = "Complete: $totalComplete";
-                $badgeColor2 = 'warning';
-                $badgeText2 = "Drafts: $totalDraft";
-            }if ($totalDraft > 0 && $totalComplete < 12) {
-                $badgeColor1 = 'warning';
-                $badgeText1 = "Complete: $totalComplete";
-                $badgeColor2 = 'warning';
-                $badgeText2 = "Drafts: $totalDraft";
+            if ($totalDraft > 0) {
+                if ($totalComplete == 0) {
+                    $badgeColor1 = 'danger';
+                    $badgeText1 = "Complete: $totalComplete";
+                    $badgeColor2 = 'warning';
+                    $badgeText2 = "Drafts: $totalDraft";
+                } elseif ($totalComplete < 12) {
+                    $badgeColor1 = 'warning';
+                    $badgeText1 = "Complete: $totalComplete";
+                    $badgeColor2 = 'warning';
+                    $badgeText2 = "Drafts: $totalDraft";
+                } else {
+                    $badgeColor1 = 'success';
+                    $badgeText1 = "Complete: $totalComplete";
+                    $badgeColor2 = 'warning';
+                    $badgeText2 = "Drafts: $totalDraft";
+                }
             } else {
                 $badgeColor1 = 'success';
                 $badgeText1 = "Complete: $totalComplete";
@@ -196,9 +193,10 @@ class EkualisasiGroupController extends AdminController
                 $badgeColor1 = 'secondary';
                 $badgeText1 = "Complete: $totalComplete";
                 $badgeColor2 = 'secondary';
-                $badgeText2 = "Draft: $totalDraft";
+                $badgeText2 = "Drafts: $totalDraft";
             }
         }
+    
     
         return "<span class='badge bg-$badgeColor1'>$badgeText1</span> <span class='badge bg-$badgeColor2'>$badgeText2</span>";
     });
