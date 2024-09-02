@@ -83,6 +83,9 @@ class ClientController extends AdminController
         $grid->column('created_at', __('Created at'))->hide();
         $grid->column('updated_at', __('Updated at'))->hide();
         $grid->column('deleted_at', __('Deleted at'))->hide();
+        $grid->quickSearch(function ($model, $query) {
+            $model->where('nama_wp', $query)->orWhere('nama_wp', 'like', "%{$query}%");
+        });
 
         return $grid;
     }
