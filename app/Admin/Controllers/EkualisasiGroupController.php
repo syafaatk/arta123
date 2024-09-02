@@ -151,6 +151,13 @@ class EkualisasiGroupController extends AdminController
         $totalData = (int) $this->total_data;
         $totalDraft = (int) $this->jumlah_draft;
         $totalComplete = $totalData - $totalDraft;
+    
+        // Initialize badge colors and texts
+        $badgeColor1 = 'secondary';
+        $badgeText1 = '';
+        $badgeColor2 = 'secondary';
+        $badgeText2 = '';
+    
         // Determine badge color and text based on conditions
         if ($totalData == 12) {
             if ($totalDraft > 0) {
@@ -158,7 +165,7 @@ class EkualisasiGroupController extends AdminController
                 $badgeText1 = "Complete: $totalComplete";
                 $badgeColor2 = 'warning';
                 $badgeText2 = "Drafts: $totalDraft";
-            }if($totalDraft = 0) {
+            } else {
                 $badgeColor1 = 'success';
                 $badgeText1 = "Complete: $totalComplete";
                 $badgeColor2 = 'success';
@@ -171,15 +178,16 @@ class EkualisasiGroupController extends AdminController
                 $badgeColor2 = 'warning';
                 $badgeText2 = "Drafts: $totalDraft";
             } else {
-                $badgeColor1 = 'secondary'; // Or any other color if needed
+                $badgeColor1 = 'secondary';
                 $badgeText1 = "Complete: $totalComplete";
-                $badgeColor2 = 'secondary'; // Or any other color if needed
+                $badgeColor2 = 'secondary';
                 $badgeText2 = "Draft: $totalDraft";
             }
         }
     
-        return "<span class='badge bg-$badgeColor1'>$badgeText1</span><span class='badge bg-$badgeColor2'>$badgeText2</span>";
+        return "<span class='badge bg-$badgeColor1'>$badgeText1</span> <span class='badge bg-$badgeColor2'>$badgeText2</span>";
     });
+    
     
     
 
