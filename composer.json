@@ -14,6 +14,7 @@
         "laravel/tinker": "^2.5",
         "maatwebsite/excel": "^3.1",
         "mpdf/mpdf": "^8.2",
+        "open-admin-ext/api-tester": "^1.0",
         "open-admin-ext/grid-sortable": "^1.0",
         "open-admin-ext/helpers": "^1.0",
         "open-admin-ext/media-manager": "^1.0",

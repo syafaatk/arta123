@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a4592d0d22df9682a13c253c2c8dbe32",
+    "content-hash": "29bab4952cc61991f3a10c665428c4bc",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -3399,6 +3399,64 @@
                 "source": "https://github.com/nikic/PHP-Parser/tree/v5.0.0"
             },
             "time": "2024-01-07T17:17:35+00:00"
+        },
+        {
+            "name": "open-admin-ext/api-tester",
+            "version": "v1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/open-admin-org/api-tester.git",
+                "reference": "d353fa0395cfba3df0b780713900813c4cd44e9a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/open-admin-org/api-tester/zipball/d353fa0395cfba3df0b780713900813c4cd44e9a",
+                "reference": "d353fa0395cfba3df0b780713900813c4cd44e9a",
+                "shasum": ""
+            },
+            "require": {
+                "open-admin-org/open-admin": "~1.0",
+                "php": ">=7.0.0"
+            },
+            "require-dev": {
+                "laravel/laravel": "~5.5",
+                "phpunit/phpunit": "~6.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "OpenAdmin\\Admin\\ApiTester\\ApiTesterServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "OpenAdmin\\Admin\\ApiTester\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "open-admin",
+                    "email": "info@open-admin.org"
+                }
+            ],
+            "description": "Api tester for open-admin",
+            "homepage": "https://github.com/open-admin-org/api-tester",
+            "keywords": [
+                "api",
+                "open-admin",
+                "tester"
+            ],
+            "support": {
+                "issues": "https://github.com/open-admin-org/api-tester/issues",
+                "source": "https://github.com/open-admin-org/api-tester/tree/v1.0.2"
+            },
+            "time": "2022-07-01T09:33:07+00:00"
         },
         {
             "name": "open-admin-ext/grid-sortable",
@@ -9852,5 +9910,5 @@
         "php": "^7.3|^8.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }
